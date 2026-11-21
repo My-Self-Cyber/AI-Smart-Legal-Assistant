@@ -14,8 +14,8 @@ const STATE = {
         name: 'Muhammad Aqib',
         email: 'aqib44584@gmail.com',
         phone: '+92 300 1234567',
-        role: 'Advocate (High Court)',
-        chamber: 'Chamber #14, High Court Bar Association'
+        role: 'Citizen (Normal User)',
+        city: 'Vehari, Punjab, Pakistan'
     },
     conversations: [
         { id: 1, title: 'Murder Offence Punishment & Trial', topic: 'Criminal Law', date: '21-03-2026', query: 'What is the punishment for intentional murder under Pakistan Penal Code section 302?', citations: 'PPC 1860, Sec 302' },
@@ -60,7 +60,7 @@ const STATE = {
     auditLogs: [
         { time: '21-03-2026 13:50', user: 'Muhammad Aqib', action: 'Legal Question Legal AI Query: PPC 302', entity: 'Statutory Knowledge Base', ip: '192.168.10.45', status: 'Success' },
         { time: '21-03-2026 13:48', user: 'Muhammad Aqib', action: 'Extracted Passage Inspection: Sec 154 CrPC', entity: 'Document Repository', ip: '192.168.10.45', status: 'Success' },
-        { time: '21-03-2026 12:40', user: 'Sarah K (Advocate)', action: 'User Feedback: Thumbs Up Registered', entity: 'User Feedback Registry', ip: '192.168.10.72', status: 'Success' },
+        { time: '21-03-2026 12:40', user: 'Sarah K (Citizen)', action: 'User Feedback: Thumbs Up Registered', entity: 'User Feedback Registry', ip: '192.168.10.72', status: 'Success' },
         { time: '21-03-2026 12:15', user: 'System Legal AI Engine', action: 'Statutory Precedent Matching', entity: 'Legal Repository (Statutory)', ip: '127.0.0.1', status: 'Success' },
         { time: '21-03-2026 11:30', user: 'Guest Citizen', action: 'Failed Login Attempt (Invalid Hash)', entity: 'User Auth Module', ip: '39.45.18.99', status: 'Warning' },
         { time: '21-03-2026 10:20', user: 'Admin User', action: 'Document Upload & document processing Parsing', entity: 'Punjab Consumer Act.pdf', ip: '192.168.10.1', status: 'Success' },
@@ -572,11 +572,11 @@ document.addEventListener('DOMContentLoaded', () => {
 // ── RBAC / Role Switching (User Portal vs Administrator Panel) ───────────────
 STATE.currentRole = 'user';
 STATE.registeredUsers = [
-    { id: 'USR-001', name: 'Muhammad Aqib', email: 'aqib44584@gmail.com', role: 'Advocate (High Court)', chamber: 'Chamber #14, Vehari', status: 'Active', joined: '01/01/2026' },
-    { id: 'USR-002', name: 'Sarah K', email: 'sarah.advocate@gmail.com', role: 'Advocate (Supreme Court)', chamber: 'Chamber #08, Lahore', status: 'Active', joined: '15/01/2026' },
-    { id: 'USR-003', name: 'Ali Raza', email: 'aliraza.cit@yahoo.com', role: 'Citizen', chamber: 'N/A', status: 'Active', joined: '02/02/2026' },
-    { id: 'USR-004', name: 'Tariq Mehmood', email: 'tariq.m@hotmail.com', role: 'Citizen', chamber: 'N/A', status: 'Active', joined: '10/02/2026' },
-    { id: 'USR-005', name: 'Hamza Riaz', email: 'hamza.law@cui.edu.pk', role: 'Law Student (CUI Vehari)', chamber: 'BSSE / CUI', status: 'Active', joined: '18/02/2026' }
+    { id: 'USR-001', name: 'Muhammad Aqib', email: 'aqib44584@gmail.com', role: 'Citizen (Normal User)', city: 'Vehari, Pakistan', status: 'Active', joined: '01/01/2026' },
+    { id: 'USR-002', name: 'Sarah K', email: 'sarah.k@gmail.com', role: 'Citizen', city: 'Lahore', status: 'Active', joined: '15/01/2026' },
+    { id: 'USR-003', name: 'Ali Raza', email: 'aliraza.cit@yahoo.com', role: 'Citizen', city: 'Multan', status: 'Active', joined: '02/02/2026' },
+    { id: 'USR-004', name: 'Tariq Mehmood', email: 'tariq.m@hotmail.com', role: 'Citizen', city: 'Multan', status: 'Active', joined: '10/02/2026' },
+    { id: 'USR-005', name: 'Hamza Riaz', email: 'hamza.law@cui.edu.pk', role: 'Student', city: 'Vehari', status: 'Active', joined: '18/02/2026' }
 ];
 
 function switchRole(role) {
@@ -617,7 +617,7 @@ function renderAdminUsersTable() {
             <td><strong>${u.name}</strong></td>
             <td>${u.email}</td>
             <td><span class="badge-tag badge-gold">${u.role}</span></td>
-            <td>${u.chamber}</td>
+            <td>${u.city}</td>
             <td><span class="badge-tag badge-active">${u.status}</span></td>
             <td>${u.joined}</td>
         `;

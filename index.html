@@ -29,7 +29,7 @@
         <div class="header-right-tools">
             <!-- RBAC Role Switcher: User Portal vs Administrator Panel -->
             <div class="role-switcher-container">
-                <button class="role-switch-btn active" id="btn-role-user" onclick="switchRole('user')" title="Citizen / Advocate End">
+                <button class="role-switch-btn active" id="btn-role-user" onclick="switchRole('user')" title="Normal User / Citizen Portal">
                     👤 User Portal
                 </button>
                 <button class="role-switch-btn" id="btn-role-admin" onclick="switchRole('admin')" title="Restricted Admin Panel">
@@ -197,7 +197,7 @@
                         </div>
                         <img src="images/doc_screen_register.webp" alt="High Court & Pakistan Flag" style="max-width:320px; border-radius:12px; border:1px solid var(--border); margin-bottom:1.5rem; box-shadow:0 8px 30px rgba(0,0,0,0.5);">
                         <p style="color:var(--text-gray); font-size:0.85rem; max-width:320px; line-height:1.5;">
-                            Empowering Pakistani citizens, legal scholars, and advocates with grounded semantic intelligence.
+                            Empowering Pakistani citizens and normal users with instant legal awareness and rights guidance.
                         </p>
                     </div>
 
@@ -833,7 +833,7 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Role</th>
-                                <th>Affiliation / Chamber</th>
+                                <th>City / Location</th>
                                 <th>Status</th>
                                 <th>Joined</th>
                             </tr>
@@ -886,7 +886,7 @@
             <section id="screen-settings" class="screen-view">
                 <div style="margin-bottom:1.5rem;">
                     <h2 style="font-size:1.5rem; font-weight:800; color:var(--gold-bright);">Account Settings and Security Panel</h2>
-                    <p style="color:var(--text-muted); font-size:0.85rem;">Manage personal advocate profile, password hashes, and remote sessions (Module 1)</p>
+                    <p style="color:var(--text-muted); font-size:0.85rem;">Manage personal user profile, security settings, and active sessions (Module 1)</p>
                 </div>
 
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.25rem; margin-bottom:1.25rem;">
@@ -914,10 +914,9 @@
                         <div class="auth-input-group">
                             <label class="auth-input-label">Role</label>
                             <select id="profile-role" class="auth-input-field" style="padding-left:1rem; background:var(--bg-input);">
-                                <option selected>Advocate (High Court)</option>
-                                <option>Citizen</option>
-                                <option>Law Student</option>
-                                <option>Legal Researcher</option>
+                                <option selected>Citizen / Normal User</option>
+                                <option>Student</option>
+                                <option>General Public</option>
                             </select>
                         </div>
 
