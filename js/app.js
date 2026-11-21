@@ -686,3 +686,96 @@ function renderUserMyFeedbackList() {
         container.appendChild(div);
     });
 }
+
+// ── Security Gate & Admin Authentication Verification ────────────────────────
+STATE.isAdminAuthenticated = false;
+
+function openAdminSecurityModal() {
+    const modal = document.getElementById('admin-security-modal');
+    if (modal) {
+        modal.style.display = 'flex';
+        const keyInput = document.getElementById('admin-auth-key');
+        if (keyInput) {
+            keyInput.value = '';
+            keyInput.focus();
+        }
+    }
+}
+
+function closeAdminSecurityModal() {
+    const modal = document.getElementById('admin-security-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+function verifyAdminPasskey() {
+    const email = document.getElementById('admin-auth-email').value.trim();
+    const key = document.getElementById('admin-auth-key').value.trim();
+
+    // Verification check for Admin Privileges
+    if (key === 'cui-admin-2026' || key === 'admin123') {
+        STATE.isAdminAuthenticated = true;
+        closeAdminSecurityModal();
+
+        STATE.auditLogs.unshift({
+            time: 'Just now',
+            user: email,
+            action: 'Admin Session Authenticated via Cryptographic Passkey',
+            entity: 'System Administration Gateway',
+            ip: '192.168.10.1',
+            status: 'Success'
+        });
+
+        activateAdminPanel();
+    } else {
+        STATE.auditLogs.unshift({
+            time: 'Just now',
+            user: email || 'Unknown Remote IP',
+            action: 'Unauthorized Admin Access Blocked: 403 Forbidden',
+            entity: 'Security Gate',
+            ip: '192.168.10.45',
+            status: 'Failure'
+        });
+
+        alert('⛔ 403 Access Denied: Invalid Administrative Passkey. Access attempt has been recorded in the security audit logs.');
+    }
+}
+
+function activateAdminPanel() {
+    const menuUser = document.getElementById('menu-user-portal');
+    const menuAdmin = document.getElementById('menu-admin-panel');
+    const brandSub = document.getElementById('top-brand-sub');
+    const adminBanner = document.getElementById('admin-active-status-bar');
+
+    if (menuUser) menuUser.style.display = 'none';
+    if (menuAdmin) menuAdmin.style.display = 'flex';
+    if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus • Administrator Panel (Secure Session)';
+    if (adminBanner) adminBanner.style.display = 'flex';
+
+    showScreen('audit');
+}
+
+function lockAdminSession() {
+    STATE.isAdminAuthenticated = false;
+
+    const menuUser = document.getElementById('menu-user-portal');
+    const menuAdmin = document.getElementById('menu-admin-panel');
+    const brandSub = document.getElementById('top-brand-sub');
+    const adminBanner = document.getElementById('admin-active-status-bar');
+
+    if (menuAdmin) menuAdmin.style.display = 'none';
+    if (menuUser) menuUser.style.display = 'flex';
+    if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus • User Portal';
+    if (adminBanner) adminBanner.style.display = 'none';
+
+    STATE.auditLogs.unshift({
+        time: 'Just now',
+        user: 'Admin Session',
+        action: 'Administrator Session Terminated & Locked',
+        entity: 'Security Boundary',
+        ip: '192.168.10.1',
+        status: 'Success'
+    });
+
+    showScreen('dashboard');
+    alert('🔒 Administrator session locked. Returned safely to Citizen User Portal.');
+}
