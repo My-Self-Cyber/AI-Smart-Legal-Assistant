@@ -2,8 +2,8 @@
  * AI Smart Legal Assistant — Official Core Application Logic
  * Implements FYP SDD Modules:
  * Module 1: User Management & Authentication
- * Module 2: Legal Question Processing (RAG Pipeline & Citation Inspector)
- * Module 3: Document Management & Ingestion (PyPDF & 500-char Chunking)
+ * Module 2: Legal Question Processing (Legal AI Pipeline & Citation Inspector)
+ * Module 3: Document Management & Ingestion (document processing & 500-char Chunking)
  * Module 4: History & User Feedback Rating Panel
  * Module 5: System Administration & Real-Time Audit Logs
  */
@@ -36,7 +36,7 @@ const STATE = {
             1. <strong>Statutory Warranty:</strong> Manufacturers and sellers are under legal obligation to supply products free from design, manufacturing, or warning defects.<br/>
             2. <strong>Redressal Forum:</strong> If a defect causes economic loss or hazard, the consumer may file a formal complaint before the dedicated <em>District Consumer Court</em>.<br/>
             3. <strong>Legal Relief:</strong> The Court is empowered to order replacement of defective goods, full refund of price, and substantial damages/costs under Section 31.<br/><br/>
-            <em>*Retrieved from ChromaDB Vector Corpus with 0.89 Cosine Similarity threshold.</em>`,
+            <em>*Retrieved from Pakistan Statutory Repository with 0.89 Cosine Similarity threshold.</em>`,
             source: {
                 act: 'Punjab Consumer Protection Act, 2005',
                 section: 'Section 3: Rights of Consumers & Remedies',
@@ -58,13 +58,13 @@ const STATE = {
         { id: 8, title: 'Draft Commercial Arbitration Bill', version: '1', category: 'Civil Law', jurisdiction: 'Federal', date: '08/09/2026', status: 'Pending Review' }
     ],
     auditLogs: [
-        { time: '21-03-2026 13:50', user: 'Muhammad Aqib', action: 'Legal Question RAG Query: PPC 302', entity: 'ChromaDB Vector Index', ip: '192.168.10.45', status: 'Success' },
+        { time: '21-03-2026 13:50', user: 'Muhammad Aqib', action: 'Legal Question Legal AI Query: PPC 302', entity: 'Statutory Knowledge Base', ip: '192.168.10.45', status: 'Success' },
         { time: '21-03-2026 13:48', user: 'Muhammad Aqib', action: 'Extracted Passage Inspection: Sec 154 CrPC', entity: 'Document Repository', ip: '192.168.10.45', status: 'Success' },
-        { time: '21-03-2026 12:40', user: 'Sarah K (Advocate)', action: 'User Feedback: Thumbs Up Registered', entity: 'Feedback Table (MySQL)', ip: '192.168.10.72', status: 'Success' },
-        { time: '21-03-2026 12:15', user: 'System RAG Engine', action: 'ChromaDB Cosine Similarity Query', entity: 'Vector Store (768-dim)', ip: '127.0.0.1', status: 'Success' },
+        { time: '21-03-2026 12:40', user: 'Sarah K (Advocate)', action: 'User Feedback: Thumbs Up Registered', entity: 'User Feedback Registry', ip: '192.168.10.72', status: 'Success' },
+        { time: '21-03-2026 12:15', user: 'System Legal AI Engine', action: 'Statutory Precedent Matching', entity: 'Legal Repository (Statutory)', ip: '127.0.0.1', status: 'Success' },
         { time: '21-03-2026 11:30', user: 'Guest Citizen', action: 'Failed Login Attempt (Invalid Hash)', entity: 'User Auth Module', ip: '39.45.18.99', status: 'Warning' },
-        { time: '21-03-2026 10:20', user: 'Admin User', action: 'Document Upload & PyPDF Parsing', entity: 'Punjab Consumer Act.pdf', ip: '192.168.10.1', status: 'Success' },
-        { time: '21-03-2026 09:15', user: 'System Daemon', action: 'Ollama LLM Keep-Alive Ping (Port 11434)', entity: 'Mistral-7B Local', ip: '127.0.0.1', status: 'Success' }
+        { time: '21-03-2026 10:20', user: 'Admin User', action: 'Document Upload & document processing Parsing', entity: 'Punjab Consumer Act.pdf', ip: '192.168.10.1', status: 'Success' },
+        { time: '21-03-2026 09:15', user: 'System Daemon', action: 'AI Legal Engine Keep-Alive Ping (Port 11434)', entity: 'Mistral-7B Local', ip: '127.0.0.1', status: 'Success' }
     ],
     feedbacks: [
         { id: 1, user: 'Muhammad Aqib', query: 'What is punishment for PPC 302 murder?', response: 'PPC 302 provides Qisas, life imprisonment or death penalty...', rating: '👍 Helpful', comment: 'Accurate statutory citation of Section 302(b).', time: '21-03-2026 19:24' },
@@ -135,7 +135,7 @@ function renderDashboard() {
     }
 }
 
-// ── Screen 4: Ask Legal Question (RAG Q&A Engine) (Image 4) ──────────────────
+// ── Screen 4: Ask Legal Question (Legal AI Q&A Engine) (Image 4) ──────────────────
 function renderChatFeed() {
     const feed = document.getElementById('chat-scroll-feed');
     if (!feed) return;
@@ -157,7 +157,7 @@ function renderChatFeed() {
             bubbleWrap.innerHTML = `
                 <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.2rem;">
                     <span style="font-size:1.1rem; color:var(--gold-bright);">⚖️</span>
-                    <span style="font-size:0.8rem; font-weight:700; color:var(--gold-bright);">AI Assistant (Local Ollama RAG Engine)</span>
+                    <span style="font-size:0.8rem; font-weight:700; color:var(--gold-bright);">AI Assistant (Legal AI Intelligence Engine)</span>
                     <span class="badge-tag badge-active" style="font-size:0.65rem;">Grounded Citation</span>
                 </div>
                 <div class="chat-bubble-assistant">
@@ -191,7 +191,7 @@ function updateSourcesPanel(source) {
     if (actElem) actElem.textContent = source.act;
     if (secElem) secElem.textContent = source.section;
     if (catElem) catElem.textContent = source.category;
-    if (simElem) simElem.textContent = `Cosine Similarity: ${source.similarity}`;
+    if (simElem) simElem.textContent = `Relevance Match: ${source.similarity}`;
     if (textElem) textElem.textContent = source.excerpt;
 }
 
@@ -215,16 +215,16 @@ function sendLegalQuery() {
         time: 'Just now',
         user: STATE.user.name,
         action: `Legal Question Query: "${query.substring(0, 32)}..."`,
-        entity: 'ChromaDB Vector Retrieval',
+        entity: 'Statutory Precedent Search',
         ip: '192.168.10.45',
         status: 'Success'
     });
 
-    // Simulated RAG Pipeline Execution
+    // Simulated Legal AI Pipeline Execution
     setTimeout(() => {
         let reply = '';
         let matchedSource = {
-            act: 'Pakistan Statutory Corpus (ChromaDB)',
+            act: 'Pakistan Statutory Corpus (Pakistan Legal Repository)',
             section: 'Grounded Statutory Section',
             category: 'Pakistani Jurisprudence',
             similarity: '0.86',
@@ -266,7 +266,7 @@ function sendLegalQuery() {
                 excerpt: 'When any person accused of any non-bailable offence is arrested or detained without warrant... he may be released on bail, but he shall not be so released if there appear reasonable grounds...'
             };
         } else {
-            reply = `Based on semantic retrieval from the <strong>Pakistani Legal Knowledge Base (ChromaDB)</strong>, your query involves substantive statutory rights. All procedures must strictly adhere to statutory limitation periods and jurisdictional mandates.<br/><br/>
+            reply = `Based on semantic retrieval from the <strong>Pakistani Legal Knowledge Base (Pakistan Legal Repository)</strong>, your query involves substantive statutory rights. All procedures must strictly adhere to statutory limitation periods and jurisdictional mandates.<br/><br/>
             Citations and active provisions have been loaded in the <strong>Sources & Context</strong> inspection panel.`;
         }
 
@@ -308,12 +308,12 @@ function submitChatFeedback(msgIdx, ratingType) {
         time: 'Just now',
         user: STATE.user.name,
         action: `User Feedback: ${ratingType.toUpperCase()} Registered`,
-        entity: 'Feedback Table (MySQL)',
+        entity: 'User Feedback Registry',
         ip: '192.168.10.45',
         status: 'Success'
     });
 
-    alert(`Feedback registered: ${ratingType === 'helpful' ? 'Marked as Helpful 👍' : 'Marked as Not Helpful 👎'}. Thank you for helping improve the RAG grounding!`);
+    alert(`Feedback registered: ${ratingType === 'helpful' ? 'Marked as Helpful 👍' : 'Marked as Not Helpful 👎'}. Thank you for helping improve the statutory accuracy!`);
 }
 
 function openCommentModal(msgIdx) {
@@ -441,15 +441,15 @@ function uploadNewDocument() {
     STATE.auditLogs.unshift({
         time: 'Just now',
         user: STATE.user.name,
-        action: `PDF Ingestion & 500-char Chunking: "${title}"`,
-        entity: 'ChromaDB Vector Index',
+        action: `Legal Act Ingestion & Indexing: "${title}"`,
+        entity: 'Statutory Knowledge Base',
         ip: '192.168.10.45',
         status: 'Success'
     });
 
     if (titleInput) titleInput.value = '';
     renderDocumentsTable();
-    alert(`Document "${title}" uploaded and chunked successfully (500 chars, 50 overlap, 768-dim embeddings added to ChromaDB)!`);
+    alert(`Document "${title}" uploaded and chunked successfully (500 chars, 50 overlap, Statutory embeddings added to Pakistan Legal Repository)!`);
 }
 
 function inspectDocument(docTitle) {
@@ -547,7 +547,7 @@ function saveProfileChanges() {
         time: 'Just now',
         user: STATE.user.name,
         action: 'Profile Credentials Updated',
-        entity: 'Users Table (MySQL)',
+        entity: 'User Accounts',
         ip: '192.168.10.45',
         status: 'Success'
     });
@@ -556,7 +556,7 @@ function saveProfileChanges() {
 }
 
 function updatePassword() {
-    alert('Password updated successfully! Salted bcrypt hash regenerated in MySQL.');
+    alert('Password updated successfully! Password updated successfully and encrypted in secure database.');
 }
 
 function revokeAllSessions() {
@@ -568,3 +568,121 @@ document.addEventListener('DOMContentLoaded', () => {
     // Show Dashboard by default (Image 3)
     showScreen('dashboard');
 });
+
+// ── RBAC / Role Switching (User Portal vs Administrator Panel) ───────────────
+STATE.currentRole = 'user';
+STATE.registeredUsers = [
+    { id: 'USR-001', name: 'Muhammad Aqib', email: 'aqib44584@gmail.com', role: 'Advocate (High Court)', chamber: 'Chamber #14, Vehari', status: 'Active', joined: '01/01/2026' },
+    { id: 'USR-002', name: 'Sarah K', email: 'sarah.advocate@gmail.com', role: 'Advocate (Supreme Court)', chamber: 'Chamber #08, Lahore', status: 'Active', joined: '15/01/2026' },
+    { id: 'USR-003', name: 'Ali Raza', email: 'aliraza.cit@yahoo.com', role: 'Citizen', chamber: 'N/A', status: 'Active', joined: '02/02/2026' },
+    { id: 'USR-004', name: 'Tariq Mehmood', email: 'tariq.m@hotmail.com', role: 'Citizen', chamber: 'N/A', status: 'Active', joined: '10/02/2026' },
+    { id: 'USR-005', name: 'Hamza Riaz', email: 'hamza.law@cui.edu.pk', role: 'Law Student (CUI Vehari)', chamber: 'BSSE / CUI', status: 'Active', joined: '18/02/2026' }
+];
+
+function switchRole(role) {
+    STATE.currentRole = role;
+
+    const btnUser = document.getElementById('btn-role-user');
+    const btnAdmin = document.getElementById('btn-role-admin');
+    const menuUser = document.getElementById('menu-user-portal');
+    const menuAdmin = document.getElementById('menu-admin-panel');
+    const brandSub = document.getElementById('top-brand-sub');
+
+    if (role === 'user') {
+        if (btnUser) btnUser.classList.add('active');
+        if (btnAdmin) btnAdmin.classList.remove('active');
+        if (menuUser) menuUser.style.display = 'flex';
+        if (menuAdmin) menuAdmin.style.display = 'none';
+        if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus • User Portal';
+        showScreen('dashboard');
+    } else {
+        if (btnAdmin) btnAdmin.classList.add('active');
+        if (btnUser) btnUser.classList.remove('active');
+        if (menuAdmin) menuAdmin.style.display = 'flex';
+        if (menuUser) menuUser.style.display = 'none';
+        if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus • Administrator Panel';
+        showScreen('audit');
+    }
+}
+
+function renderAdminUsersTable() {
+    const tbody = document.getElementById('admin-users-table-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    STATE.registeredUsers.forEach(u => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><code>${u.id}</code></td>
+            <td><strong>${u.name}</strong></td>
+            <td>${u.email}</td>
+            <td><span class="badge-tag badge-gold">${u.role}</span></td>
+            <td>${u.chamber}</td>
+            <td><span class="badge-tag badge-active">${u.status}</span></td>
+            <td>${u.joined}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function submitUserFeedbackForm() {
+    const topic = document.getElementById('user-fb-topic').value;
+    const rating = document.getElementById('user-fb-rating').value;
+    const comment = document.getElementById('user-fb-comment').value.trim();
+
+    if (!comment) {
+        alert('Please enter a feedback comment.');
+        return;
+    }
+
+    const newFb = {
+        id: Date.now(),
+        user: STATE.user.name,
+        query: `Inquiry on ${topic}`,
+        response: 'Grounded Statutory Output',
+        rating: rating,
+        comment: comment,
+        time: 'Just now'
+    };
+
+    STATE.feedbacks.unshift(newFb);
+    STATE.auditLogs.unshift({
+        time: 'Just now',
+        user: STATE.user.name,
+        action: `User Feedback Submitted (${rating})`,
+        entity: 'User Feedback Registry',
+        ip: '192.168.10.45',
+        status: 'Success'
+    });
+
+    document.getElementById('user-fb-comment').value = '';
+    renderUserMyFeedbackList();
+    alert('Thank you! Your feedback has been recorded in the database.');
+}
+
+function renderUserMyFeedbackList() {
+    const container = document.getElementById('user-my-feedback-list');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const myFeedbacks = STATE.feedbacks.filter(f => f.user === STATE.user.name);
+    if (myFeedbacks.length === 0) {
+        container.innerHTML = '<div style="color:var(--text-muted); font-size:0.85rem;">No feedback submitted yet.</div>';
+        return;
+    }
+
+    myFeedbacks.forEach(f => {
+        const div = document.createElement('div');
+        div.className = 'recent-chat-row';
+        div.style.cursor = 'default';
+        div.innerHTML = `
+            <div>
+                <div style="font-weight:600; color:var(--text-white); font-size:0.88rem;">${f.query}</div>
+                <div style="font-size:0.8rem; color:var(--text-gray); margin-top:0.2rem;">"${f.comment}"</div>
+                <div style="font-size:0.72rem; color:var(--text-muted); margin-top:0.2rem;">${f.time}</div>
+            </div>
+            <span class="badge-tag ${f.rating.includes('Helpful') ? 'badge-active' : 'badge-gold'}">${f.rating}</span>
+        `;
+        container.appendChild(div);
+    });
+}
