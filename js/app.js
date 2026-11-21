@@ -779,3 +779,115 @@ function lockAdminSession() {
     showScreen('dashboard');
     alert('🔒 Administrator session locked. Returned safely to Citizen User Portal.');
 }
+
+// ── Dedicated Full-Screen Auth & Admin Routing Controller ────────────────────
+function showAuthView(viewName) {
+    const loginView = document.getElementById('auth-view-login');
+    const registerView = document.getElementById('auth-view-register');
+
+    if (viewName === 'login') {
+        if (loginView) loginView.style.display = 'flex';
+        if (registerView) registerView.style.display = 'none';
+    } else {
+        if (loginView) loginView.style.display = 'none';
+        if (registerView) registerView.style.display = 'flex';
+    }
+}
+
+function handleLoginSubmit(event) {
+    event.preventDefault();
+    const email = document.getElementById('login-email').value.trim();
+    const pass = document.getElementById('login-password').value.trim();
+
+    // Check if Administrator Login
+    if (email === 'admin@cui.edu.pk' && pass === 'cui-admin-2026') {
+        STATE.isAdminAuthenticated = true;
+        document.getElementById('auth-wrapper').style.display = 'none';
+        document.getElementById('user-portal-shell').style.display = 'none';
+        document.getElementById('admin-portal-shell').style.display = 'block';
+        showAdminScreen('audit');
+        return;
+    }
+
+    // Citizen / Normal User Login
+    STATE.user.email = email;
+    document.getElementById('auth-wrapper').style.display = 'none';
+    document.getElementById('admin-portal-shell').style.display = 'none';
+    document.getElementById('user-portal-shell').style.display = 'block';
+
+    const displayName = document.getElementById('user-display-name');
+    if (displayName) displayName.textContent = STATE.user.name;
+
+    showScreen('dashboard');
+}
+
+function handleRegisterSubmit(event) {
+    event.preventDefault();
+    const name = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const pass = document.getElementById('reg-pass').value.trim();
+    const pass2 = document.getElementById('reg-pass2').value.trim();
+
+    if (pass !== pass2) {
+        alert('Passwords do not match. Please re-enter.');
+        return;
+    }
+
+    STATE.user.name = name;
+    STATE.user.email = email;
+
+    document.getElementById('auth-wrapper').style.display = 'none';
+    document.getElementById('admin-portal-shell').style.display = 'none';
+    document.getElementById('user-portal-shell').style.display = 'block';
+
+    const displayName = document.getElementById('user-display-name');
+    if (displayName) displayName.textContent = STATE.user.name;
+
+    const welcome = document.getElementById('dash-welcome-text');
+    if (welcome) welcome.textContent = 'Welcome back, ' + name;
+
+    showScreen('dashboard');
+    alert('Account created successfully! Welcome to AI Smart Legal Assistant, ' + name + '.');
+}
+
+function logoutToAuthScreen() {
+    document.getElementById('user-portal-shell').style.display = 'none';
+    document.getElementById('admin-portal-shell').style.display = 'none';
+    document.getElementById('auth-wrapper').style.display = 'flex';
+    showAuthView('login');
+}
+
+function logoutAdmin() {
+    STATE.isAdminAuthenticated = false;
+    document.getElementById('admin-portal-shell').style.display = 'none';
+    document.getElementById('user-portal-shell').style.display = 'block';
+    showScreen('dashboard');
+}
+
+function showAdminScreen(adminScreenId) {
+    document.querySelectorAll('.admin-view').forEach(v => {
+        v.style.display = 'none';
+        v.classList.remove('active');
+    });
+
+    const target = document.getElementById('adminscreen-' + adminScreenId);
+    if (target) {
+        target.style.display = 'block';
+        target.classList.add('active');
+    }
+
+    document.querySelectorAll('[data-adminscreen]').forEach(item => {
+        if (item.getAttribute('data-adminscreen') === adminScreenId) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
+    });
+
+    if (adminScreenId === 'audit') renderAuditLogsTable();
+    if (adminScreenId === 'documents') renderDocumentsTable();
+    if (adminScreenId === 'admin-feedback') renderFeedbackTable();
+    if (adminScreenId === 'admin-users') renderAdminUsersTable();
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}

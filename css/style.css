@@ -916,3 +916,45 @@ body {
     align-items: center;
     gap: 0.4rem;
 }
+
+/* ── Dedicated Full-Screen Auth Layout (No Header, No Sidebar) ────────────── */
+#auth-wrapper {
+    min-height: 100vh;
+    width: 100vw;
+    background: #040711;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 500;
+    overflow-y: auto;
+}
+
+.auth-fullscreen-container {
+    max-width: 980px;
+    width: 100%;
+    margin: auto;
+}
+
+.auth-clean-card {
+    background: #080E1F;
+    border: 1px solid var(--border-gold);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(229, 169, 60, 0.15);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 560px;
+}
+
+@media (max-width: 860px) {
+    .auth-clean-card {
+        grid-template-columns: 1fr;
+    }
+    .auth-hero-pane {
+        display: none;
+    }
+}
