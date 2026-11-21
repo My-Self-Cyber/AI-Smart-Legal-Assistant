@@ -3,785 +3,822 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Smart Legal Assistant — Pakistan Legal AI Suite</title>
+    <title>AI Smart Legal Assistant — SDD Prototype (Evaluation 2)</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- ── Top Header Strip ───────────────────────────────────────────── -->
+    <!-- ── Top Header Bar ─────────────────────────────────────────────────────── -->
     <header class="top-header">
-        <div class="brand-section" onclick="showScreen('home')">
-            <div class="brand-icon-box">⚖️</div>
-            <div class="brand-title-wrap">
-                <h1>AI Smart Legal Assistant</h1>
-                <p>Pakistan Legal Intelligence & RAG System</p>
+        <div class="brand-container" onclick="showScreen('dashboard')">
+            <div class="brand-logo-badge">⚖️</div>
+            <div>
+                <div class="brand-title">AI Smart Legal Assistant</div>
+                <div class="brand-sub">COMSATS University Islamabad, Vehari Campus</div>
             </div>
         </div>
 
-        <div class="header-search-bar">
-            <span>🔍</span>
-            <input type="text" id="global-search-bar" placeholder="Search Pakistan Penal Code, Cr.P.C., Case Precedents..." onkeydown="if(event.key==='Enter') executeGlobalSearch()">
+        <div class="header-center-search">
+            <span class="header-search-icon">🔍</span>
+            <input type="text" class="header-search-input" placeholder="Search Pakistani statutes (PPC, CrPC, Constitution, PECA, Case Law)..." onkeydown="if(event.key==='Enter') { showScreen('chat'); document.getElementById('chat-user-input').value = this.value; sendLegalQuery(); }">
         </div>
 
-        <div class="user-profile-strip">
-            <button class="btn-gold" onclick="showScreen('auth')">+ Sign Up / Login</button>
-            <div class="user-avatar-circle" title="Zain Ul Abideen (FA23-BSE-127)">ZA</div>
+        <div class="header-right-tools">
+            <div class="icon-btn-badge" title="Notifications" onclick="alert('System Notification: ChromaDB Legal Corpus updated with 1,420 statutory vectors.')">
+                🔔
+            </div>
+            <div class="user-profile-pill" onclick="showScreen('settings')">
+                <div class="user-avatar-circle">A</div>
+                <span class="user-profile-name" id="top-bar-user-name">Muhammad Aqib</span>
+            </div>
         </div>
     </header>
 
-    <!-- ── Master App Shell (Sidebar + Workspace Viewport) ───────────── -->
+    <!-- ── Main App Shell with Sidebar & Views ─────────────────────────────────── -->
     <div class="app-container">
-
-        <!-- Left Navigation Rail (Matches Screenshots 2–11) -->
-        <nav class="nav-sidebar">
+        
+        <!-- Left Sidebar Navigation (Matching Images 3, 4, 5, 8, 10) -->
+        <aside class="sidebar-nav">
             <ul class="sidebar-menu">
-                <li class="sidebar-item active" data-screen="home" onclick="showScreen('home')">
-                    <span class="icon">🏠</span> <span>Home</span>
-                </li>
-                <li class="sidebar-item" data-screen="cases" onclick="showScreen('cases')">
-                    <span class="icon">📁</span> <span>Cases</span>
-                </li>
-                <li class="sidebar-item" data-screen="research" onclick="showScreen('research')">
-                    <span class="icon">🔍</span> <span>Research</span>
-                </li>
-                <li class="sidebar-item" data-screen="documents" onclick="showScreen('documents')">
-                    <span class="icon">📑</span> <span>Documents</span>
-                </li>
-                <li class="sidebar-item" data-screen="history" onclick="showScreen('history')">
-                    <span class="icon">📜</span> <span>History</span>
-                </li>
-                <li class="sidebar-item" data-screen="analytics" onclick="showScreen('analytics')">
-                    <span class="icon">📊</span> <span>Analytics</span>
-                </li>
-                <li class="sidebar-item" data-screen="calendar" onclick="showScreen('calendar')">
-                    <span class="icon">📅</span> <span>Calendar</span>
-                </li>
-                <li class="sidebar-item" data-screen="pipeline" onclick="showScreen('pipeline')">
-                    <span class="icon">👥</span> <span>Clients</span>
-                </li>
-                <li class="sidebar-item" data-screen="settings" onclick="showScreen('settings')">
-                    <span class="icon">⚙️</span> <span>Settings</span>
+                <li class="sidebar-item active" data-screen="dashboard" onclick="showScreen('dashboard')">
+                    <span class="sidebar-item-icon">🏠</span>
+                    <span class="sidebar-item-label">Dashboard</span>
                 </li>
                 <li class="sidebar-item" data-screen="chat" onclick="showScreen('chat')">
-                    <span class="icon">💬</span> <span>Legal Chat</span>
+                    <span class="sidebar-item-icon">❓</span>
+                    <span class="sidebar-item-label">Ask Legal Question</span>
+                </li>
+                <li class="sidebar-item" data-screen="history" onclick="showScreen('history')">
+                    <span class="sidebar-item-icon">🕒</span>
+                    <span class="sidebar-item-label">Chat History</span>
+                </li>
+                <li class="sidebar-item" data-screen="sources" onclick="showScreen('sources')">
+                    <span class="sidebar-item-icon">📖</span>
+                    <span class="sidebar-item-label">Source References</span>
+                </li>
+                <li class="sidebar-item" data-screen="documents" onclick="showScreen('documents')">
+                    <span class="sidebar-item-icon">📁</span>
+                    <span class="sidebar-item-label">Document Management</span>
+                </li>
+                <li class="sidebar-item" data-screen="feedback" onclick="showScreen('feedback')">
+                    <span class="sidebar-item-icon">⭐</span>
+                    <span class="sidebar-item-label">Feedback & Ratings</span>
+                </li>
+                <li class="sidebar-item" data-screen="audit" onclick="showScreen('audit')">
+                    <span class="sidebar-item-icon">🛡️</span>
+                    <span class="sidebar-item-label">System Audit Logs</span>
+                </li>
+                <li class="sidebar-item" data-screen="settings" onclick="showScreen('settings')">
+                    <span class="sidebar-item-icon">⚙️</span>
+                    <span class="sidebar-item-label">Account Settings</span>
                 </li>
             </ul>
 
             <div class="sidebar-footer">
-                <div style="font-size:0.75rem; color:#64748B; text-align:center;">
-                    COMSATS Vehari Campus<br/>
-                    <strong style="color:#FFD166;">Semester 7th SDD</strong>
+                <div class="sidebar-divider"></div>
+                <div class="sidebar-item" onclick="showScreen('login')">
+                    <span class="sidebar-item-icon">🚪</span>
+                    <span class="sidebar-item-label">Logout</span>
                 </div>
             </div>
-        </nav>
+        </aside>
 
-        <!-- Main Workspace Viewport -->
-        <main class="workspace-viewport">
+        <!-- Main Content Area -->
+        <main class="main-content">
 
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <!--  SCREEN 1: CREATE ACCOUNT (Matching Image 1)               -->
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <section id="screen-auth" class="screen-view">
-                <div class="auth-split-grid">
-                    <div class="auth-graphic-side">
-                        <img src="images/ai_scales_emblem.png" alt="AI Legal Scales of Justice">
-                        <h2 style="font-size:1.4rem; color:#FFFFFF; margin-top:1.5rem; text-align:center;">
-                            AI Smart Legal Assistant
-                        </h2>
-                        <p style="font-size:0.85rem; color:#94A3B8; text-align:center; max-width:280px; margin-top:0.4rem;">
-                            The definitive artificial intelligence legal companion for Pakistan statutes and case analysis.
+            <!-- ── SCREEN 1: LOGIN (Image 1) ──────────────────────────────────────── -->
+            <section id="screen-login" class="screen-view">
+                <div class="auth-split-wrapper">
+                    <div class="auth-hero-pane">
+                        <img src="images/ai_scales_emblem.png" alt="Scales of Justice" class="auth-hero-emblem">
+                        <h2 style="color:var(--gold-bright); margin-bottom:0.5rem; font-size:1.5rem;">AI Smart Legal Assistant</h2>
+                        <p style="color:var(--text-gray); font-size:0.88rem; max-width:320px; line-height:1.6;">
+                            Retrieval-Augmented Generation (RAG) Legal Assistant for Pakistani Law & Court Procedure.
+                        </p>
+                        <div style="margin-top:2rem; width:100%; max-width:300px; display:flex; flex-direction:column; gap:0.5rem;">
+                            <div style="height:3px; background:var(--gold-gradient); border-radius:2px;"></div>
+                            <div style="height:2px; width:70%; background:var(--gold-primary); opacity:0.6; border-radius:2px;"></div>
+                            <div style="height:2px; width:40%; background:var(--gold-primary); opacity:0.3; border-radius:2px;"></div>
+                        </div>
+                    </div>
+
+                    <div class="auth-card-pane">
+                        <div class="auth-box-card">
+                            <div style="text-align:center; margin-bottom:1.8rem;">
+                                <div class="brand-logo-badge" style="margin:0 auto 0.8rem auto; width:48px; height:48px; font-size:1.6rem;">⚖️</div>
+                                <h3 style="color:var(--text-white); font-size:1.3rem;">Sign In to Your Account</h3>
+                                <p style="color:var(--text-muted); font-size:0.8rem; margin-top:0.3rem;">Enter your credentials to access the legal intelligence hub</p>
+                            </div>
+
+                            <form onsubmit="event.preventDefault(); showScreen('dashboard');">
+                                <div class="auth-input-group">
+                                    <label class="auth-input-label">Email Address</label>
+                                    <span class="auth-input-icon">✉️</span>
+                                    <input type="email" class="auth-input-field" value="aqib44584@gmail.com" required>
+                                </div>
+
+                                <div class="auth-input-group">
+                                    <label class="auth-input-label">Password</label>
+                                    <span class="auth-input-icon">🔒</span>
+                                    <input type="password" class="auth-input-field" value="••••••••••••" required>
+                                </div>
+
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; font-size:0.82rem;">
+                                    <label style="display:flex; align-items:center; gap:0.4rem; color:var(--text-gray); cursor:pointer;">
+                                        <input type="checkbox" checked> Remember me
+                                    </label>
+                                    <a href="#" style="color:var(--gold-bright); text-decoration:none;">Forgot Password?</a>
+                                </div>
+
+                                <button type="submit" class="btn-gold" style="width:100%; padding:0.75rem; font-size:0.95rem;">
+                                    Sign In ➔
+                                </button>
+                            </form>
+
+                            <div style="text-align:center; margin-top:1.5rem; font-size:0.85rem; color:var(--text-muted);">
+                                Don't have an account? 
+                                <a href="javascript:void(0)" onclick="showScreen('register')" style="color:var(--gold-bright); font-weight:600; text-decoration:none;">register</a>
+                            </div>
+
+                            <div style="text-align:center; margin-top:2rem; color:var(--text-muted); font-size:1.2rem;">
+                                🔒
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── SCREEN 2: REGISTRATION (Image 2) ───────────────────────────────── -->
+            <section id="screen-register" class="screen-view">
+                <div class="auth-split-wrapper">
+                    <div class="auth-hero-pane">
+                        <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:1.5rem;">
+                            <span style="font-size:1.6rem; color:var(--gold-bright);">⚖️</span>
+                            <span style="font-size:1.2rem; font-weight:700; color:var(--gold-bright);">AI Smart Legal Assistant</span>
+                        </div>
+                        <img src="images/doc_screen_register.webp" alt="High Court & Pakistan Flag" style="max-width:320px; border-radius:12px; border:1px solid var(--border); margin-bottom:1.5rem; box-shadow:0 8px 30px rgba(0,0,0,0.5);">
+                        <p style="color:var(--text-gray); font-size:0.85rem; max-width:320px; line-height:1.5;">
+                            Empowering Pakistani citizens, legal scholars, and advocates with grounded semantic intelligence.
                         </p>
                     </div>
 
-                    <div class="auth-form-side">
-                        <h2 style="font-size:1.8rem; font-weight:800; color:#FFFFFF; margin-bottom:0.25rem;">Create Account</h2>
-                        <p style="font-size:0.85rem; color:#94A3B8; margin-bottom:1.5rem;">Join the AI legal revolution in Pakistan.</p>
+                    <div class="auth-card-pane">
+                        <div class="auth-box-card">
+                            <h3 style="color:var(--text-white); font-size:1.3rem; margin-bottom:0.4rem;">Create Account</h3>
+                            <p style="color:var(--text-muted); font-size:0.82rem; margin-bottom:1.8rem;">Register for the official FYP SDD Evaluation Prototype</p>
 
-                        <form onsubmit="handleAccountCreated(event)">
-                            <div class="auth-form-group">
-                                <label>Full Name</label>
-                                <input type="text" class="auth-input" placeholder="e.g. Zain Ul Abideen" value="Zain Ul Abideen" required>
+                            <form onsubmit="event.preventDefault(); alert('Account registered successfully! Redirecting to Dashboard...'); showScreen('dashboard');">
+                                <div class="auth-input-group">
+                                    <label class="auth-input-label">Full Name</label>
+                                    <span class="auth-input-icon">👤</span>
+                                    <input type="text" class="auth-input-field" placeholder="Muhammad Aqib" required>
+                                </div>
+
+                                <div class="auth-input-group">
+                                    <label class="auth-input-label">Email Address</label>
+                                    <span class="auth-input-icon">✉️</span>
+                                    <input type="email" class="auth-input-field" placeholder="name@example.com" required>
+                                </div>
+
+                                <div class="auth-input-group">
+                                    <label class="auth-input-label">Password</label>
+                                    <span class="auth-input-icon">🔒</span>
+                                    <input type="password" class="auth-input-field" placeholder="At least 8 characters" required>
+                                </div>
+
+                                <div class="auth-input-group">
+                                    <label class="auth-input-label">Confirm Password</label>
+                                    <span class="auth-input-icon">🔒</span>
+                                    <input type="password" class="auth-input-field" placeholder="Confirm your password" required>
+                                </div>
+
+                                <div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:1.4rem;">
+                                    By registering, you agree to the <a href="#" style="color:var(--gold-bright);">Terms</a> and <a href="#" style="color:var(--gold-bright);">legal disclaimer</a>.
+                                </div>
+
+                                <button type="submit" class="btn-gold" style="width:100%; padding:0.75rem; font-size:0.95rem;">
+                                    Create Account ➔
+                                </button>
+                            </form>
+
+                            <div style="text-align:center; margin-top:1.5rem; font-size:0.85rem; color:var(--text-muted);">
+                                Already have an account? 
+                                <a href="javascript:void(0)" onclick="showScreen('login')" style="color:var(--gold-bright); font-weight:600; text-decoration:none;">Sign In</a>
                             </div>
-
-                            <div class="auth-form-group">
-                                <label>Email Address</label>
-                                <input type="email" class="auth-input" placeholder="student@comsats.edu.pk" value="zain.fa23@comsats.edu.pk" required>
-                            </div>
-
-                            <div class="auth-form-group">
-                                <label>Password</label>
-                                <input type="password" class="auth-input" value="••••••••••••" required>
-                            </div>
-
-                            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1.2rem; font-size:0.8rem; color:#94A3B8;">
-                                <input type="checkbox" checked required id="terms-box">
-                                <label for="terms-box">I agree to the <a href="javascript:void(0)" style="color:#FFD166;">Terms of Service</a></label>
-                            </div>
-
-                            <button type="submit" class="btn-gold" style="width:100%; padding:0.75rem; font-size:0.95rem;">Sign Up</button>
-
-                            <div style="text-align:center; margin:1.2rem 0 0.5rem 0; font-size:0.75rem; color:#64748B;">Or sign up with</div>
-                            <div class="social-icons-row">
-                                <div class="social-circle-btn" title="Google">G</div>
-                                <div class="social-circle-btn" title="LinkedIn">in</div>
-                                <div class="social-circle-btn" title="Twitter">𝕏</div>
-                                <div class="social-circle-btn" title="YouTube">▶</div>
-                            </div>
-
-                            <div style="text-align:center; font-size:0.8rem; color:#94A3B8; margin-top:0.8rem;">
-                                Already have an account? <a href="javascript:void(0)" onclick="alert('Demo account logged in as Zain Ul Abideen.'); showScreen('home');" style="color:#FFD166; font-weight:600;">Log In</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <!--  SCREEN 2: HOME DASHBOARD (Matching Image 2)               -->
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <section id="screen-home" class="screen-view active">
-                <div class="home-widgets-top">
-                    <!-- Brand Emblem Widget -->
-                    <div class="brand-emblem-card">
-                        <img src="images/ai_scales_emblem.png" alt="Glowing AI Scales of Justice">
-                    </div>
-
-                    <!-- Active Cases Overview Chart Card -->
-                    <div class="panel-box">
-                        <div class="panel-header">
-                            <span class="panel-title">Active Cases Overview</span>
-                            <span style="font-size:0.75rem; color:#94A3B8;">Live Ingestion</span>
-                        </div>
-                        <div style="display:flex; align-items:flex-end; gap:0.6rem; height:110px; padding:0.5rem 0;" id="active-cases-bars">
-                            <!-- Injected bars via JS -->
-                        </div>
-                        <div style="display:flex; justify-content:space-around; margin-top:0.75rem; border-top:1px solid #1F2E4D; padding-top:0.5rem; font-size:0.82rem;">
-                            <div><strong>196</strong> <span style="color:#64748B;">Active</span></div>
-                            <div><strong>345</strong> <span style="color:#64748B;">Resolved</span></div>
-                            <div><strong>265</strong> <span style="color:#64748B;">Verified</span></div>
-                        </div>
-                    </div>
-
-                    <!-- Recent Legal Research Card -->
-                    <div class="panel-box">
-                        <div class="panel-header">
-                            <span class="panel-title">Recent Legal Research</span>
-                            <span class="badge-tag badge-active">Updated</span>
-                        </div>
-                        <div style="display:flex; flex-direction:column; gap:0.65rem;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; background:#0D162B; padding:0.5rem 0.75rem; border-radius:6px;">
-                                <span style="font-size:0.82rem;">📄 Pakistan Penal Code Sec 302</span>
-                                <span style="font-size:0.72rem; color:#64748B;">11/02/26</span>
-                            </div>
-                            <div style="display:flex; justify-content:space-between; align-items:center; background:#0D162B; padding:0.5rem 0.75rem; border-radius:6px;">
-                                <span style="font-size:0.82rem;">📄 Cr.P.C. 154 Cognizable FIR</span>
-                                <span style="font-size:0.72rem; color:#64748B;">11/08/26</span>
-                            </div>
-                            <div style="display:flex; justify-content:space-between; align-items:center; background:#0D162B; padding:0.5rem 0.75rem; border-radius:6px;">
-                                <span style="font-size:0.82rem;">📄 PECA 2016 Cyber Defamation</span>
-                                <span style="font-size:0.72rem; color:#64748B;">11/18/26</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="home-widgets-bottom">
-                    <!-- AI Insights Feed -->
-                    <div class="panel-box">
-                        <div class="panel-header">
-                            <span class="panel-title">AI Insights Feed</span>
-                            <span class="status-pill" style="color:#38BDF8; background:rgba(56,189,248,0.15);">ChromaDB Stream</span>
-                        </div>
-                        <div style="display:flex; flex-direction:column; gap:0.8rem;">
-                            <div style="background:#091024; border:1px solid #1F2E4D; padding:0.85rem; border-radius:8px;">
-                                <strong style="color:#FFD166; font-size:0.85rem;">🧠 Supreme Court Precedent Analysis (PLD 2024 SC 12)</strong>
-                                <p style="font-size:0.78rem; color:#94A3B8; margin-top:0.25rem;">
-                                    Retrieved 4 relevant statutory precedents affirming bail criteria under Section 497 Cr.P.C. for medical infirmity.
-                                </p>
-                            </div>
-                            <div style="background:#091024; border:1px solid #1F2E4D; padding:0.85rem; border-radius:8px;">
-                                <strong style="color:#38BDF8; font-size:0.85rem;">🧠 High Court Injunction Advisory</strong>
-                                <p style="font-size:0.78rem; color:#94A3B8; margin-top:0.25rem;">
-                                    Specific Relief Act Section 42 temporary injunction requirements satisfied across 3 active property disputes.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Quick Actions -->
-                    <div class="panel-box">
-                        <div class="panel-header">
-                            <span class="panel-title">Quick Actions</span>
-                        </div>
-                        <div style="display:flex; flex-direction:column; gap:0.75rem;">
-                            <button class="btn-gold" style="width:100%; justify-content:center;" onclick="showScreen('cases')">+ New Case</button>
-                            <button class="btn-outline-gold" style="width:100%; justify-content:center;" onclick="showScreen('documents')">Draft Document</button>
-                            <button class="btn-outline-gold" style="width:100%; justify-content:center;" onclick="showScreen('research')">Start Research Query</button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <!--  SCREEN 3: MY CASES (Matching Image 4)                     -->
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <section id="screen-cases" class="screen-view">
-                <div class="view-header">
-                    <div>
-                        <h2 class="view-title">My Cases</h2>
-                        <p style="font-size:0.82rem; color:#94A3B8;">9 Active Litigation & Advisory Matters</p>
+            <!-- ── SCREEN 3: USER DASHBOARD (Image 3) ─────────────────────────────── -->
+            <section id="screen-dashboard" class="screen-view active">
+                <div class="dashboard-top-row">
+                    <div class="dashboard-user-welcome">
+                        <div class="dashboard-avatar-big">⚖️</div>
+                        <div>
+                            <div style="font-size:0.85rem; color:var(--text-muted);">User Dashboard</div>
+                            <h2 style="color:var(--gold-bright); font-size:1.6rem; font-weight:800;">Welcome back, Muhammad Aqib</h2>
+                        </div>
                     </div>
-                    <button class="btn-gold" onclick="alert('Creating new case matter...')">+ New Case</button>
-                </div>
 
-                <div class="cases-grid-3x3" id="cases-cards-container">
-                    <!-- Populated dynamically via app.js -->
-                </div>
-            </section>
-
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <!--  SCREEN 4: LEGAL RESEARCH HUB (Matching Image 5)           -->
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <section id="screen-research" class="screen-view">
-                <div class="view-header">
-                    <div>
-                        <h2 class="view-title">Legal Research Hub</h2>
-                        <p style="font-size:0.82rem; color:#94A3B8;">Natural-Language Statutory Grounding across Pakistan Code</p>
-                    </div>
-                    <button class="btn-gold" onclick="focusResearchInput()">+ New Research Query</button>
-                </div>
-
-                <!-- Glowing Golden Search Input -->
-                <div class="research-hero-search">
-                    <div class="research-search-inner">
-                        <span style="font-size:1.2rem; color:#FFD166;">🔍</span>
-                        <input type="text" id="research-main-input" placeholder="Inquire: e.g. What constitutes cyber stalking under PECA Section 21?" onkeydown="if(event.key==='Enter') runResearchHubQuery()">
-                        <button class="btn-gold" onclick="runResearchHubQuery()">Search Statutes</button>
+                    <div style="display:flex; gap:0.85rem;">
+                        <button class="btn-gold" onclick="showScreen('chat')">
+                            <span>➕</span> Ask New Question
+                        </button>
+                        <button class="btn-outline-gold" onclick="showScreen('history')">
+                            <span>🕒</span> View Chat History
+                        </button>
                     </div>
                 </div>
 
-                <!-- Filter Dropdowns -->
-                <div class="filter-dropdowns-row">
-                    <select class="filter-select">
-                        <option>Jurisdiction: All Pakistan Federal Laws</option>
-                        <option>Punjab Provincial Enactments</option>
-                        <option>Sindh Statutes</option>
-                    </select>
-                    <select class="filter-select">
-                        <option>Practice Area: Criminal Procedure & Penal Law</option>
-                        <option>Constitutional & Civil Writs</option>
-                        <option>Cybercrime & Electronic Evidence</option>
-                    </select>
-                    <select class="filter-select">
-                        <option>Document Type: Enacted Acts & Statutes</option>
-                        <option>High Court / Supreme Court Rulings</option>
-                    </select>
+                <!-- Stats 3-Card Grid -->
+                <div class="dashboard-stats-grid">
+                    <div class="stat-metric-card">
+                        <div>
+                            <div style="font-size:0.85rem; color:var(--text-gray); font-weight:600;">Conversations</div>
+                            <div class="stat-metric-val" id="dash-total-conv">6</div>
+                            <div style="font-size:0.72rem; color:var(--color-success); margin-top:0.3rem;">● Stored in MySQL</div>
+                        </div>
+                        <div style="font-size:2.2rem; color:rgba(229,169,60,0.3);">📊</div>
+                    </div>
+
+                    <div class="stat-metric-card">
+                        <div>
+                            <div style="font-size:0.85rem; color:var(--text-gray); font-weight:600;">Topics Explored</div>
+                            <div class="stat-metric-val">7</div>
+                            <div style="font-size:0.72rem; color:var(--gold-bright); margin-top:0.3rem;">PPC, CrPC, PECA, MFLO...</div>
+                        </div>
+                        <div style="font-size:2.2rem; color:rgba(229,169,60,0.3);">🕸️</div>
+                    </div>
+
+                    <div class="stat-metric-card">
+                        <div>
+                            <div style="font-size:0.85rem; color:var(--text-gray); font-weight:600;">Saved References</div>
+                            <div class="stat-metric-val">3</div>
+                            <div style="font-size:0.72rem; color:var(--color-success); margin-top:0.3rem;">Verified Statutory Citations</div>
+                        </div>
+                        <div style="font-size:2.2rem; color:rgba(229,169,60,0.3);">🔖</div>
+                    </div>
                 </div>
 
-                <!-- Results Output Area -->
-                <div id="research-results-box" style="margin-bottom:1.5rem; display:none;">
-                    <!-- Injected dynamically on search -->
-                </div>
+                <!-- Middle 2-Column: Recent Chats & Recent Activity -->
+                <div class="dashboard-middle-grid">
+                    <div class="panel-card">
+                        <div class="card-title-bar">
+                            <span class="card-title"><span class="badge-tag badge-gold">Recent Chats</span></span>
+                            <a href="javascript:void(0)" onclick="showScreen('history')" style="color:var(--gold-bright); font-size:0.82rem; text-decoration:none;">View All ➔</a>
+                        </div>
+                        <div id="dash-recent-chats-list">
+                            <!-- Populated dynamically via app.js -->
+                        </div>
+                    </div>
 
-                <!-- Suggested Databases & AI Agents Grid -->
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
-                    <div class="panel-box">
-                        <div class="panel-header"><span class="panel-title">Trending Pakistan Law Topics</span></div>
+                    <div class="panel-card">
+                        <div class="card-title-bar">
+                            <span class="card-title"><span class="badge-tag badge-gold">Recent Activity</span></span>
+                            <a href="javascript:void(0)" onclick="showScreen('audit')" style="color:var(--gold-bright); font-size:0.82rem; text-decoration:none;">Audit Logs ➔</a>
+                        </div>
                         <div style="display:flex; flex-direction:column; gap:0.6rem;">
-                            <div class="case-card-tile" onclick="setResearchQuery('PPC 302 Punishment for Murder Qisas vs Tazir')" style="cursor:pointer;">
-                                <strong style="color:#FFD166; font-size:0.85rem;">⚖️ PPC 302: Qatl-i-Amd Qisas vs Tazir</strong>
-                                <span style="font-size:0.75rem; color:#94A3B8;">142 Research Inquiries this week</span>
+                            <div class="recent-chat-row" onclick="showScreen('sources')">
+                                <div style="display:flex; align-items:center; gap:0.75rem;">
+                                    <span style="font-size:1.1rem; color:var(--gold-bright);">🔍</span>
+                                    <div>
+                                        <div style="font-size:0.85rem; color:var(--text-white); font-weight:600;">PPC 302 Statutory Query</div>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">21-03-2026 • ChromaDB Retrieval</div>
+                                    </div>
+                                </div>
+                                <span class="badge-tag badge-active">Success</span>
                             </div>
-                            <div class="case-card-tile" onclick="setResearchQuery('CrPC 154 Procedure when Police refuse FIR')" style="cursor:pointer;">
-                                <strong style="color:#38BDF8; font-size:0.85rem;">🚓 Cr.P.C. 154 / 22-A Police Non-Registration</strong>
-                                <span style="font-size:0.75rem; color:#94A3B8;">89 Legal Petitions drafted</span>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="panel-box">
-                        <div class="panel-header"><span class="panel-title">AI Research Agents</span></div>
-                        <div style="display:flex; flex-direction:column; gap:0.6rem;">
-                            <div class="case-card-tile">
-                                <strong style="color:#10B981; font-size:0.85rem;">🤖 Nomic-Embed-Text Semantic Agent</strong>
-                                <span style="font-size:0.75rem; color:#94A3B8;">768-d vector similarity matching (&ge; 0.75 cutoff)</span>
+                            <div class="recent-chat-row" onclick="showScreen('sources')">
+                                <div style="display:flex; align-items:center; gap:0.75rem;">
+                                    <span style="font-size:1.1rem; color:var(--gold-bright);">🔖</span>
+                                    <div>
+                                        <div style="font-size:0.85rem; color:var(--text-white); font-weight:600;">Saved Punjab Consumer Act Reference</div>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">27-03-2026 • Bookmark Created</div>
+                                    </div>
+                                </div>
+                                <span class="badge-tag badge-active">Saved</span>
                             </div>
-                            <div class="case-card-tile">
-                                <strong style="color:#E5A93C; font-size:0.85rem;">🤖 Mistral-7B Legal Citation Synthesizer</strong>
-                                <span style="font-size:0.75rem; color:#94A3B8;">Strict local LLM prompt grounding (Zero cloud transmission)</span>
+
+                            <div class="recent-chat-row" onclick="showScreen('feedback')">
+                                <div style="display:flex; align-items:center; gap:0.75rem;">
+                                    <span style="font-size:1.1rem; color:var(--gold-bright);">⭐</span>
+                                    <div>
+                                        <div style="font-size:0.85rem; color:var(--text-white); font-weight:600;">User Feedback Registered (👍 Helpful)</div>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">25-03-2026 • MySQL Feedback</div>
+                                    </div>
+                                </div>
+                                <span class="badge-tag badge-gold">Rated</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
 
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <!--  SCREEN 5: DOCUMENT REPOSITORY (Matching Image 6)          -->
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <section id="screen-documents" class="screen-view">
-                <div class="view-header">
+                <!-- Bottom Statutory Disclaimer Banner -->
+                <div class="legal-disclaimer-banner">
+                    <span style="font-size:1.3rem; color:var(--gold-bright);">ⓘ</span>
                     <div>
-                        <h2 class="view-title">Document Repository & Knowledge Base</h2>
-                        <p style="font-size:0.82rem; color:#94A3B8;">Ingested Legal Enactments and Draft Agreements</p>
-                    </div>
-                    <div style="display:flex; gap:0.5rem;">
-                        <button class="btn-outline-gold" onclick="alert('Creating template...')">New Document</button>
-                        <button class="btn-gold" onclick="alert('File upload dialog opened.')">Upload PDF</button>
+                        <strong>Legal Disclaimer:</strong> The AI Smart Legal Assistant provides general informational answers generated through Retrieval-Augmented Generation from stored Pakistani statutes. It does not constitute formal legal advice. For actionable court litigation, consult a licensed advocate. (UI concept • Sample data FR-1.3)
                     </div>
                 </div>
+            </section>
 
-                <div class="panel-box">
-                    <table class="doc-table">
-                        <thead>
-                            <tr>
-                                <th>Document Name</th>
-                                <th>Last Modified</th>
-                                <th>Status</th>
-                                <th>File Type</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Pakistan Penal Code 1860 (Act XLV)</strong></td>
-                                <td>06/09/2026</td>
-                                <td><span class="badge-tag badge-active">Active Ingested</span></td>
-                                <td>PDF (842 Chunks)</td>
-                                <td><button class="btn-outline-gold" style="padding:2px 8px; font-size:0.72rem;">Inspect</button></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Code of Criminal Procedure 1898 (Act V)</strong></td>
-                                <td>02/01/2026</td>
-                                <td><span class="badge-tag badge-active">Active Ingested</span></td>
-                                <td>PDF (915 Chunks)</td>
-                                <td><button class="btn-outline-gold" style="padding:2px 8px; font-size:0.72rem;">Inspect</button></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Client Representation Retainer Agreement</strong></td>
-                                <td>02/06/2026</td>
-                                <td><span class="badge-tag badge-pending">Needs Review</span></td>
-                                <td>DOCX</td>
-                                <td><button class="btn-outline-gold" style="padding:2px 8px; font-size:0.72rem;">Edit</button></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Constitution of Pakistan (1973 Edition)</strong></td>
-                                <td>09/07/2026</td>
-                                <td><span class="badge-tag badge-active">Active Ingested</span></td>
-                                <td>PDF (460 Chunks)</td>
-                                <td><button class="btn-outline-gold" style="padding:2px 8px; font-size:0.72rem;">Inspect</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <!-- ── SCREEN 4: ASK A LEGAL QUESTION / RAG CHAT (Image 4) ────────────── -->
+            <section id="screen-chat" class="screen-view">
+                <div class="chat-rag-layout">
+                    <!-- Left: Conversational Q&A Area -->
+                    <div class="chat-conversation-pane">
+                        <div class="chat-header-bar">
+                            <div>
+                                <h3 style="color:var(--text-white); font-size:1.15rem; font-weight:700;">Ask a legal question</h3>
+                                <div style="font-size:0.75rem; color:var(--text-muted);">Pakistan Penal Code, Cr.P.C., PECA, Constitution & Family Law</div>
+                            </div>
+                            <span class="badge-tag badge-active">● Ollama LLM Active</span>
+                        </div>
 
-                <div class="panel-box" style="margin-top:1.5rem;">
-                    <div class="panel-header"><span class="panel-title">Drafting Templates</span></div>
-                    <div class="templates-grid">
-                        <div class="template-card" onclick="alert('Opening Non-Disclosure Agreement Template')">
-                            <span style="font-size:1.4rem;">📝</span>
-                            <div>
-                                <strong style="font-size:0.85rem; color:#FFFFFF;">Standard NDA</strong>
-                                <div style="font-size:0.72rem; color:#94A3B8;">Contract Act 1872 compliant</div>
-                            </div>
+                        <!-- Chat Messages Feed -->
+                        <div class="chat-scroll-feed" id="chat-scroll-feed">
+                            <!-- Populated dynamically via app.js -->
                         </div>
-                        <div class="template-card" onclick="alert('Opening Legal Service Agreement')">
-                            <span style="font-size:1.4rem;">📜</span>
-                            <div>
-                                <strong style="font-size:0.85rem; color:#FFFFFF;">Service Agreement</strong>
-                                <div style="font-size:0.72rem; color:#94A3B8;">Advocate-Client Retainer</div>
-                            </div>
+
+                        <!-- Chat Input Tray -->
+                        <div class="chat-input-dock">
+                            <button class="feedback-pill-btn" title="Attach FIR or Legal Document" onclick="alert('Upload legal FIR or Court Document for RAG context extraction.')">
+                                📎
+                            </button>
+                            <input type="text" id="chat-user-input" class="chat-input-field" placeholder="Ask any legal question (e.g. punishment under PPC 302, bail under CrPC 497)..." onkeydown="if(event.key==='Enter') sendLegalQuery()">
+                            <button class="btn-gold" onclick="sendLegalQuery()">
+                                Send ➔
+                            </button>
                         </div>
-                        <div class="template-card" onclick="alert('Opening Formal Police Complaint Template')">
-                            <span style="font-size:1.4rem;">📑</span>
-                            <div>
-                                <strong style="font-size:0.85rem; color:#FFFFFF;">Section 154 CrPC Complaint</strong>
-                                <div style="font-size:0.72rem; color:#94A3B8;">Police FIR written petition</div>
+                    </div>
+
+                    <!-- Right: Sources & Context + Legal Disclaimer (Matching Image 4) -->
+                    <div style="display:flex; flex-direction:column; gap:1.25rem;">
+                        <div class="panel-card panel-card-gold" style="flex:1;">
+                            <div class="card-title-bar">
+                                <span class="card-title card-title-gold">📖 Sources & context</span>
+                                <span class="badge-tag badge-gold" id="context-source-similarity">Cosine Similarity: 0.89</span>
                             </div>
+
+                            <div style="margin-bottom:0.8rem;">
+                                <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">Statutory Act</div>
+                                <div style="font-size:0.95rem; font-weight:700; color:var(--text-white);" id="context-source-act">Punjab Consumer Protection Act, 2005</div>
+                            </div>
+
+                            <div style="margin-bottom:0.8rem;">
+                                <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">Relevant Section</div>
+                                <div style="font-size:0.9rem; font-weight:600; color:var(--gold-bright);" id="context-source-section">Section 3: Rights of Consumers & Remedies</div>
+                            </div>
+
+                            <div style="margin-bottom:0.8rem;">
+                                <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">Jurisdiction / Category</div>
+                                <span class="badge-tag badge-active" id="context-source-category">Consumer Protection</span>
+                            </div>
+
+                            <div style="background:#070C1B; border:1px solid var(--border); border-radius:6px; padding:0.85rem; font-size:0.82rem; line-height:1.5; color:var(--text-gray); margin-bottom:1rem;" id="context-source-excerpt">
+                                "Section 3. Rights of Consumers. (1) Every consumer shall have the right to be protected against goods and services which are hazardous to life, property or safety. Any consumer aggrieved by a defect may lodge a complaint before the Consumer Court..."
+                            </div>
+
+                            <button class="btn-outline-gold" style="width:100%;" onclick="showScreen('sources')">
+                                Inspect Full Act in Citation Inspector ➔
+                            </button>
+                        </div>
+
+                        <!-- Right Bottom: Legal Disclaimer Card -->
+                        <div class="panel-card">
+                            <div class="card-title-bar">
+                                <span class="card-title" style="font-size:0.95rem;">🛡️ Legal disclaimer</span>
+                            </div>
+                            <p style="color:var(--text-muted); font-size:0.8rem; line-height:1.5;">
+                                This assistant uses local RAG inference to cross-examine stored Pakistani statutes. It does not create an attorney-client relationship. Always verify citations with an authorized legal practitioner.
+                            </p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <!--  SCREEN 6: ACTIVITY LOG / HISTORY (Matching Image 3)       -->
-            <!-- ═════════════════════════════════════════════════════════ -->
+            <!-- ── SCREEN 5: CHAT HISTORY (Image 5) ───────────────────────────────── -->
             <section id="screen-history" class="screen-view">
-                <div class="view-header">
-                    <div>
-                        <h2 class="view-title">Audit Trail & Activity Log</h2>
-                        <p style="font-size:0.82rem; color:#94A3B8;">Forensic System Access & Query Execution History (SEC-3)</p>
+                <div class="history-watermark-bg">
+                    <div style="margin-bottom:1.5rem;">
+                        <h2 style="font-size:1.6rem; font-weight:800; color:var(--text-white); letter-spacing:0.5px;">CHAT HISTORY</h2>
+                        <p style="color:var(--text-muted); font-size:0.85rem;">Longitudinal records of all conversational sessions stored in MySQL database</p>
                     </div>
-                    <button class="btn-outline-gold">Filter Logs</button>
-                </div>
 
-                <div class="panel-box">
-                    <table class="activity-table">
+                    <!-- Top Search & Filter Bar (Matching Image 5) -->
+                    <div class="history-search-banner">
+                        <input type="text" class="history-gold-input" placeholder="🔍  Search past questions, titles, or statutory sections...">
+                        <select class="history-gold-input" style="flex:0 0 180px; background:#0B1327;">
+                            <option>All Categories</option>
+                            <option>Criminal Law</option>
+                            <option>Criminal Procedure</option>
+                            <option>Cyber Law</option>
+                            <option>Consumer Protection</option>
+                        </select>
+                        <select class="history-gold-input" style="flex:0 0 160px; background:#0B1327;">
+                            <option>All Dates</option>
+                            <option>March 2026</option>
+                            <option>February 2026</option>
+                        </select>
+                    </div>
+
+                    <!-- History Table List -->
+                    <table class="custom-table">
                         <thead>
                             <tr>
-                                <th>Action</th>
-                                <th>Description</th>
-                                <th>Client IP / Timestamp</th>
-                                <th>Execution Status</th>
+                                <th>Conversation Title / Question</th>
+                                <th>Category</th>
+                                <th>Citations</th>
+                                <th>Date</th>
+                                <th style="text-align:right;">Action</th>
                             </tr>
                         </thead>
-                        <tbody id="activity-log-body">
+                        <tbody id="history-table-body">
                             <!-- Populated dynamically via app.js -->
                         </tbody>
                     </table>
 
-                    <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:1rem; align-items:center;">
-                        <span style="font-size:0.8rem; color:#94A3B8;">Page 1 of 2</span>
-                        <button class="btn-outline-gold" style="padding:2px 8px; font-size:0.75rem;">&lt;</button>
-                        <button class="btn-gold" style="padding:2px 8px; font-size:0.75rem;">1</button>
-                        <button class="btn-outline-gold" style="padding:2px 8px; font-size:0.75rem;">2</button>
-                        <button class="btn-outline-gold" style="padding:2px 8px; font-size:0.75rem;">&gt;</button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <!--  SCREEN 7: PERFORMANCE ANALYTICS (Matching Image 7)        -->
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <section id="screen-analytics" class="screen-view">
-                <div class="view-header">
-                    <div>
-                        <h2 class="view-title">Performance Analytics & AI Efficiency</h2>
-                        <p style="font-size:0.82rem; color:#94A3B8;">Model Evaluation, Latency Benchmarks, and User Ratings</p>
-                    </div>
-                    <button class="btn-gold" onclick="alert('Compiling official evaluation report...')">Generate New Report</button>
-                </div>
-
-                <div class="analytics-4-grid">
-                    <!-- 1. Case Load Overview -->
-                    <div class="analytics-card">
-                        <div class="panel-title">Case Load Overview</div>
-                        <div style="height:80px; display:flex; align-items:center; justify-content:center;">
-                            <svg viewBox="0 0 160 50" width="100%" height="50">
-                                <path d="M 10 40 Q 40 10 80 30 T 150 15" fill="none" stroke="#E5A93C" stroke-width="2.5" />
-                            </svg>
-                        </div>
-                        <div style="font-size:0.78rem; color:#10B981;">▲ 24% Inquiry Growth</div>
-                    </div>
-
-                    <!-- 2. Research Efficiency -->
-                    <div class="analytics-card">
-                        <div class="panel-title">Research Efficiency</div>
-                        <div style="display:flex; align-items:flex-end; gap:0.4rem; height:70px;">
-                            <div style="height:30%; width:15%; background:#E5A93C; border-radius:2px;"></div>
-                            <div style="height:50%; width:15%; background:#E5A93C; border-radius:2px;"></div>
-                            <div style="height:70%; width:15%; background:#E5A93C; border-radius:2px;"></div>
-                            <div style="height:90%; width:15%; background:#E5A93C; border-radius:2px;"></div>
-                            <div style="height:100%; width:15%; background:#FFD166; border-radius:2px;"></div>
-                        </div>
-                        <div style="font-size:0.78rem; color:#38BDF8;">Avg. 1.36s sub-second response</div>
-                    </div>
-
-                    <!-- 3. Document Generation Volume -->
-                    <div class="analytics-card">
-                        <div class="panel-title">Generation Volume</div>
-                        <div style="display:flex; align-items:center; justify-content:center; height:70px;">
-                            <svg viewBox="0 0 36 36" width="60" height="60">
-                                <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#1E293B" stroke-width="3" />
-                                <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#FFD166" stroke-dasharray="68, 100" stroke-width="3" />
-                                <text x="18" y="21" font-size="8" fill="#FFFFFF" text-anchor="middle" font-weight="bold">68%</text>
-                            </svg>
-                        </div>
-                        <div style="font-size:0.78rem; color:#94A3B8;">842 Documents generated</div>
-                    </div>
-
-                    <!-- 4. Client Satisfaction Score -->
-                    <div class="analytics-card">
-                        <div class="panel-title">Satisfaction Score</div>
-                        <div style="display:flex; align-items:center; justify-content:center; height:70px;">
-                            <svg viewBox="0 0 100 50" width="90" height="45">
-                                <path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#1E293B" stroke-width="8" />
-                                <path d="M 10 50 A 40 40 0 0 1 82 22" fill="none" stroke="#10B981" stroke-width="8" />
-                                <text x="50" y="48" font-size="12" fill="#FFFFFF" text-anchor="middle" font-weight="bold">94%</text>
-                            </svg>
-                        </div>
-                        <div style="font-size:0.78rem; color:#10B981;">Positive Feedback Ratio</div>
-                    </div>
-                </div>
-
-                <div class="panel-box">
-                    <div class="panel-header"><span class="panel-title">Custom Saved Evaluation Reports</span></div>
-                    <div style="display:flex; flex-direction:column; gap:0.6rem;">
-                        <div class="case-card-tile" style="padding:0.75rem 1rem;">
-                            <strong>Evaluation 2 (Semester 7th) SDD Milestone Report</strong>
-                            <div style="font-size:0.75rem; color:#94A3B8;">40% Modules complete, 12 Diagrams verified, ChromaDB indexed.</div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--border);">
+                        <span style="font-size:0.8rem; color:var(--text-muted);">Showing 1-6 of 6 Conversations</span>
+                        <div style="display:flex; gap:0.4rem;">
+                            <button class="feedback-pill-btn">&lt;</button>
+                            <button class="feedback-pill-btn active">1</button>
+                            <button class="feedback-pill-btn">&gt;</button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <!--  SCREEN 8: CASE DEADLINES & HEARINGS (Matching Image 9)    -->
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <section id="screen-calendar" class="screen-view">
-                <div class="view-header">
-                    <div>
-                        <h2 class="view-title">Case Deadlines & Court Hearings</h2>
-                        <p style="font-size:0.82rem; color:#94A3B8;">Integrated Judicial Schedule for District & Sessions Courts</p>
+            <!-- ── SCREEN 6: DOCUMENT MANAGEMENT (Image 6) ────────────────────────── -->
+            <section id="screen-documents" class="screen-view">
+                <div style="margin-bottom:1.5rem;">
+                    <div style="display:flex; align-items:center; gap:0.6rem;">
+                        <span style="font-size:1.6rem; color:var(--gold-bright);">📁</span>
+                        <h2 style="font-size:1.5rem; font-weight:800; color:var(--text-white);">Document Management</h2>
                     </div>
-                    <button class="btn-gold" onclick="alert('Create Event dialog opened.')">Create New Event</button>
+                    <p style="color:var(--text-muted); font-size:0.85rem;">New Document Ingestion (FR-3.1), PyPDF parsing & 500-char chunking for ChromaDB indexing</p>
                 </div>
 
-                <div class="calendar-layout">
-                    <div class="panel-box">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-                            <strong style="font-size:1.05rem; color:#FFFFFF;">November 2026</strong>
-                            <div style="display:flex; gap:0.4rem;">
-                                <button class="btn-gold" style="padding:2px 8px; font-size:0.75rem;">Month</button>
-                                <button class="btn-outline-gold" style="padding:2px 8px; font-size:0.75rem;">Week</button>
-                                <button class="btn-outline-gold" style="padding:2px 8px; font-size:0.75rem;">Day</button>
+                <div style="display:grid; grid-template-columns: 360px 1fr; gap:1.25rem;">
+                    <!-- Left: Upload Document Form (FR-3.1) -->
+                    <div class="panel-card panel-card-gold">
+                        <h3 style="font-size:1.1rem; color:var(--gold-bright); margin-bottom:1.2rem;">Upload Document</h3>
+
+                        <div class="auth-input-group">
+                            <label class="auth-input-label">Document Title</label>
+                            <input type="text" id="upload-doc-title" class="auth-input-field" style="padding-left:1rem;" placeholder="e.g. Specific Relief Act 1877">
+                        </div>
+
+                        <div class="auth-input-group">
+                            <label class="auth-input-label">File Type</label>
+                            <div style="display:flex; gap:0.5rem;">
+                                <button type="button" class="btn-gold" style="flex:1; padding:0.45rem;">PDF</button>
+                                <button type="button" class="btn-outline-gold" style="flex:1; padding:0.45rem;">TXT</button>
                             </div>
                         </div>
 
-                        <table class="cal-month-grid">
+                        <div class="auth-input-group">
+                            <label class="auth-input-label">Legal Category</label>
+                            <select id="upload-doc-category" class="auth-input-field" style="padding-left:1rem; background:var(--bg-input);">
+                                <option>Criminal Law</option>
+                                <option>Criminal Procedure</option>
+                                <option>Civil Law</option>
+                                <option>Constitutional Law</option>
+                                <option>Cybercrime (PECA)</option>
+                                <option>Consumer Protection</option>
+                            </select>
+                        </div>
+
+                        <div class="auth-input-group">
+                            <label class="auth-input-label">Jurisdiction</label>
+                            <select id="upload-doc-jurisdiction" class="auth-input-field" style="padding-left:1rem; background:var(--bg-input);">
+                                <option>Federal</option>
+                                <option>Punjab</option>
+                                <option>Sindh</option>
+                                <option>Khyber Pakhtunkhwa</option>
+                                <option>Balochistan</option>
+                            </select>
+                        </div>
+
+                        <!-- Drag and Drop Box -->
+                        <div style="border:2px dashed var(--border-gold); border-radius:var(--radius-sm); padding:1.8rem 1rem; text-align:center; background:#070C1C; margin-bottom:1.2rem; cursor:pointer;" onclick="alert('File selector opened: Select legal act or judgment PDF.')">
+                            <span style="font-size:1.8rem; color:var(--gold-bright);">📄</span>
+                            <div style="font-size:0.85rem; color:var(--text-white); font-weight:600; margin-top:0.4rem;">Drag and Drop Upload</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.2rem;">PDF, TXT up to 25MB</div>
+                        </div>
+
+                        <button class="btn-gold" style="width:100%;" onclick="uploadNewDocument()">
+                            Upload & Process ➔
+                        </button>
+                    </div>
+
+                    <!-- Right: Document Repository Table (Matching Image 6) -->
+                    <div class="panel-card">
+                        <div class="card-title-bar">
+                            <span class="card-title">Document Repository Table</span>
+                            <span class="badge-tag badge-gold">ChromaDB Vector Store</span>
+                        </div>
+
+                        <table class="custom-table">
                             <thead>
-                                <tr><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th></tr>
+                                <tr>
+                                    <th>Document Title</th>
+                                    <th>Version</th>
+                                    <th>Category</th>
+                                    <th>Jurisdiction</th>
+                                    <th>Upload Date</th>
+                                    <th>Status</th>
+                                    <th style="text-align:right;">Actions</th>
+                                </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td><td></td><td></td><td>1</td>
-                                    <td>2<div class="cal-event-pill">Court Hearing (Vehari)</div></td>
-                                    <td>3</td><td>4</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td style="background:rgba(229,169,60,0.1);">6<div class="cal-event-pill">Court Deadline</div></td>
-                                    <td>7<div class="cal-event-pill">Court Date</div></td>
-                                    <td>8<div class="cal-event-pill" style="background:#E5A93C; color:#070B19;">Sessions Trial</div></td>
-                                    <td>9</td><td>10</td><td>11</td>
-                                </tr>
-                                <tr>
-                                    <td>12</td>
-                                    <td>13<div class="cal-event-pill">Bail Hearing</div></td>
-                                    <td>14</td><td>15</td>
-                                    <td>16<div class="cal-event-pill">Pre-trial Review</div></td>
-                                    <td>17<div class="cal-event-pill">Discovery Date</div></td>
-                                    <td>18</td>
-                                </tr>
-                                <tr>
-                                    <td>19</td>
-                                    <td>20<div class="cal-event-pill">Discovery Deadline</div></td>
-                                    <td>21</td><td>22</td>
-                                    <td>23<div class="cal-event-pill">Court Date</div></td>
-                                    <td>24<div class="cal-event-pill">Court Date</div></td>
-                                    <td>25</td>
-                                </tr>
+                            <tbody id="documents-table-body">
+                                <!-- Populated dynamically via app.js -->
                             </tbody>
                         </table>
                     </div>
+                </div>
+            </section>
 
-                    <!-- Upcoming Events Column -->
-                    <div class="panel-box">
-                        <div class="panel-header"><span class="panel-title">Upcoming Events</span></div>
-                        <div style="display:flex; flex-direction:column; gap:0.8rem;">
-                            <div class="case-card-tile">
-                                <strong style="color:#FFD166;">⚖️ Sessions Court Hearing</strong>
-                                <p style="font-size:0.75rem; color:#94A3B8;">Dec 1, 2026 • Courtroom 4</p>
+            <!-- ── SCREEN 7: SYSTEM ACTIVITY AUDIT LOG (Image 7) ──────────────────── -->
+            <section id="screen-audit" class="screen-view">
+                <div class="panel-card">
+                    <div style="margin-bottom:1.5rem;">
+                        <h2 style="font-size:1.5rem; font-weight:800; color:var(--gold-bright);">System Activity Audit Log</h2>
+                        <p style="color:var(--text-muted); font-size:0.85rem;">Real-time monitoring of all user and system actions (MySQL Activity_Logs table)</p>
+                    </div>
+
+                    <!-- Filter Bar (Matching Image 7) -->
+                    <div style="display:flex; gap:0.8rem; margin-bottom:1.2rem; flex-wrap:wrap;">
+                        <input type="text" class="auth-input-field" style="flex:1; min-width:200px; padding-left:1rem;" placeholder="🔍  Search by user, action, or target entity...">
+                        <input type="date" class="auth-input-field" style="flex:0 0 160px; padding-left:1rem;" value="2026-03-21">
+                        <select class="auth-input-field" style="flex:0 0 150px; padding-left:1rem; background:var(--bg-input);">
+                            <option>All Users</option>
+                            <option>Muhammad Aqib</option>
+                            <option>Sarah K</option>
+                            <option>System Daemon</option>
+                        </select>
+                        <select class="auth-input-field" style="flex:0 0 150px; padding-left:1rem; background:var(--bg-input);">
+                            <option>All Event Types</option>
+                            <option>RAG Queries</option>
+                            <option>PDF Ingestion</option>
+                            <option>Authentication</option>
+                        </select>
+                    </div>
+
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>User</th>
+                                <th>Action Performed</th>
+                                <th>Target Entity</th>
+                                <th>IP Address</th>
+                                <th>Event Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="audit-table-body">
+                            <!-- Populated dynamically via app.js -->
+                        </tbody>
+                    </table>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1.5rem;">
+                        <span style="font-size:0.8rem; color:var(--text-muted);">Showing 1-7 of 1,250 entries</span>
+                        <div style="display:flex; gap:0.4rem;">
+                            <button class="feedback-pill-btn">&lt; Prev</button>
+                            <button class="feedback-pill-btn active">1</button>
+                            <button class="feedback-pill-btn">Next &gt;</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── SCREEN 8: SOURCE REFERENCES & CITATION INSPECTOR (Image 8) ─────── -->
+            <section id="screen-sources" class="screen-view">
+                <div style="margin-bottom:1.5rem;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <span class="badge-tag badge-gold">FR-2.3, FR-2.4</span>
+                            <h2 style="font-size:1.5rem; font-weight:800; color:var(--text-white); margin-top:0.3rem;">Source References and Citation Inspector</h2>
+                        </div>
+                        <span class="badge-tag badge-active">Active Grounding Mode</span>
+                    </div>
+                </div>
+
+                <div class="citations-split-layout">
+                    <!-- Left: Citation Context (Matching Image 8) -->
+                    <div class="panel-card panel-card-gold">
+                        <div class="card-title-bar">
+                            <span class="card-title card-title-gold">Citation Context</span>
+                        </div>
+
+                        <div style="margin-bottom:1rem;">
+                            <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">Statutory Source</div>
+                            <h3 style="color:var(--text-white); font-size:1.15rem; margin-top:0.2rem;" id="inspector-act-title">Punjab Consumer Protection Act, 2005</h3>
+                        </div>
+
+                        <div style="display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:1.2rem;">
+                            <span class="badge-tag badge-gold">Consumer Protection</span>
+                            <span class="badge-tag badge-active">Punjab, Pakistan</span>
+                            <span class="badge-tag badge-active">Effective: 2005</span>
+                            <span class="badge-tag badge-active">Status: Active</span>
+                            <span class="badge-tag badge-gold">Jurisdiction: Provincial</span>
+                        </div>
+
+                        <div style="background:#070D1E; border:1px solid var(--border); border-radius:var(--radius-sm); padding:1rem; font-size:0.85rem; line-height:1.6; color:var(--text-gray); margin-bottom:1.5rem;">
+                            <strong style="color:var(--gold-bright);">Section 3: Rights of Consumers</strong><br/>
+                            Every consumer shall have the right to be protected against goods and services which are hazardous to life, property or safety. Any consumer aggrieved by a defect may lodge a complaint before the Consumer Court having territorial jurisdiction. The Court shall adjudicate disputes expeditiously within 6 months.
+                        </div>
+
+                        <button class="btn-gold" style="width:100%;" onclick="alert('Viewing original gazette notification PDF for Punjab Consumer Protection Act 2005.')">
+                            View Full Document PDF ➔
+                        </button>
+                    </div>
+
+                    <!-- Right: Extracted Text Viewer & Section Hierarchy Tree (Matching Image 8) -->
+                    <div class="panel-card">
+                        <div class="card-title-bar">
+                            <span class="card-title">Extracted Text Viewer</span>
+                            <span style="font-size:0.8rem; color:var(--text-muted);">Page 12 / 154</span>
+                        </div>
+
+                        <div class="auth-input-group">
+                            <input type="text" class="auth-input-field" style="padding-left:1rem;" placeholder="Search in act sections...">
+                        </div>
+
+                        <div class="citation-tree-box">
+                            <div class="citation-tree-item" onclick="selectSectionInTree('Section 1: Short title, extent and commencement', 'This Act may be called the Punjab Consumer Protection Act 2005. It extends to the whole of the Province of Punjab.')">
+                                📑 Section 1: Definitions & Extent
                             </div>
-                            <div class="case-card-tile">
-                                <strong style="color:#38BDF8;">📑 Discovery Deadline</strong>
-                                <p style="font-size:0.75rem; color:#94A3B8;">Dec 8, 2026 • Evidence Filing</p>
+                            <div class="citation-tree-item" onclick="selectSectionInTree('Section 2: Obligations of Manufacturers and Suppliers', 'Manufacturers shall be liable for defective products regardless of negligence if damage is caused to consumer property or person.')">
+                                📑 Section 2: Obligations of Manufacturers
                             </div>
-                            <div class="case-card-tile">
-                                <strong style="color:#10B981;">👥 Client Consultation</strong>
-                                <p style="font-size:0.75rem; color:#94A3B8;">Dec 12, 2026 • Online Portal</p>
+                            <div class="citation-tree-item active" onclick="selectSectionInTree('Section 3: Rights of Consumers & Remedies', 'Every consumer shall have the right to seek damages, replacement of goods, or refund of paid sum before the District Consumer Court.')">
+                                📑 Section 3: Rights of Consumers (Active Citation)
+                            </div>
+                            <div class="citation-tree-item" onclick="selectSectionInTree('Section 4: Establishment of Consumer Courts', 'The Government shall establish one or more Consumer Courts in each district of Punjab presided over by a District & Sessions Judge.')">
+                                📑 Section 4: Consumer Courts Jurisdiction
+                            </div>
+                        </div>
+
+                        <div id="extracted-text-body">
+                            <div style="color:var(--gold-bright); font-weight:700; margin-bottom:0.6rem;">Section 3: Rights of Consumers & Remedies</div>
+                            <div style="line-height:1.7; color:var(--text-white); background:#060C1B; padding:1.2rem; border-left:3px solid var(--gold-bright); border-radius:4px; font-size:0.88rem;">
+                                (1) Every consumer shall have the right to be protected against goods and services which are hazardous to life, property or safety.<br/>
+                                (2) Where a defect in products causes loss to a consumer, the manufacturer and retailer shall be jointly and severally liable.<br/>
+                                (3) The Consumer Court may award punitive damages not exceeding fifty thousand rupees in addition to actual loss.
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <!--  SCREEN 9: CLIENT INTAKE PIPELINE (Matching Images 10, 11)  -->
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <section id="screen-pipeline" class="screen-view">
-                <div class="view-header">
-                    <div>
-                        <h2 class="view-title">Client Intake Pipeline</h2>
-                        <p style="font-size:0.82rem; color:#94A3B8;">5-Stage Legal Advisory Workflow</p>
+            <!-- ── SCREEN 9: USER FEEDBACK & RATING PANEL (Image 9) ───────────────── -->
+            <section id="screen-feedback" class="screen-view">
+                <div class="panel-card">
+                    <div style="margin-bottom:1.5rem;">
+                        <span class="badge-tag badge-gold">FR-4.3, FR-5.1</span>
+                        <h2 style="font-size:1.5rem; font-weight:800; color:var(--gold-bright); margin-top:0.3rem;">User Feedback & Rating Panel</h2>
+                        <p style="color:var(--text-muted); font-size:0.85rem;">Reviewing User Ratings and Comments for RAG Pipeline Optimization</p>
                     </div>
-                    <button class="btn-gold" onclick="alert('Add Client modal opened.')">+ Add New Client</button>
-                </div>
 
-                <div class="kanban-board">
-                    <!-- Column 1 -->
-                    <div class="kanban-col">
-                        <div class="kanban-col-header"><span>1. New Inquiry</span> <span class="badge-tag badge-pending">2</span></div>
-                        <div class="kanban-card">
-                            <strong style="font-size:0.85rem; color:#FFFFFF;">Muhammad Tariq</strong>
-                            <p style="font-size:0.75rem; color:#94A3B8; margin:0.3rem 0;">Property Inheritance Dispute</p>
-                            <span class="badge-tag badge-urgent">Nov 21</span>
+                    <div style="display:flex; gap:0.8rem; margin-bottom:1.2rem;">
+                        <input type="text" class="auth-input-field" style="flex:1; padding-left:1rem;" placeholder="🔍  Search feedback by user name, query text, or comment...">
+                        <input type="date" class="auth-input-field" style="flex:0 0 170px; padding-left:1rem;" value="2026-03-21">
+                    </div>
+
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>User ID / Name</th>
+                                <th>Message / Query</th>
+                                <th>AI Response</th>
+                                <th>Helpfulness Rating</th>
+                                <th>Optional Comment</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody id="feedback-table-body">
+                            <!-- Populated dynamically via app.js -->
+                        </tbody>
+                    </table>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1.5rem;">
+                        <span style="font-size:0.8rem; color:var(--text-muted);">Showing 1-4 of 48 feedback entries</span>
+                        <div style="display:flex; gap:0.4rem;">
+                            <button class="feedback-pill-btn">&lt; Previous</button>
+                            <button class="feedback-pill-btn active">1</button>
+                            <button class="feedback-pill-btn">Next &gt;</button>
                         </div>
                     </div>
-
-                    <!-- Column 2 -->
-                    <div class="kanban-col">
-                        <div class="kanban-col-header"><span>2. Conflict Check</span> <span class="badge-tag badge-active">1</span></div>
-                        <div class="kanban-card">
-                            <strong style="font-size:0.85rem; color:#FFFFFF;">Fatima Bibi</strong>
-                            <p style="font-size:0.75rem; color:#94A3B8; margin:0.3rem 0;">Family Court Khula Petition</p>
-                            <span class="badge-tag badge-active">Verified</span>
-                        </div>
-                    </div>
-
-                    <!-- Column 3 -->
-                    <div class="kanban-col">
-                        <div class="kanban-col-header"><span>3. Consultation</span> <span class="badge-tag badge-pending">1</span></div>
-                        <div class="kanban-card">
-                            <strong style="font-size:0.85rem; color:#FFFFFF;">Shahbaz Ali</strong>
-                            <p style="font-size:0.75rem; color:#94A3B8; margin:0.3rem 0;">Cr.P.C. 497 Bail Strategy</p>
-                            <span class="badge-tag badge-pending">Scheduled</span>
-                        </div>
-                    </div>
-
-                    <!-- Column 4 -->
-                    <div class="kanban-col">
-                        <div class="kanban-col-header"><span>4. Retainer Signed</span> <span class="badge-tag badge-active">2</span></div>
-                        <div class="kanban-card">
-                            <strong style="font-size:0.85rem; color:#FFFFFF;">Kamran Enterprises</strong>
-                            <p style="font-size:0.75rem; color:#94A3B8; margin:0.3rem 0;">Commercial Contract Audit</p>
-                            <span class="badge-tag badge-active">Assigned</span>
-                        </div>
-                    </div>
-
-                    <!-- Column 5 -->
-                    <div class="kanban-col">
-                        <div class="kanban-col-header"><span>5. Case Assigned</span> <span class="badge-tag badge-active">3</span></div>
-                        <div class="kanban-card">
-                            <strong style="font-size:0.85rem; color:#FFFFFF;">Dr. Imran Rafiq</strong>
-                            <p style="font-size:0.75rem; color:#94A3B8; margin:0.3rem 0;">PECA Cybercrime Extortion</p>
-                            <span class="badge-tag badge-active">Advocate Aqib</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div style="margin-top:1.5rem;">
-                    <button class="btn-gold" style="width:100%; justify-content:center; padding:0.85rem; font-size:1rem;" onclick="alert('Client Intake Form triggered.')">
-                        + New Client Intake Form
-                    </button>
                 </div>
             </section>
 
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <!--  SCREEN 10: SETTINGS & SUBSCRIPTION (Matching Image 8)     -->
-            <!-- ═════════════════════════════════════════════════════════ -->
+            <!-- ── SCREEN 10: ACCOUNT SETTINGS AND SECURITY (Image 10) ────────────── -->
             <section id="screen-settings" class="screen-view">
-                <div class="view-header">
-                    <div>
-                        <h2 class="view-title">Account Settings & Subscription Tier</h2>
-                        <p style="font-size:0.82rem; color:#94A3B8;">Plan configuration and security credentials</p>
+                <div style="margin-bottom:1.5rem;">
+                    <h2 style="font-size:1.5rem; font-weight:800; color:var(--gold-bright);">Account Settings and Security Panel</h2>
+                    <p style="color:var(--text-muted); font-size:0.85rem;">Manage personal advocate profile, password hashes, and remote sessions (Module 1)</p>
+                </div>
+
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.25rem; margin-bottom:1.25rem;">
+                    <!-- Card 1: Profile Update Form (Matching Image 10) -->
+                    <div class="panel-card panel-card-gold">
+                        <div class="card-title-bar">
+                            <span class="card-title card-title-gold">Profile Update Form</span>
+                        </div>
+
+                        <div class="auth-input-group">
+                            <label class="auth-input-label">Full Name</label>
+                            <input type="text" id="profile-name" class="auth-input-field" style="padding-left:1rem;" value="Muhammad Aqib">
+                        </div>
+
+                        <div class="auth-input-group">
+                            <label class="auth-input-label">Email Address</label>
+                            <input type="email" id="profile-email" class="auth-input-field" style="padding-left:1rem;" value="aqib44584@gmail.com">
+                        </div>
+
+                        <div class="auth-input-group">
+                            <label class="auth-input-label">Phone Number</label>
+                            <input type="text" id="profile-phone" class="auth-input-field" style="padding-left:1rem;" value="+92 300 1234567">
+                        </div>
+
+                        <div class="auth-input-group">
+                            <label class="auth-input-label">Role</label>
+                            <select id="profile-role" class="auth-input-field" style="padding-left:1rem; background:var(--bg-input);">
+                                <option selected>Advocate (High Court)</option>
+                                <option>Citizen</option>
+                                <option>Law Student</option>
+                                <option>Legal Researcher</option>
+                            </select>
+                        </div>
+
+                        <button class="btn-gold" style="width:100%;" onclick="saveProfileChanges()">
+                            Save Changes ➔
+                        </button>
+                    </div>
+
+                    <!-- Card 2: Password Change Inputs (Matching Image 10) -->
+                    <div class="panel-card">
+                        <div class="card-title-bar">
+                            <span class="card-title">Password Change Inputs</span>
+                        </div>
+
+                        <div class="auth-input-group">
+                            <label class="auth-input-label">Current Password</label>
+                            <input type="password" class="auth-input-field" style="padding-left:1rem;" value="currentpassword123">
+                        </div>
+
+                        <div class="auth-input-group">
+                            <label class="auth-input-label">New Password</label>
+                            <input type="password" class="auth-input-field" style="padding-left:1rem;" placeholder="New password (min 8 chars)">
+                        </div>
+
+                        <div class="auth-input-group">
+                            <label class="auth-input-label">Confirm New Password</label>
+                            <input type="password" class="auth-input-field" style="padding-left:1rem;" placeholder="Repeat new password">
+                        </div>
+
+                        <button class="btn-outline-gold" style="width:100%; margin-top:0.8rem;" onclick="updatePassword()">
+                            Update Password ➔
+                        </button>
                     </div>
                 </div>
 
-                <div class="settings-tabs-row">
-                    <button class="settings-tab-btn">Profile</button>
-                    <button class="settings-tab-btn">Security</button>
-                    <button class="settings-tab-btn active">Subscription</button>
-                    <button class="settings-tab-btn">API Keys</button>
-                </div>
-
-                <div class="panel-box">
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1F2E4D; padding-bottom:1rem; margin-bottom:1.2rem;">
-                        <div>
-                            <span style="font-size:0.8rem; color:#94A3B8;">Current Plan Status</span>
-                            <h3 style="font-size:1.4rem; color:#FFD166; margin-top:0.2rem;">🎖️ Professional Legal Scholar Tier</h3>
-                        </div>
-                        <div>
-                            <span style="font-size:0.8rem; color:#94A3B8;">Billing Cycle</span>
-                            <div style="font-size:1rem; color:#FFFFFF; font-weight:600;">Academic License (Active)</div>
-                        </div>
+                <!-- Card 3: Session Management Controls (Matching Image 10) -->
+                <div class="panel-card">
+                    <div class="card-title-bar">
+                        <span class="card-title">Session Management Controls</span>
+                        <button class="btn-gold" style="padding:0.4rem 1rem; font-size:0.8rem;" onclick="revokeAllSessions()">
+                            Revoke All Other Sessions
+                        </button>
                     </div>
 
-                    <h4 style="font-size:0.95rem; color:#FFFFFF; margin-bottom:0.8rem;">Included Plan Features:</h4>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; font-size:0.85rem; color:#94A3B8; margin-bottom:1.5rem;">
-                        <div>✓ Unlimited ChromaDB 768-d Vector Retrieval</div>
-                        <div>✓ Local Ollama (Mistral-7B) On-Premise Inference</div>
-                        <div>✓ Verbatim Statutory Citation Grounding</div>
-                        <div>✓ Audit Trail Logging & Case Timeline Sync</div>
-                    </div>
-
-                    <div style="display:flex; gap:1rem;">
-                        <button class="btn-gold" onclick="alert('Plan Upgrade options...')">Upgrade Plan</button>
-                        <button class="btn-outline-gold">Update Billing</button>
-                        <button class="btn-outline-gold" style="margin-left:auto;">Contact Support</button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <!--  SCREEN 11: AI LEGAL CHAT & RAG ENGINE                    -->
-            <!-- ═════════════════════════════════════════════════════════ -->
-            <section id="screen-chat" class="screen-view">
-                <div class="chat-screen-layout">
-                    <!-- Left Sub-Navigation / Emblem & Threads (Matching Screenshot) -->
-                    <div class="chat-sub-nav">
-                        <!-- AI Scales of Justice Emblem Card -->
-                        <div class="panel-box" style="padding: 1.25rem; display: flex; align-items: center; justify-content: center; background: #070B19; border: 1px solid var(--border-gold); box-shadow: inset 0 0 25px rgba(229,169,60,0.1); border-radius: 14px;">
-                            <img src="images/ai_scales_emblem.png" alt="AI Scales of Justice" style="width: 100%; max-height: 190px; object-fit: contain; filter: drop-shadow(0 0 18px rgba(229, 169, 60, 0.45));">
+                    <div style="display:flex; flex-direction:column; gap:0.6rem;">
+                        <div class="recent-chat-row" style="cursor:default;">
+                            <div style="display:flex; align-items:center; gap:0.75rem;">
+                                <span style="font-size:1.3rem;">💻</span>
+                                <div>
+                                    <strong style="color:var(--text-white); font-size:0.88rem;">Windows Workstation (Chrome 128)</strong>
+                                    <div style="font-size:0.75rem; color:var(--color-success);">Current Active Session • IP: 192.168.10.45 (Vehari, Pakistan)</div>
+                                </div>
+                            </div>
+                            <span class="badge-tag badge-active">Current</span>
                         </div>
 
-                        <!-- Search Bar -->
-                        <div style="position: relative;">
-                            <input type="text" placeholder="🔍  Search" style="width: 100%; background: #0C152B; border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 1rem; color: #fff; font-size: 0.85rem; outline: none;">
-                        </div>
-
-                        <!-- Sub-menu list items -->
-                        <div class="chat-sub-menu-list">
-                            <div class="chat-sub-menu-item" onclick="switchChatThread('Document View')">
-                                <span style="font-size:1.05rem;">📄</span> Document View
+                        <div class="recent-chat-row" style="cursor:default;">
+                            <div style="display:flex; align-items:center; gap:0.75rem;">
+                                <span style="font-size:1.3rem;">📱</span>
+                                <div>
+                                    <strong style="color:var(--text-white); font-size:0.88rem;">Android Smartphone (Chrome Mobile)</strong>
+                                    <div style="font-size:0.75rem; color:var(--text-muted);">Last active: 2 hours ago • IP: 39.45.18.99</div>
+                                </div>
                             </div>
-                            <div class="chat-sub-menu-item active" onclick="switchChatThread('Case Edit')">
-                                <span style="font-size:1.05rem;">✏️</span> Case Edit
-                            </div>
-                            <div class="chat-sub-menu-item" onclick="switchChatThread('Research Query')">
-                                <span style="font-size:1.05rem;">🔍</span> Research Query
-                            </div>
-                            <div class="chat-sub-menu-item" onclick="switchChatThread('Login')">
-                                <span style="font-size:1.05rem;">👤</span> Login
-                            </div>
-                            <div class="chat-sub-menu-item" onclick="switchChatThread('Login Edit')">
-                                <span style="font-size:1.05rem;">📄</span> Login Edit
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right Main Chat Window (Matching Screenshot) -->
-                    <div class="chat-main-box">
-                        <!-- Chat Top Header -->
-                        <div class="chat-main-header">
-                            <div style="display: flex; align-items: center; gap: 0.85rem;">
-                                <span class="chat-main-header-title">AI Legal Chatbot</span>
-                                <span style="background: #1A284A; border-radius: 5px; width: 75px; height: 12px; display: inline-block;"></span>
-                            </div>
-                            <div class="chat-online-badge">Online</div>
-                        </div>
-
-                        <!-- Chat Messages Feed (Populated via JS) -->
-                        <div class="chat-feed-box" id="chat-feed-box">
-                            <!-- Populated dynamically via renderChatMessages() -->
-                        </div>
-
-                        <!-- Quick Prompts Row (Matching Screenshot) -->
-                        <div class="quick-prompts-bar">
-                            <span class="quick-prompts-label">Quick Prompts</span>
-                            <button class="quick-prompt-pill" onclick="sendQuickPrompt('Draft NDA')">Draft NDA</button>
-                            <button class="quick-prompt-pill" onclick="sendQuickPrompt('Summarize Case')">Summarize Case</button>
-                            <button class="quick-prompt-pill" onclick="sendQuickPrompt('Find Precedent')">Find Precedent</button>
-                            <button class="quick-prompt-pill" onclick="sendQuickPrompt('Find Precedents')">Find Precedents</button>
-                        </div>
-
-                        <!-- Chat Input Bar (Matching Screenshot) -->
-                        <div class="chat-bottom-input-bar">
-                            <div class="chat-input-wrapper">
-                                <span class="chat-input-icon" title="Voice Input" onclick="alert('🎤 Voice input listening for legal query...')">🎤</span>
-                                <span class="chat-input-icon" title="Attach Document" onclick="alert('📎 Attach Pakistani Case Law PDF / FIR...')">📎</span>
-                                <input type="text" id="chat-message-input" class="chat-main-text-input" placeholder="Type your legal inquiry or citation query..." onkeydown="if(event.key==='Enter') sendChatMessage()">
-                            </div>
-                            <button class="btn-send-gold" onclick="sendChatMessage()">Send</button>
+                            <button class="feedback-pill-btn" onclick="alert('Revoked session')">🗑️</button>
                         </div>
                     </div>
                 </div>
@@ -790,6 +827,7 @@
         </main>
     </div>
 
+    <!-- ── App Logic ───────────────────────────────────────────────────────────── -->
     <script src="js/app.js"></script>
 </body>
 </html>

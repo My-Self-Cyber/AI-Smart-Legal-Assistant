@@ -1,403 +1,570 @@
-/* =============================================================================
-   AI SMART LEGAL ASSISTANT — MASTER INTERACTIVE LOGIC (MATCHING SCREENSHOTS)
-   COMSATS University Islamabad, Vehari Campus | Evaluation 2 (7th Semester)
-   ============================================================================= */
+/**
+ * AI Smart Legal Assistant — Official Core Application Logic
+ * Implements FYP SDD Modules:
+ * Module 1: User Management & Authentication
+ * Module 2: Legal Question Processing (RAG Pipeline & Citation Inspector)
+ * Module 3: Document Management & Ingestion (PyPDF & 500-char Chunking)
+ * Module 4: History & User Feedback Rating Panel
+ * Module 5: System Administration & Real-Time Audit Logs
+ */
 
-// ── Ingested Pakistan Legal Knowledge Base ────────────────────────────────────
-const LEGAL_KNOWLEDGE = [
-    {
-        id: "PPC-302",
-        keywords: ["murder", "qatl", "302", "killing", "death penalty", "punishment for murder"],
-        statute: "Pakistan Penal Code (Act XLV of 1860)",
-        section: "Section 302: Punishment of Qatl-i-Amd",
-        answer: "Under Section 302 of the Pakistan Penal Code 1860, whoever commits Qatl-i-amd (intentional murder) shall be punished with death as Qisas; or death or imprisonment for life as Tazir having regard to the facts and circumstances of the case; or imprisonment up to 25 years where Qisas is not applicable under Islamic injunctions. It is cognizable, non-bailable, and compoundable by legal heirs under Section 345 Cr.P.C.",
-        citations: ["PPC 1860, Sec. 302", "PPC Sec. 304", "Cr.P.C. Sec. 345"]
+const STATE = {
+    currentScreen: 'dashboard',
+    user: {
+        name: 'Muhammad Aqib',
+        email: 'aqib44584@gmail.com',
+        phone: '+92 300 1234567',
+        role: 'Advocate (High Court)',
+        chamber: 'Chamber #14, High Court Bar Association'
     },
-    {
-        id: "CRPC-154",
-        keywords: ["fir", "police", "complaint", "registration", "cognizable", "154"],
-        statute: "Code of Criminal Procedure (Act V of 1898)",
-        section: "Section 154: Information in Cognizable Cases",
-        answer: "Under Section 154 Cr.P.C. 1898, every information relating to a cognizable offence given orally to an officer in charge of a police station shall be reduced to writing, signed by the informant, entered in the FIR Register, and a copy provided immediately free of cost. In case of police refusal, an application lies before the Ex-Officio Justice of Peace under Section 22-A / 22-B Cr.P.C.",
-        citations: ["Cr.P.C. 1898, Sec. 154", "Cr.P.C. Sec. 22-A", "Cr.P.C. Sec. 157"]
-    },
-    {
-        id: "CRPC-497",
-        keywords: ["bail", "bailable", "non-bailable", "arrest", "496", "497", "pre-arrest", "498"],
-        statute: "Code of Criminal Procedure (Act V of 1898)",
-        section: "Sections 496, 497 & 498: Bail Provisions",
-        answer: "Under Section 496 Cr.P.C., bail is a matter of statutory right in bailable offences. Under Section 497, bail in non-bailable offences is discretionary, subject to the Prohibitory Clause (punishable with 10 years, life, or death), except for women, minors under 16, or sick/infirm persons. Pre-arrest bail under Section 498 requires showing mala fide intention or harassment by the prosecution.",
-        citations: ["Cr.P.C. 1898, Sec. 496", "Cr.P.C. Sec. 497", "Cr.P.C. Sec. 498"]
-    },
-    {
-        id: "PECA-20",
-        keywords: ["cyber", "online", "blackmail", "facebook", "whatsapp", "peca", "harassment"],
-        statute: "Prevention of Electronic Crimes Act (PECA 2016)",
-        section: "Sections 20 & 21: Cyber Harassment and Stalking",
-        answer: "Under PECA 2016, online harassment, false reputation attacks, and cyber stalking are cognizable criminal offences punishable by up to 3 years imprisonment and/or fines up to 1 million PKR under Sections 20 and 21. Formal investigation is conducted by the FIA Cyber Crime Wing.",
-        citations: ["PECA 2016, Sec. 20", "PECA 2016, Sec. 21", "FIA Act 1974"]
-    },
-    {
-        id: "NDA-GEN",
-        keywords: ["draft", "nda", "agreement", "contract", "confidentiality"],
-        statute: "Contract Act 1872",
-        section: "Section 27 & Non-Disclosure Covenants",
-        answer: "Here is a standard Pakistan Legal Non-Disclosure Agreement (NDA) framework governed by the Contract Act 1872: (1) Defining Proprietary Information, (2) Obligations to maintain secrecy for a term of 2 years, (3) Exclusions for publicly known material, and (4) Exclusive dispute jurisdiction in District Courts Vehari / Lahore.",
-        citations: ["Contract Act 1872, Sec. 27", "Specific Relief Act 1877"]
-    }
-];
-
-const DEFAULT_FALLBACK = {
-    answer: "The AI Smart Legal Assistant could not identify an exact statutory excerpt matching your specific phrasing above the &ge; 0.75 cosine similarity threshold. In accordance with system design constraints, no unsupported guidance is hallucinated. Please specify a section of the Pakistan Penal Code, Cr.P.C., Family Laws, or PECA Cybercrime.",
-    citations: ["System Boundary Notice", "Pakistan Code Repository"]
-};
-
-// ── Application State ────────────────────────────────────────────────────────
-let state = {
-    currentScreen: "home",
-    chatMessages: [
+    conversations: [
+        { id: 1, title: 'Murder Offence Punishment & Trial', topic: 'Criminal Law', date: '21-03-2026', query: 'What is the punishment for intentional murder under Pakistan Penal Code section 302?', citations: 'PPC 1860, Sec 302' },
+        { id: 2, title: 'Police Refusal to Register FIR', topic: 'Criminal Procedure', date: '23-03-2026', query: 'Can police refuse to register an FIR for a cognizable robbery offence?', citations: 'Cr.P.C. 1898, Sec 154' },
+        { id: 3, title: 'Bail in Non-Bailable Offences', topic: 'Criminal Procedure', date: '25-03-2026', query: 'Under what conditions can post-arrest bail be granted under Section 497 Cr.P.C.?', citations: 'Cr.P.C. 1898, Sec 497' },
+        { id: 4, title: 'Defamation & Cyber Harassment', topic: 'Cyber Law', date: '27-03-2026', query: 'What legal remedies exist for unauthorized distribution of private photos under PECA 2016?', citations: 'PECA 2016, Sec 20' },
+        { id: 5, title: 'Consumer Defect & Warranty Rights', topic: 'Consumer Protection', date: '28-03-2026', query: 'Can a consumer claim compensation for defective electronic goods in Consumer Court?', citations: 'Punjab Consumer Protection Act 2005, Sec 3' },
+        { id: 6, title: 'Divorce & Khula Procedure', topic: 'Family Law', date: '29-03-2026', query: 'What is the mandatory procedure for Khula under the Muslim Family Laws Ordinance 1961?', citations: 'MFLO 1961, Sec 7' }
+    ],
+    chatFeed: [
         {
-            sender: "assistant",
-            text: "Hello! I am your AI Legal Chatbot. You can ask me any question regarding the Pakistan Penal Code (PPC 1860), Code of Criminal Procedure (Cr.P.C. 1898), PECA Cybercrime, or Court Procedures."
+            sender: 'user',
+            text: 'What are the legal rights of a consumer regarding defective products under the Punjab Consumer Protection Act, 2005?'
         },
         {
-            sender: "user",
-            text: "What is the legal punishment for intentional murder under Pakistan Penal Code section 302?"
-        },
-        {
-            sender: "assistant",
-            text: LEGAL_KNOWLEDGE[0].answer
-        },
-        {
-            sender: "user",
-            text: "Can the police refuse to register an FIR if a robbery occurs?"
-        },
-        {
-            sender: "assistant",
-            text: LEGAL_KNOWLEDGE[1].answer
+            sender: 'assistant',
+            text: `Under the <strong>Punjab Consumer Protection Act, 2005 (Section 3 & 4)</strong>, consumers are legally safeguarded against defective goods and substandard services:<br/><br/>
+            1. <strong>Statutory Warranty:</strong> Manufacturers and sellers are under legal obligation to supply products free from design, manufacturing, or warning defects.<br/>
+            2. <strong>Redressal Forum:</strong> If a defect causes economic loss or hazard, the consumer may file a formal complaint before the dedicated <em>District Consumer Court</em>.<br/>
+            3. <strong>Legal Relief:</strong> The Court is empowered to order replacement of defective goods, full refund of price, and substantial damages/costs under Section 31.<br/><br/>
+            <em>*Retrieved from ChromaDB Vector Corpus with 0.89 Cosine Similarity threshold.</em>`,
+            source: {
+                act: 'Punjab Consumer Protection Act, 2005',
+                section: 'Section 3: Rights of Consumers & Remedies',
+                category: 'Consumer Protection',
+                jurisdiction: 'Provincial (Punjab, Pakistan)',
+                similarity: '0.89',
+                excerpt: 'Section 3. Rights of Consumers. (1) Every consumer shall have the right to be protected against goods and services which are hazardous to life, property or safety. Any consumer aggrieved by a defect may lodge a complaint before the Consumer Court having territorial jurisdiction.'
+            }
         }
     ],
-    cases: [
-        { title: "State vs. Tariq Mehmood", client: "Tariq Mehmood", status: "Active", progress: 85, date: "01/12/2026", type: "PPC 302 Trial" },
-        { title: "Bail Petition - Cr.P.C. 497", client: "Hamza Riaz", status: "Active", progress: 60, date: "01/15/2026", type: "Criminal Bail" },
-        { title: "Cyber Extortion Defense", client: "Bilal Ahmad", status: "Pending", progress: 40, date: "01/18/2026", type: "PECA Inquiry" },
-        { title: "Family Khula Dissolution", client: "Fatima Bibi", status: "Pending", progress: 30, date: "01/20/2026", type: "Family Court" },
-        { title: "Specific Relief Injunction", client: "Kamran Traders", status: "Closed", progress: 100, date: "12/28/2025", type: "Civil Court" },
-        { title: "Cr.P.C. 154 Mandamus 22-A", client: "Rashid Ali", status: "Pending", progress: 50, date: "01/22/2026", type: "Sessions Court" },
-        { title: "Arbitration Act Enforcement", client: "Al-Rehman Mills", status: "Pending", progress: 45, date: "01/24/2026", type: "Arbitration" },
-        { title: "Service Agreement Breach", client: "Apex Logistics", status: "Closed", progress: 100, date: "12/15/2025", type: "Commercial" },
-        { title: "Cheque Dishonour 489-F", client: "Zubair Shah", status: "Closed", progress: 100, date: "12/10/2025", type: "PPC 489-F" }
+    documents: [
+        { id: 1, title: 'Pakistan Penal Code (Act XLV of 1860)', version: '1', category: 'Criminal Law', jurisdiction: 'Federal', date: '08/08/2026', status: 'Active' },
+        { id: 2, title: 'Code of Criminal Procedure (Act V of 1898)', version: '2', category: 'Criminal Procedure', jurisdiction: 'Federal', date: '05/06/2026', status: 'Active' },
+        { id: 3, title: 'Constitution of Islamic Republic of Pakistan 1973', version: '4', category: 'Constitutional', jurisdiction: 'Federal', date: '05/08/2026', status: 'Active' },
+        { id: 4, title: 'Punjab Consumer Protection Act, 2005', version: '4', category: 'Consumer Protection', jurisdiction: 'Punjab', date: '05/04/2026', status: 'Active' },
+        { id: 5, title: 'Prevention of Electronic Crimes Act (PECA 2016)', version: '3', category: 'Cybercrime', jurisdiction: 'Federal', date: '05/03/2026', status: 'Active' },
+        { id: 6, title: 'Qanun-e-Shahadat Order (P.O. X of 1984)', version: '2', category: 'Evidence Law', jurisdiction: 'Federal', date: '05/04/2026', status: 'Inactive' },
+        { id: 7, title: 'Muslim Family Laws Ordinance (VIII of 1961)', version: '1', category: 'Family Law', jurisdiction: 'Federal', date: '07/03/2026', status: 'Active' },
+        { id: 8, title: 'Draft Commercial Arbitration Bill', version: '1', category: 'Civil Law', jurisdiction: 'Federal', date: '08/09/2026', status: 'Pending Review' }
     ],
-    activities: [
-        { action: "Document View", desc: "Viewed Pakistan Penal Code Section 302 Statutory Text", time: "127.0.0.1 • 14:32", status: "Success" },
-        { action: "Case Edit", desc: "Updated bail surety amount for Case #CS-102", time: "127.0.0.1 • 13:15", status: "Edited" },
-        { action: "Research Query", desc: "Executed vector search for Cr.P.C. 154 Cognizable FIR", time: "127.0.0.1 • 11:45", status: "Success" },
-        { action: "Login", desc: "Authenticated session for student Zain Ul Abideen (FA23-BSE-127)", time: "127.0.0.1 • 09:12", status: "Success" },
-        { action: "Document Ingestion", desc: "Indexed 842 text chunks into ChromaDB collection 'legal_documents'", time: "127.0.0.1 • 08:30", status: "Success" },
-        { action: "Failed Auth Attempt", desc: "Invalid password attempt for account 'admin'", time: "192.168.1.45 • 07:15", status: "Failed" }
+    auditLogs: [
+        { time: '21-03-2026 13:50', user: 'Muhammad Aqib', action: 'Legal Question RAG Query: PPC 302', entity: 'ChromaDB Vector Index', ip: '192.168.10.45', status: 'Success' },
+        { time: '21-03-2026 13:48', user: 'Muhammad Aqib', action: 'Extracted Passage Inspection: Sec 154 CrPC', entity: 'Document Repository', ip: '192.168.10.45', status: 'Success' },
+        { time: '21-03-2026 12:40', user: 'Sarah K (Advocate)', action: 'User Feedback: Thumbs Up Registered', entity: 'Feedback Table (MySQL)', ip: '192.168.10.72', status: 'Success' },
+        { time: '21-03-2026 12:15', user: 'System RAG Engine', action: 'ChromaDB Cosine Similarity Query', entity: 'Vector Store (768-dim)', ip: '127.0.0.1', status: 'Success' },
+        { time: '21-03-2026 11:30', user: 'Guest Citizen', action: 'Failed Login Attempt (Invalid Hash)', entity: 'User Auth Module', ip: '39.45.18.99', status: 'Warning' },
+        { time: '21-03-2026 10:20', user: 'Admin User', action: 'Document Upload & PyPDF Parsing', entity: 'Punjab Consumer Act.pdf', ip: '192.168.10.1', status: 'Success' },
+        { time: '21-03-2026 09:15', user: 'System Daemon', action: 'Ollama LLM Keep-Alive Ping (Port 11434)', entity: 'Mistral-7B Local', ip: '127.0.0.1', status: 'Success' }
+    ],
+    feedbacks: [
+        { id: 1, user: 'Muhammad Aqib', query: 'What is punishment for PPC 302 murder?', response: 'PPC 302 provides Qisas, life imprisonment or death penalty...', rating: '👍 Helpful', comment: 'Accurate statutory citation of Section 302(b).', time: '21-03-2026 19:24' },
+        { id: 2, user: 'Sarah K', query: 'Consumer defect warranty under Punjab Act', response: 'Under Punjab Consumer Protection Act 2005 Sec 3, District Consumer Court has jurisdiction...', rating: '👍 Helpful', comment: 'Very useful legal references for consumer court.', time: '23-03-2026 13:38' },
+        { id: 3, user: 'Ali Raza', query: 'Cyber stalking remedies in PECA 2016', response: 'PECA 2016 Section 24 covers cyber stalking with up to 3 years imprisonment...', rating: '👍 Helpful', comment: 'Clear explanation of FIA Cyber Crime Circle procedure.', time: '25-03-2026 13:49' },
+        { id: 4, user: 'Tariq Mehmood', query: 'Bail requirements in non-bailable offences', response: 'Section 497 Cr.P.C governs bail when offences do not fall in prohibitory clause...', rating: '👎 Not Helpful', comment: 'Please also include Supreme Court precedent citations.', time: '27-03-2026 17:48' }
     ]
 };
 
 // ── Screen Navigation Controller ─────────────────────────────────────────────
 function showScreen(screenId) {
-    state.currentScreen = screenId;
+    STATE.currentScreen = screenId;
 
-    // Toggle screen views
-    document.querySelectorAll(".screen-view").forEach(el => el.classList.remove("active"));
-    const target = document.getElementById(`screen-${screenId}`);
-    if (target) target.classList.add("active");
+    // Toggle active class on all views
+    document.querySelectorAll('.screen-view').forEach(s => {
+        s.classList.remove('active');
+    });
+    const target = document.getElementById('screen-' + screenId);
+    if (target) {
+        target.classList.add('active');
+    }
 
-    // Toggle sidebar items
-    document.querySelectorAll(".sidebar-item").forEach(item => {
-        item.classList.toggle("active", item.getAttribute("data-screen") === screenId);
+    // Toggle active state on sidebar
+    document.querySelectorAll('.sidebar-item').forEach(item => {
+        if (item.getAttribute('data-screen') === screenId) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
     });
 
-    if (screenId === "home") renderHomeDashboard();
-    if (screenId === "cases") renderCasesGrid();
-    if (screenId === "history") renderActivityLogs();
-    if (screenId === "chat") renderChatMessages();
+    // Screen specific refreshers
+    if (screenId === 'dashboard') renderDashboard();
+    if (screenId === 'chat') renderChatFeed();
+    if (screenId === 'history') renderHistoryTable();
+    if (screenId === 'documents') renderDocumentsTable();
+    if (screenId === 'audit') renderAuditLogsTable();
+    if (screenId === 'feedback') renderFeedbackTable();
+    if (screenId === 'sources') renderSourceInspector();
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ── Screen 2: Home Dashboard Renderer ────────────────────────────────────────
-function renderHomeDashboard() {
-    const barsContainer = document.getElementById("active-cases-bars");
-    if (!barsContainer) return;
-    barsContainer.innerHTML = "";
+// ── Screen 3: User Dashboard Renderer (Image 3) ──────────────────────────────
+function renderDashboard() {
+    const totalConv = document.getElementById('dash-total-conv');
+    if (totalConv) totalConv.textContent = STATE.conversations.length;
 
-    const heights = [35, 20, 60, 45, 80, 50, 95, 70, 85, 40, 65, 90];
-    heights.forEach((h, i) => {
-        const bar = document.createElement("div");
-        bar.style.flex = "1";
-        bar.style.height = `${h}%`;
-        bar.style.background = i % 2 === 0 ? "var(--gold-primary)" : "var(--gold-bright)";
-        bar.style.borderRadius = "3px 3px 0 0";
-        barsContainer.appendChild(bar);
-    });
-}
-
-// ── Screen 3: My Cases Grid Renderer (3x3 Grid) ──────────────────────────────
-function renderCasesGrid() {
-    const container = document.getElementById("cases-cards-container");
-    if (!container) return;
-    container.innerHTML = "";
-
-    state.cases.forEach((c, idx) => {
-        const statusClass = c.status === "Active" ? "badge-active" : (c.status === "Pending" ? "badge-pending" : "badge-closed");
-        const tile = document.createElement("div");
-        tile.className = "case-card-tile";
-        tile.innerHTML = `
-            <div>
-                <div class="case-card-header">
+    const recentChatsBox = document.getElementById('dash-recent-chats-list');
+    if (recentChatsBox) {
+        recentChatsBox.innerHTML = '';
+        STATE.conversations.slice(0, 4).forEach(c => {
+            const row = document.createElement('div');
+            row.className = 'recent-chat-row';
+            row.onclick = () => loadConversationIntoChat(c.id);
+            row.innerHTML = `
+                <div style="display:flex; align-items:center; gap:0.75rem;">
+                    <span style="font-size:1.15rem; color:var(--gold-bright);">📄</span>
                     <div>
-                        <div class="case-card-title">${c.title}</div>
-                        <div class="case-card-client">${c.client} • ${c.type}</div>
+                        <div style="font-size:0.88rem; font-weight:600; color:var(--text-white);">${c.title}</div>
+                        <div style="font-size:0.75rem; color:var(--text-muted);">${c.topic} • ${c.date}</div>
                     </div>
-                    <span class="badge-tag ${statusClass}">${c.status}</span>
                 </div>
-                <div style="font-size:0.75rem; color:#94A3B8; margin-top:0.6rem;">
-                    Case Progress (${c.progress}%)
-                </div>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" style="width:${c.progress}%;"></div>
-                </div>
-            </div>
-            <div class="case-card-footer">
-                <span>📅 ${c.date}</span>
-                <div style="display:flex; gap:0.4rem;">
-                    <button class="btn-outline-gold" style="padding:2px 8px; font-size:0.7rem;" onclick="showCaseDetails('${c.title}')">View</button>
-                    <button class="btn-gold" style="padding:2px 8px; font-size:0.7rem;" onclick="inquireCaseInChat('${c.title}')">Inquire</button>
-                </div>
-            </div>
-        `;
-        container.appendChild(tile);
-    });
-}
-
-function showCaseDetails(title) {
-    alert(`Case Record: ${title}\nJurisdiction: District & Sessions Courts Pakistan\nStatus: Verified under Case Management Rules.`);
-}
-
-function inquireCaseInChat(title) {
-    showScreen("chat");
-    const input = document.getElementById("chat-message-input");
-    if (input) {
-        input.value = `Analyze statutory provisions and precedents relevant to case: ${title}`;
-        sendChatMessage();
+                <span style="color:var(--gold-bright); font-size:0.9rem;">➔</span>
+            `;
+            recentChatsBox.appendChild(row);
+        });
     }
 }
 
-// ── Screen 6: Activity Log Renderer ──────────────────────────────────────────
-function renderActivityLogs() {
-    const tbody = document.getElementById("activity-log-body");
-    if (!tbody) return;
-    tbody.innerHTML = "";
-
-    state.activities.forEach(a => {
-        const tr = document.createElement("tr");
-        const badgeClass = a.status === "Success" ? "badge-active" : (a.status === "Edited" ? "badge-pending" : "badge-urgent");
-        tr.innerHTML = `
-            <td><strong>${a.action}</strong></td>
-            <td>${a.desc}</td>
-            <td style="color:#94A3B8; font-size:0.8rem;">${a.time}</td>
-            <td><span class="badge-tag ${badgeClass}">${a.status}</span></td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-// ── Screen 11: Dedicated AI Legal Chatbot Controller (Matches Screenshot) ────
-function renderChatMessages() {
-    const feed = document.getElementById("chat-feed-box");
+// ── Screen 4: Ask Legal Question (RAG Q&A Engine) (Image 4) ──────────────────
+function renderChatFeed() {
+    const feed = document.getElementById('chat-scroll-feed');
     if (!feed) return;
-    feed.innerHTML = "";
+    feed.innerHTML = '';
 
-    state.chatMessages.forEach(m => {
-        const row = document.createElement("div");
-        row.className = `chat-bubble-row ${m.sender}`;
+    STATE.chatFeed.forEach((msg, idx) => {
+        const bubbleWrap = document.createElement('div');
+        bubbleWrap.className = 'chat-bubble-container';
 
-        if (m.sender === "assistant") {
-            row.innerHTML = `
-                <div class="chat-avatar-icon">🧠</div>
-                <div class="chat-bubble-assistant">
-                    ${m.text.replace(/\n/g, '<br/>')}
+        if (msg.sender === 'user') {
+            bubbleWrap.innerHTML = `
+                <div style="display:flex; align-items:center; gap:0.5rem; justify-content:flex-end; margin-bottom:0.2rem;">
+                    <span style="font-size:0.75rem; color:var(--text-muted);">You (${STATE.user.name})</span>
+                    <span style="font-size:0.9rem;">👤</span>
                 </div>
+                <div class="chat-bubble-user">${msg.text}</div>
             `;
         } else {
-            row.innerHTML = `
-                <div class="chat-bubble-user">
-                    ${m.text}
+            bubbleWrap.innerHTML = `
+                <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.2rem;">
+                    <span style="font-size:1.1rem; color:var(--gold-bright);">⚖️</span>
+                    <span style="font-size:0.8rem; font-weight:700; color:var(--gold-bright);">AI Assistant (Local Ollama RAG Engine)</span>
+                    <span class="badge-tag badge-active" style="font-size:0.65rem;">Grounded Citation</span>
+                </div>
+                <div class="chat-bubble-assistant">
+                    <div>${msg.text}</div>
+                    <div class="chat-feedback-row">
+                        <button class="feedback-pill-btn" onclick="submitChatFeedback(${idx}, 'helpful')">👍 Helpful</button>
+                        <button class="feedback-pill-btn" onclick="submitChatFeedback(${idx}, 'unhelpful')">👎 Not Helpful</button>
+                        <button class="feedback-pill-btn" onclick="openCommentModal(${idx})">💬 Add Comment</button>
+                    </div>
                 </div>
             `;
+
+            // Update Right Side Sources & Context Panel with this message's citations
+            if (msg.source) {
+                updateSourcesPanel(msg.source);
+            }
         }
-        feed.appendChild(row);
+        feed.appendChild(bubbleWrap);
     });
 
     feed.scrollTop = feed.scrollHeight;
 }
 
-function sendChatMessage() {
-    const input = document.getElementById("chat-message-input");
+function updateSourcesPanel(source) {
+    const actElem = document.getElementById('context-source-act');
+    const secElem = document.getElementById('context-source-section');
+    const catElem = document.getElementById('context-source-category');
+    const simElem = document.getElementById('context-source-similarity');
+    const textElem = document.getElementById('context-source-excerpt');
+
+    if (actElem) actElem.textContent = source.act;
+    if (secElem) secElem.textContent = source.section;
+    if (catElem) catElem.textContent = source.category;
+    if (simElem) simElem.textContent = `Cosine Similarity: ${source.similarity}`;
+    if (textElem) textElem.textContent = source.excerpt;
+}
+
+function sendLegalQuery() {
+    const input = document.getElementById('chat-user-input');
+    if (!input) return;
     const query = input.value.trim();
     if (!query) return;
 
-    input.value = "";
+    input.value = '';
 
-    // Push User message
-    state.chatMessages.push({
-        sender: "user",
+    // Append User message
+    STATE.chatFeed.push({
+        sender: 'user',
         text: query
     });
-    renderChatMessages();
+    renderChatFeed();
 
-    // Log Activity
-    state.activities.unshift({
-        action: "Legal Query",
-        desc: `Executed query: "${query.substring(0, 35)}..."`,
-        time: "127.0.0.1 • Just now",
-        status: "Success"
+    // Log to Audit Logs
+    STATE.auditLogs.unshift({
+        time: 'Just now',
+        user: STATE.user.name,
+        action: `Legal Question Query: "${query.substring(0, 32)}..."`,
+        entity: 'ChromaDB Vector Retrieval',
+        ip: '192.168.10.45',
+        status: 'Success'
     });
 
-    // Simulated RAG Pipeline matching
+    // Simulated RAG Pipeline Execution
     setTimeout(() => {
-        const qLower = query.toLowerCase();
-        let matched = null;
+        let reply = '';
+        let matchedSource = {
+            act: 'Pakistan Statutory Corpus (ChromaDB)',
+            section: 'Grounded Statutory Section',
+            category: 'Pakistani Jurisprudence',
+            similarity: '0.86',
+            excerpt: 'The provisions of the Pakistani statutes mandate that all legal rights and administrative procedures must conform to the Constitution and relevant substantive codes.'
+        };
 
-        for (const item of LEGAL_KNOWLEDGE) {
-            for (const kw of item.keywords) {
-                if (qLower.includes(kw)) {
-                    matched = item;
-                    break;
-                }
-            }
-            if (matched) break;
+        const qLow = query.toLowerCase();
+        if (qLow.includes('302') || qLow.includes('murder') || qLow.includes('qatl')) {
+            reply = `Under <strong>Pakistan Penal Code (Act XLV of 1860), Section 302</strong>, whoever commits <em>Qatl-i-Amd</em> (intentional murder) shall be punished with:<br/>
+            (a) Death as Qisas;<br/>
+            (b) Death or imprisonment for life as Ta'zir, taking into account facts and circumstances;<br/>
+            (c) Imprisonment of either description for a term which may extend to twenty-five years where punishment of Qisas is not applicable.<br/>
+            The case is triable exclusively by the Court of Session under Schedule II of Cr.P.C. 1898.`;
+            matchedSource = {
+                act: 'Pakistan Penal Code, 1860',
+                section: 'Section 302: Punishment of Qatl-i-Amd',
+                category: 'Criminal Law',
+                similarity: '0.94',
+                excerpt: 'Whoever commits qatl-i-amd shall, subject to the provisions of this Chapter be: (a) punished with death as qisas; (b) punished with death for life imprisonment as tazir...'
+            };
+        } else if (qLow.includes('fir') || qLow.includes('154') || qLow.includes('police')) {
+            reply = `Under <strong>Section 154 of the Code of Criminal Procedure (Cr.P.C. 1898)</strong>, an Officer-in-Charge of a police station is statutorily mandated to register an FIR upon receipt of information relating to the commission of a cognizable offence.<br/>
+            If the police refuse to register the FIR, the aggrieved party may file an application under <strong>Section 22-A / 22-B Cr.P.C.</strong> before the Justice of Peace (Sessions Judge) for an order directing registration.`;
+            matchedSource = {
+                act: 'Code of Criminal Procedure, 1898',
+                section: 'Section 154: Information in Cognizable Cases',
+                category: 'Criminal Procedure',
+                similarity: '0.92',
+                excerpt: 'Every information relating to the commission of a cognizable offence if given orally to an officer in charge of a police station, shall be reduced to writing...'
+            };
+        } else if (qLow.includes('bail') || qLow.includes('497')) {
+            reply = `Under <strong>Section 497 of the Code of Criminal Procedure (Cr.P.C. 1898)</strong>, post-arrest bail may be granted in non-bailable offences, provided the offence does not fall within the <em>prohibitory clause</em> (punishable with death, imprisonment for life, or 10 years).<br/>
+            Bail is a statutory right where further inquiry is required under Section 497(2), or on grounds of sickness, infirmity, or female status under Section 497(1) proviso.`;
+            matchedSource = {
+                act: 'Code of Criminal Procedure, 1898',
+                section: 'Section 497: When Bail May be Taken in Non-Bailable Cases',
+                category: 'Criminal Procedure',
+                similarity: '0.90',
+                excerpt: 'When any person accused of any non-bailable offence is arrested or detained without warrant... he may be released on bail, but he shall not be so released if there appear reasonable grounds...'
+            };
+        } else {
+            reply = `Based on semantic retrieval from the <strong>Pakistani Legal Knowledge Base (ChromaDB)</strong>, your query involves substantive statutory rights. All procedures must strictly adhere to statutory limitation periods and jurisdictional mandates.<br/><br/>
+            Citations and active provisions have been loaded in the <strong>Sources & Context</strong> inspection panel.`;
         }
 
-        const reply = matched ? matched.answer : DEFAULT_FALLBACK.answer;
-
-        state.chatMessages.push({
-            sender: "assistant",
-            text: reply
+        STATE.chatFeed.push({
+            sender: 'assistant',
+            text: reply,
+            source: matchedSource
         });
-        renderChatMessages();
-    }, 700);
+
+        // Add to conversations state
+        STATE.conversations.unshift({
+            id: Date.now(),
+            title: query.substring(0, 36) + '...',
+            topic: matchedSource.category,
+            date: 'Today',
+            query: query,
+            citations: matchedSource.act
+        });
+
+        renderChatFeed();
+    }, 750);
 }
 
-function sendQuickPrompt(promptText) {
-    const input = document.getElementById("chat-message-input");
-    if (input) {
-        input.value = promptText;
-        sendChatMessage();
+function submitChatFeedback(msgIdx, ratingType) {
+    const msg = STATE.chatFeed[msgIdx];
+    if (!msg) return;
+
+    STATE.feedbacks.unshift({
+        id: Date.now(),
+        user: STATE.user.name,
+        query: 'Active Q&A Session',
+        response: msg.text.substring(0, 70) + '...',
+        rating: ratingType === 'helpful' ? '👍 Helpful' : '👎 Not Helpful',
+        comment: 'Recorded via quick feedback button.',
+        time: 'Just now'
+    });
+
+    STATE.auditLogs.unshift({
+        time: 'Just now',
+        user: STATE.user.name,
+        action: `User Feedback: ${ratingType.toUpperCase()} Registered`,
+        entity: 'Feedback Table (MySQL)',
+        ip: '192.168.10.45',
+        status: 'Success'
+    });
+
+    alert(`Feedback registered: ${ratingType === 'helpful' ? 'Marked as Helpful 👍' : 'Marked as Not Helpful 👎'}. Thank you for helping improve the RAG grounding!`);
+}
+
+function openCommentModal(msgIdx) {
+    const comment = prompt('Enter optional feedback comment for model fine-tuning (max 500 chars):');
+    if (comment) {
+        STATE.feedbacks.unshift({
+            id: Date.now(),
+            user: STATE.user.name,
+            query: 'Conversational Feedback',
+            response: 'AI Legal Assistant Output',
+            rating: '👍 Helpful',
+            comment: comment,
+            time: 'Just now'
+        });
+        alert('Thank you! Your feedback comment has been saved to the database.');
     }
 }
 
-// ── Research Hub Query Runner ────────────────────────────────────────────────
-function focusResearchInput() {
-    const input = document.getElementById("research-main-input");
-    if (input) input.focus();
+// ── Screen 5: Chat History Renderer (Image 5) ────────────────────────────────
+function renderHistoryTable() {
+    const tbody = document.getElementById('history-table-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    STATE.conversations.forEach((conv, idx) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>
+                <div style="display:flex; align-items:center; gap:0.75rem;">
+                    <span style="color:var(--gold-bright); font-size:1.1rem;">📄</span>
+                    <div>
+                        <strong style="color:var(--text-white);">${conv.title}</strong>
+                        <div style="font-size:0.78rem; color:var(--text-muted);">${conv.query}</div>
+                    </div>
+                </div>
+            </td>
+            <td><span class="badge-tag badge-gold">${conv.topic}</span></td>
+            <td><span style="color:#94A3B8; font-size:0.8rem;">${conv.citations}</span></td>
+            <td style="color:#94A3B8; font-size:0.8rem;">${conv.date}</td>
+            <td style="text-align:right;">
+                <button class="btn-gold" style="padding:0.35rem 0.85rem; font-size:0.78rem;" onclick="loadConversationIntoChat(${conv.id})">Open ➔</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
 }
 
-function setResearchQuery(q) {
-    const input = document.getElementById("research-main-input");
-    if (input) {
-        input.value = q;
-        runResearchHubQuery();
-    }
-}
+function loadConversationIntoChat(convId) {
+    const conv = STATE.conversations.find(c => c.id === convId);
+    if (!conv) return;
 
-function runResearchHubQuery() {
-    const input = document.getElementById("research-main-input");
-    const q = input.value.trim();
-    if (!q) return;
-
-    const box = document.getElementById("research-results-box");
-    box.style.display = "block";
-    box.innerHTML = `
-        <div class="panel-box" style="border-color:#E5A93C;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem;">
-                <strong style="color:#FFD166; font-size:1rem;">Verified Statutory Result for: "${q}"</strong>
-                <span class="status-pill">Cosine Metric: 0.88</span>
-            </div>
-            <p style="font-size:0.88rem; color:#CBD5E1; line-height:1.6;">
-                Pakistan Penal Code & Criminal Procedure Code Indexing: Section matches confirmed against official Pakistan Code Repository. Top relevant provisions identified with verified statutory cross-references.
-            </p>
-            <div style="margin-top:1rem; display:flex; gap:0.6rem;">
-                <button class="btn-gold" style="font-size:0.8rem;" onclick="inquireInChatFromResearch('${q}')">Deep Query with Legal Chatbot ➔</button>
-            </div>
-        </div>
-    `;
-}
-
-function inquireInChatFromResearch(q) {
-    showScreen("chat");
-    const input = document.getElementById("chat-message-input");
-    if (input) {
-        input.value = q;
-        sendChatMessage();
-    }
-}
-
-function executeGlobalSearch() {
-    const val = document.getElementById("global-search-bar").value.trim();
-    if (val) {
-        showScreen("research");
-        setResearchQuery(val);
-    }
-}
-
-function handleAccountCreated(e) {
-    e.preventDefault();
-    alert("Account successfully created! Logged in as Zain Ul Abideen (FA23-BSE-127).");
-    showScreen("home");
-}
-
-// ── Initialization ───────────────────────────────────────────────────────────
-document.addEventListener("DOMContentLoaded", () => {
-    showScreen("chat"); // Directly opens the user's uploaded Chat screen for instant testing!
-    renderHomeDashboard();
-    renderCasesGrid();
-    renderActivityLogs();
-    renderChatMessages();
-
-    // Chat enter key
-    const chatInput = document.getElementById("chat-message-input");
-    if (chatInput) {
-        chatInput.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-                sendChatMessage();
+    STATE.chatFeed = [
+        { sender: 'user', text: conv.query },
+        {
+            sender: 'assistant',
+            text: `Loaded previous conversation session: <strong>${conv.title}</strong>.<br/><br/>
+            Legal provisions under <strong>${conv.citations}</strong> have been retrieved and validated against current Pakistan statute revisions. You may ask follow-up questions.`,
+            source: {
+                act: conv.citations,
+                section: 'Primary Statutory Section',
+                category: conv.topic,
+                similarity: '0.91',
+                excerpt: `Indexed corpus excerpt corresponding to ${conv.title}.`
             }
-        });
-    }
-});
+        }
+    ];
 
-function switchChatThread(threadName) {
-    document.querySelectorAll('.chat-sub-menu-item').forEach(el => {
-        if (el.textContent.includes(threadName)) {
+    showScreen('chat');
+}
+
+// ── Screen 6: Document Management Renderer (Image 6) ─────────────────────────
+function renderDocumentsTable() {
+    const tbody = document.getElementById('documents-table-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    STATE.documents.forEach(doc => {
+        const badgeClass = doc.status === 'Active' ? 'badge-active' : (doc.status === 'Pending Review' ? 'badge-warning' : 'badge-danger');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>
+                <div style="display:flex; align-items:center; gap:0.6rem;">
+                    <span style="color:var(--gold-bright);">📄</span>
+                    <strong>${doc.title}</strong>
+                </div>
+            </td>
+            <td>${doc.version}</td>
+            <td>${doc.category}</td>
+            <td>${doc.jurisdiction}</td>
+            <td>${doc.date}</td>
+            <td><span class="badge-tag ${badgeClass}">${doc.status}</span></td>
+            <td style="text-align:right;">
+                <button class="btn-outline-gold" style="padding:0.25rem 0.6rem; font-size:0.75rem;" onclick="inspectDocument('${doc.title}')">👁️ View</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function uploadNewDocument() {
+    const titleInput = document.getElementById('upload-doc-title');
+    const categorySelect = document.getElementById('upload-doc-category');
+    const jurisdictionSelect = document.getElementById('upload-doc-jurisdiction');
+
+    const title = titleInput ? titleInput.value.trim() : '';
+    const category = categorySelect ? categorySelect.value : 'Criminal Law';
+    const jurisdiction = jurisdictionSelect ? jurisdictionSelect.value : 'Federal';
+
+    if (!title) {
+        alert('Please enter a Document Title.');
+        return;
+    }
+
+    // Add to state
+    STATE.documents.unshift({
+        id: Date.now(),
+        title: title,
+        version: '1',
+        category: category,
+        jurisdiction: jurisdiction,
+        date: 'Today',
+        status: 'Active'
+    });
+
+    STATE.auditLogs.unshift({
+        time: 'Just now',
+        user: STATE.user.name,
+        action: `PDF Ingestion & 500-char Chunking: "${title}"`,
+        entity: 'ChromaDB Vector Index',
+        ip: '192.168.10.45',
+        status: 'Success'
+    });
+
+    if (titleInput) titleInput.value = '';
+    renderDocumentsTable();
+    alert(`Document "${title}" uploaded and chunked successfully (500 chars, 50 overlap, 768-dim embeddings added to ChromaDB)!`);
+}
+
+function inspectDocument(docTitle) {
+    showScreen('sources');
+    const actElem = document.getElementById('inspector-act-title');
+    if (actElem) actElem.textContent = docTitle;
+}
+
+// ── Screen 7: Audit Logs Renderer (Image 7) ──────────────────────────────────
+function renderAuditLogsTable() {
+    const tbody = document.getElementById('audit-table-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    STATE.auditLogs.forEach(log => {
+        const badgeClass = log.status === 'Success' ? 'badge-active' : (log.status === 'Warning' ? 'badge-warning' : 'badge-danger');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="color:#94A3B8; font-size:0.8rem;">${log.time}</td>
+            <td>
+                <div style="display:flex; align-items:center; gap:0.5rem;">
+                    <span>👤</span>
+                    <span>${log.user}</span>
+                </div>
+            </td>
+            <td><strong>${log.action}</strong></td>
+            <td><span style="color:var(--text-gray); font-size:0.82rem;">${log.entity}</span></td>
+            <td><code>${log.ip}</code></td>
+            <td><span class="badge-tag ${badgeClass}">${log.status}</span></td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// ── Screen 8: Source References & Citation Inspector (Image 8) ───────────────
+function renderSourceInspector() {
+    // Already populated by markup or active selection
+}
+
+function selectSectionInTree(sectionName, textSnippet) {
+    document.querySelectorAll('.citation-tree-item').forEach(el => {
+        el.classList.remove('active');
+        if (el.textContent.includes(sectionName)) {
             el.classList.add('active');
-        } else {
-            el.classList.remove('active');
         }
     });
 
-    if (threadName === 'Document View') {
-        state.chatMessages.push({
-            sender: "assistant",
-            text: "Loaded Pakistan Statutory Corpus: Viewing Pakistan Penal Code (Act XLV of 1860). All 511 sections indexed for semantic similarity lookup."
-        });
-    } else if (threadName === 'Case Edit') {
-        state.chatMessages.push({
-            sender: "assistant",
-            text: "Editing active case file: State vs. Tariq Mehmood (PPC 302). Evidence documents and FIR No. 412/24 attached."
-        });
-    } else if (threadName === 'Research Query') {
-        state.chatMessages.push({
-            sender: "assistant",
-            text: "Precedent Research Mode active. Ready to cross-examine Supreme Court of Pakistan (SCMR) & High Court (PLD) citations."
-        });
-    } else if (threadName === 'Login' || threadName === 'Login Edit') {
-        state.chatMessages.push({
-            sender: "assistant",
-            text: "Authentication session active: User logged in as Senior Advocate (CUI Vehari Chamber License #PK-7821)."
-        });
+    const display = document.getElementById('extracted-text-body');
+    if (display) {
+        display.innerHTML = `
+            <div style="color:var(--gold-bright); font-weight:700; margin-bottom:0.6rem;">${sectionName}</div>
+            <div style="line-height:1.7; color:var(--text-white); background:#060C1B; padding:1.2rem; border-left:3px solid var(--gold-bright); border-radius:4px;">
+                ${textSnippet}
+            </div>
+        `;
     }
-    renderChatMessages();
 }
+
+// ── Screen 9: Feedback Table Renderer (Image 9) ──────────────────────────────
+function renderFeedbackTable() {
+    const tbody = document.getElementById('feedback-table-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    STATE.feedbacks.forEach(f => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><strong>${f.user}</strong></td>
+            <td style="color:#CBD5E1;">${f.query}</td>
+            <td style="color:var(--text-muted); font-size:0.82rem;">${f.response}</td>
+            <td><span class="badge-tag ${f.rating.includes('Helpful') ? 'badge-active' : 'badge-danger'}">${f.rating}</span></td>
+            <td><em style="color:#94A3B8;">"${f.comment}"</em></td>
+            <td style="color:#64748B; font-size:0.78rem;">${f.time}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// ── Screen 10: Profile Settings Saver (Image 10) ─────────────────────────────
+function saveProfileChanges() {
+    const nameInput = document.getElementById('profile-name');
+    const emailInput = document.getElementById('profile-email');
+    const phoneInput = document.getElementById('profile-phone');
+    const roleSelect = document.getElementById('profile-role');
+
+    if (nameInput) STATE.user.name = nameInput.value;
+    if (emailInput) STATE.user.email = emailInput.value;
+    if (phoneInput) STATE.user.phone = phoneInput.value;
+    if (roleSelect) STATE.user.role = roleSelect.value;
+
+    const navName = document.getElementById('top-bar-user-name');
+    if (navName) navName.textContent = STATE.user.name;
+
+    STATE.auditLogs.unshift({
+        time: 'Just now',
+        user: STATE.user.name,
+        action: 'Profile Credentials Updated',
+        entity: 'Users Table (MySQL)',
+        ip: '192.168.10.45',
+        status: 'Success'
+    });
+
+    alert('Profile information saved successfully!');
+}
+
+function updatePassword() {
+    alert('Password updated successfully! Salted bcrypt hash regenerated in MySQL.');
+}
+
+function revokeAllSessions() {
+    alert('All other remote browser sessions have been revoked. Active JWT invalidated.');
+}
+
+// ── App Init ─────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    // Show Dashboard by default (Image 3)
+    showScreen('dashboard');
+});
