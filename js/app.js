@@ -113,7 +113,13 @@ function showScreen(screenId) {
     if (screenId === 'feedback') renderFeedbackTable();
     if (screenId === 'sources') renderSourceInspector();
 
+    // Trigger scroll-reveal animation observer
+    if (typeof initScrollObserver === 'function') initScrollObserver();
+
+    // Smooth scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    const mainEl = document.querySelector('.main-content');
+    if (mainEl) mainEl.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // —— Screen 3: User Dashboard Renderer (Image 3) ——————————————————————————————
@@ -240,25 +246,60 @@ function sendLegalQuery() {
     });
     renderChatFeed();
 
-    // Show realistic typing indicator
+    // Show high-craft multi-stage AI synthesis animation
     const feed = document.getElementById('chat-scroll-feed');
-    const typingBubble = document.createElement('div');
-    typingBubble.id = 'chat-typing-bubble';
-    typingBubble.className = 'chat-bubble-container';
-    typingBubble.innerHTML = `
-        <div class="chat-bubble-assistant" style="display:inline-flex; align-items:center; gap:0.6rem; width:fit-content; border-color:rgba(229,169,60,0.35);">
-            <span style="font-size:0.82rem; color:var(--gold-bright);">Cross-referencing Pakistani statutes</span>
-            <div class="typing-indicator">
-                <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
-            </div>
+    const synthBox = document.createElement('div');
+    synthBox.id = 'chat-synthesis-indicator';
+    synthBox.className = 'ai-synthesis-box';
+    synthBox.innerHTML = `
+        <div class="synthesis-header">
+            <span style="font-size:0.75rem; color:var(--gold-bright); font-weight:700; text-transform:uppercase; letter-spacing:0.04em; display:flex; align-items:center; gap:0.4rem;">
+                <span class="live-radar-dot"></span> Active Retrieval Pipeline
+            </span>
+            <span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);" id="synth-status-percent">35%</span>
+        </div>
+        <div class="synthesis-progress-track">
+            <div class="synthesis-progress-bar" id="synth-progress-bar" style="width:35%;"></div>
+        </div>
+        <div class="synthesis-step-row" id="synth-step-text">
+            <div class="synthesis-step-dot active"></div>
+            <span>Indexing Pakistan Penal Code (PPC 1860) & Cr.P.C 1898 indices...</span>
         </div>
     `;
     if (feed) {
-        feed.appendChild(typingBubble);
+        feed.appendChild(synthBox);
         feed.scrollTop = feed.scrollHeight;
     }
+
+    // Step 2 transition
+    setTimeout(() => {
+        const pBar = document.getElementById('synth-progress-bar');
+        const pText = document.getElementById('synth-status-percent');
+        const sRow = document.getElementById('synth-step-text');
+        if (pBar) pBar.style.width = '70%';
+        if (pText) pText.textContent = '70%';
+        if (sRow) {
+            sRow.innerHTML = `
+                <div class="synthesis-step-dot active"></div>
+                <span>Correlating Fundamental Rights under Constitution 1973 (Article 10A, 25)...</span>
+            `;
+        }
+    }, 400);
+
+    // Step 3 transition
+    setTimeout(() => {
+        const pBar = document.getElementById('synth-progress-bar');
+        const pText = document.getElementById('synth-status-percent');
+        const sRow = document.getElementById('synth-step-text');
+        if (pBar) pBar.style.width = '96%';
+        if (pText) pText.textContent = '96%';
+        if (sRow) {
+            sRow.innerHTML = `
+                <div class="synthesis-step-dot done"></div>
+                <span>Synthesizing verified procedural guidance with statutory citations...</span>
+            `;
+        }
+    }, 800);
 
     // Log to Audit Logs
     STATE.auditLogs.unshift({
@@ -272,6 +313,8 @@ function sendLegalQuery() {
 
     // Simulated Legal AI Pipeline Execution
     setTimeout(() => {
+        const sEl = document.getElementById('chat-synthesis-indicator');
+        if (sEl) sEl.remove();
         let reply = '';
         let matchedSource = {
             act: 'Pakistan Statutory Corpus (Pakistan Legal Repository)',
@@ -842,14 +885,68 @@ function lockAdminSession() {
 function showAuthView(viewName) {
     const loginView = document.getElementById('auth-view-login');
     const registerView = document.getElementById('auth-view-register');
+    const heroPane = document.getElementById('auth-hero-pane');
+    const heroImg = document.getElementById('auth-hero-img');
+    const heroBadge = document.getElementById('auth-hero-badge');
+    const heroTitle = document.getElementById('auth-hero-title');
+    const heroDesc = document.getElementById('auth-hero-desc');
+    const heroStats = document.getElementById('auth-hero-stats');
 
-    if (viewName === 'login') {
-        if (loginView) loginView.style.display = 'flex';
-        if (registerView) registerView.style.display = 'none';
-    } else {
-        if (loginView) loginView.style.display = 'none';
-        if (registerView) registerView.style.display = 'flex';
-    }
+    if (heroPane) heroPane.classList.add('fade-out');
+
+    setTimeout(() => {
+        if (viewName === 'login') {
+            if (loginView) loginView.style.display = 'flex';
+            if (registerView) registerView.style.display = 'none';
+
+            if (heroImg) {
+                heroImg.src = 'images/hero_login_skyline.png';
+                heroImg.alt = 'Pakistan Legal Intelligence';
+            }
+            if (heroBadge) {
+                heroBadge.innerHTML = '<span class="live-radar-dot"></span> Official Statutory Intelligence';
+            }
+            if (heroTitle) {
+                heroTitle.textContent = 'AI Smart Legal Assistant';
+            }
+            if (heroDesc) {
+                heroDesc.textContent = 'Empowering Pakistani citizens with statutory awareness, constitutional rights guidance, and verified procedural law.';
+            }
+            if (heroStats) {
+                heroStats.innerHTML = `
+                    <div><strong style="color:var(--text-white); display:block; font-size:1.05rem; font-family:var(--font-mono);">1,420+</strong> Statutory Sections</div>
+                    <div style="width:1px; background:var(--border);"></div>
+                    <div><strong style="color:var(--text-white); display:block; font-size:1.05rem; font-family:var(--font-mono);">7 Codes</strong> Federal & Provincial</div>
+                `;
+            }
+        } else {
+            if (loginView) loginView.style.display = 'none';
+            if (registerView) registerView.style.display = 'flex';
+
+            if (heroImg) {
+                heroImg.src = 'images/hero_supreme_court.png';
+                heroImg.alt = 'Supreme Court of Pakistan & Constitution';
+            }
+            if (heroBadge) {
+                heroBadge.innerHTML = '<span class="live-radar-dot"></span> Citizen Legal Protection';
+            }
+            if (heroTitle) {
+                heroTitle.textContent = 'Create Citizen Account';
+            }
+            if (heroDesc) {
+                heroDesc.textContent = 'Join the official Pakistani legal guidance platform. Receive instant clarity on constitutional rights, police FIR procedures, and civil remedies.';
+            }
+            if (heroStats) {
+                heroStats.innerHTML = `
+                    <div><strong style="color:var(--color-success); display:block; font-size:1.05rem; font-family:var(--font-mono);">100% Free</strong> Public Access</div>
+                    <div style="width:1px; background:var(--border);"></div>
+                    <div><strong style="color:var(--gold-bright); display:block; font-size:1.05rem; font-family:var(--font-mono);">Constitution 1973</strong> Islamic Republic</div>
+                `;
+            }
+        }
+
+        if (heroPane) heroPane.classList.remove('fade-out');
+    }, 160);
 }
 
 function handleLoginSubmit(event) {
@@ -1053,19 +1150,30 @@ function filterStatuteDomain(domain, chipElem) {
 }
 
 function copyCurrentCitation() {
-    const act = document.getElementById('context-source-act')?.textContent || '';
-    const sec = document.getElementById('context-source-section')?.textContent || '';
+    const act = document.getElementById('context-source-act')?.textContent || 'Punjab Consumer Protection Act, 2005';
+    const sec = document.getElementById('context-source-section')?.textContent || 'Section 3: Rights of Consumers & Remedies';
     const excerpt = document.getElementById('context-source-excerpt')?.textContent || '';
     const textToCopy = `Pakistani Legal Citation:\nAct: ${act}\nSection: ${sec}\n\nStatutory Excerpt:\n${excerpt}\n\n[Grounded via AI Smart Legal Assistant]`;
     
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(textToCopy).then(() => {
-            showToast('📋 Statutory Citation copied to clipboard!', 'success');
+            showToast('Statutory Citation copied to clipboard!', 'success');
         }).catch(() => {
-            showToast('Copied to clipboard!', 'success');
+            showToast('Citation copied!', 'success');
         });
     } else {
-        showToast('📋 Citation copied to clipboard!', 'success');
+        showToast('Citation copied!', 'success');
+    }
+
+    const btn = document.querySelector('button[onclick="copyCurrentCitation()"]');
+    if (btn) {
+        btn.classList.add('btn-copy-morph', 'copied');
+        const origHTML = btn.innerHTML;
+        btn.innerHTML = `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Citation Copied!`;
+        setTimeout(() => {
+            btn.classList.remove('copied');
+            btn.innerHTML = origHTML;
+        }, 2200);
     }
 }
 
@@ -1175,3 +1283,25 @@ document.addEventListener('keydown', (e) => {
         closeCommandPalette();
     }
 });
+
+
+// ── Interactive Scroll-Reveal Observer ─────────────────────────────────────
+function initScrollObserver() {
+    if (typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-revealed');
+            }
+        });
+    }, {
+        threshold: 0.08,
+        rootMargin: '0px 0px -20px 0px'
+    });
+
+    document.querySelectorAll('.bento-card, .panel-card, .legal-tip-card, .statute-card, .recent-chat-row, .reveal-on-scroll').forEach(el => {
+        el.classList.add('reveal-on-scroll');
+        observer.observe(el);
+    });
+}

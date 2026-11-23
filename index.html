@@ -10,6 +10,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Ambient Living Mesh Atmosphere -->
+    <div class="ambient-bg-canvas">
+        <div class="ambient-orb ambient-orb-gold"></div>
+        <div class="ambient-orb ambient-orb-sapphire"></div>
+        <div class="ambient-orb ambient-orb-emerald"></div>
+    </div>
 
     <!-- ======================================================================
          1. FULLSCREEN DEDICATED AUTHENTICATION (NO SIDEBAR, NO HEADER)
@@ -18,18 +24,18 @@
         <div class="auth-fullscreen-container">
             <div class="auth-clean-card">
                 
-                <!-- Left Hero Brand Pane -->
-                <div class="auth-hero-pane">
-                    <img src="images/ai_scales_emblem.png" alt="Scales of Justice" class="auth-hero-emblem">
-                    <div style="display:inline-flex; align-items:center; gap:0.4rem; background:rgba(229,169,60,0.12); border:1px solid var(--border-gold); padding:0.25rem 0.75rem; border-radius:9999px; font-size:0.75rem; color:var(--gold-bright); font-weight:600; margin-bottom:0.75rem;">
+                <!-- Left Hero Brand Pane (Authentic Mockup Visuals) -->
+                <div class="auth-hero-pane" id="auth-hero-pane">
+                    <img src="images/hero_login_skyline.png" alt="Pakistan Legal Intelligence" class="auth-hero-emblem float-artwork" id="auth-hero-img">
+                    <div style="display:inline-flex; align-items:center; gap:0.4rem; background:rgba(229,169,60,0.12); border:1px solid var(--border-gold); padding:0.25rem 0.75rem; border-radius:9999px; font-size:0.75rem; color:var(--gold-bright); font-weight:600; margin-bottom:0.75rem;" id="auth-hero-badge">
                         <span class="live-radar-dot"></span> Official Statutory Intelligence
                     </div>
-                    <h2 style="color:var(--text-white); font-size:1.55rem; margin-bottom:0.6rem; font-weight:800; letter-spacing:-0.02em;">AI Smart Legal Assistant</h2>
-                    <p style="color:var(--text-gray); font-size:0.86rem; max-width:320px; line-height:1.6;">
+                    <h2 style="color:var(--text-white); font-size:1.55rem; margin-bottom:0.6rem; font-weight:800; letter-spacing:-0.02em;" id="auth-hero-title">AI Smart Legal Assistant</h2>
+                    <p style="color:var(--text-gray); font-size:0.86rem; max-width:320px; line-height:1.6;" id="auth-hero-desc">
                         Empowering Pakistani citizens with statutory awareness, constitutional rights guidance, and verified procedural law.
                     </p>
                     
-                    <div style="margin-top:2.2rem; display:flex; gap:1.2rem; font-size:0.76rem; color:var(--text-muted);">
+                    <div style="margin-top:2.2rem; display:flex; gap:1.2rem; font-size:0.76rem; color:var(--text-muted);" id="auth-hero-stats">
                         <div><strong style="color:var(--text-white); display:block; font-size:1.05rem; font-family:var(--font-mono);">1,420+</strong> Statutory Sections</div>
                         <div style="width:1px; background:var(--border);"></div>
                         <div><strong style="color:var(--text-white); display:block; font-size:1.05rem; font-family:var(--font-mono);">7 Codes</strong> Federal & Provincial</div>
@@ -230,13 +236,34 @@
                     
                     <!-- Quick Statutory Domain Chips -->
                     <div class="legal-domain-chips">
-                        <div class="domain-chip active" onclick="filterStatuteDomain('all', this)">🏛️ All Statutes</div>
-                        <div class="domain-chip" onclick="filterStatuteDomain('PPC', this)">⚖️ Pakistan Penal Code (PPC 1860)</div>
-                        <div class="domain-chip" onclick="filterStatuteDomain('CrPC', this)">📜 Criminal Procedure (Cr.P.C 1898)</div>
-                        <div class="domain-chip" onclick="filterStatuteDomain('Constitution', this)">🇵🇰 Constitution 1973</div>
-                        <div class="domain-chip" onclick="filterStatuteDomain('PECA', this)">💻 Cybercrime (PECA 2016)</div>
-                        <div class="domain-chip" onclick="filterStatuteDomain('Consumer', this)">🛡️ Punjab Consumer Protection 2005</div>
-                        <div class="domain-chip" onclick="filterStatuteDomain('Family', this)">👨‍👩‍👧 Muslim Family Laws 1961</div>
+                        <div class="domain-chip active" onclick="filterStatuteDomain('all', this)">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 10v11M19 10v11M9 10v11M15 10v11M4 10l8-7 8 7"/></svg>
+                            All Statutes
+                        </div>
+                        <div class="domain-chip" onclick="filterStatuteDomain('PPC', this)">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+                            Penal Code (PPC 1860)
+                        </div>
+                        <div class="domain-chip" onclick="filterStatuteDomain('CrPC', this)">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            Criminal Procedure (Cr.P.C 1898)
+                        </div>
+                        <div class="domain-chip" onclick="filterStatuteDomain('Constitution', this)">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            Constitution 1973
+                        </div>
+                        <div class="domain-chip" onclick="filterStatuteDomain('PECA', this)">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                            Cybercrime (PECA 2016)
+                        </div>
+                        <div class="domain-chip" onclick="filterStatuteDomain('Consumer', this)">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            Consumer Protection 2005
+                        </div>
+                        <div class="domain-chip" onclick="filterStatuteDomain('Family', this)">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            Family Laws 1961
+                        </div>
                     </div>
 
                     <!-- Bento Grid Architecture -->
@@ -244,30 +271,38 @@
                         
                         <!-- Hero Bento Card (Main Workspace Banner) -->
                         <div class="bento-card bento-hero">
-                            <div>
-                                <div class="bento-hero-header">
-                                    <div>
-                                        <div style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.75rem; color:var(--gold-bright); font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">
-                                            <span class="live-radar-dot"></span> Active Grounding Engine
+                            <div class="bento-hero-dual">
+                                <div class="bento-hero-content">
+                                    <div class="bento-hero-header">
+                                        <div>
+                                            <div style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.75rem; color:var(--gold-bright); font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">
+                                                <span class="live-radar-dot"></span> Active Grounding Engine
+                                            </div>
+                                            <h2 style="color:var(--text-white); font-size:1.65rem; font-weight:800; margin-top:0.3rem; letter-spacing:-0.03em;" id="dash-welcome-text">Welcome back, Muhammad Aqib</h2>
+                                            <p style="color:var(--text-gray); font-size:0.86rem; margin-top:0.35rem; line-height:1.5;">
+                                                Pakistani statutory guidance assistant grounded in official federal acts, provincial statutes, and verified court procedure.
+                                            </p>
                                         </div>
-                                        <h2 style="color:var(--text-white); font-size:1.65rem; font-weight:800; margin-top:0.3rem; letter-spacing:-0.03em;" id="dash-welcome-text">Welcome back, Muhammad Aqib</h2>
-                                        <p style="color:var(--text-gray); font-size:0.86rem; margin-top:0.35rem; line-height:1.5;">
-                                            Pakistani statutory guidance assistant grounded in official federal acts, provincial statutes, and verified court procedure.
-                                        </p>
+                                        <span class="badge-tag badge-active" style="flex-shrink:0;">
+                                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                            Verified Citizen
+                                        </span>
                                     </div>
-                                    <span class="badge-tag badge-active" style="flex-shrink:0;">
-                                        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                                        Verified Citizen
-                                    </span>
+
+                                    <!-- Quick Ask Dock -->
+                                    <div style="display:flex; gap:0.6rem; margin-top:1.2rem; background:rgba(6,10,22,0.6); padding:0.4rem; border-radius:var(--radius-pill); border:1px solid var(--border);">
+                                        <input type="text" id="dash-quick-query" placeholder="Ask any question (e.g. bail in non-bailable offence, FIR refusal, PPC 302)..." style="flex:1; background:transparent; border:none; padding:0.4rem 1rem; color:white; font-size:0.88rem; outline:none;" onkeydown="if(event.key==='Enter') quickAsk(this.value)">
+                                        <button class="btn-gold" style="padding:0.5rem 1.2rem; font-size:0.84rem;" onclick="quickAsk(document.getElementById('dash-quick-query').value)">
+                                            Ask Legal AI
+                                            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                                        </button>
+                                    </div>
                                 </div>
 
-                                <!-- Quick Ask Dock -->
-                                <div style="display:flex; gap:0.6rem; margin-top:1.2rem; background:rgba(6,10,22,0.6); padding:0.4rem; border-radius:var(--radius-pill); border:1px solid var(--border);">
-                                    <input type="text" id="dash-quick-query" placeholder="Ask any question (e.g. bail in non-bailable offence, FIR refusal, PPC 302)..." style="flex:1; background:transparent; border:none; padding:0.4rem 1rem; color:white; font-size:0.88rem; outline:none;" onkeydown="if(event.key==='Enter') quickAsk(this.value)">
-                                    <button class="btn-gold" style="padding:0.5rem 1.2rem; font-size:0.84rem;" onclick="quickAsk(document.getElementById('dash-quick-query').value)">
-                                        Ask Legal AI
-                                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                                    </button>
+                                <!-- Right Visual Artwork Pane (Mockup AI Scales Emblem) -->
+                                <div class="bento-hero-artwork-pane">
+                                    <div class="hero-glow-backdrop"></div>
+                                    <img src="images/hero_ai_scales.png" alt="AI Legal Neural Scales" class="bento-hero-floating-img" title="Pakistan Statutory Intelligence Engine">
                                 </div>
                             </div>
 
@@ -447,6 +482,20 @@
                                 <span class="badge-tag badge-active">
                                     <span class="live-radar-dot"></span> Online
                                 </span>
+                            </div>
+
+                            <!-- Chat Welcome Hero Artwork Banner -->
+                            <div class="chat-welcome-banner">
+                                <img src="images/hero_doc_scales.png" alt="AI Statutory Intelligence" class="chat-welcome-art">
+                                <div>
+                                    <div style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.75rem; color:var(--gold-bright); font-weight:700; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:0.25rem;">
+                                        <span class="live-radar-dot"></span> Official Citizen Advisory System
+                                    </div>
+                                    <h4 style="color:var(--text-white); font-size:1.12rem; font-weight:700; margin:0 0 0.35rem 0;">Grounded Statutory Consultation Workspace</h4>
+                                    <p style="color:var(--text-gray); font-size:0.83rem; line-height:1.5; margin:0;">
+                                        Enter any legal scenario in plain English or Urdu. The assistant references verified sections from the Pakistan Penal Code 1860, Cr.P.C 1898, Constitution 1973, and PECA 2016.
+                                    </p>
+                                </div>
                             </div>
 
                             <!-- Chat Messages Feed -->

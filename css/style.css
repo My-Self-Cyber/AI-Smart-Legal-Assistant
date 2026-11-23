@@ -371,26 +371,142 @@ body {
     gap: 0.35rem;
 }
 
+/* ── Ambient Living Mesh Atmosphere ────────────────────────────────────────── */
+.ambient-bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.ambient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+.ambient-orb-gold {
+    top: -10%;
+    right: 15%;
+    width: 550px;
+    height: 550px;
+    background: radial-gradient(circle, rgba(229, 169, 60, 0.14) 0%, rgba(10, 15, 29, 0) 70%);
+    animation: driftGold 18s ease-in-out infinite alternate;
+}
+
+.ambient-orb-sapphire {
+    bottom: -15%;
+    left: 5%;
+    width: 650px;
+    height: 650px;
+    background: radial-gradient(circle, rgba(30, 80, 160, 0.16) 0%, rgba(6, 9, 19, 0) 70%);
+    animation: driftSapphire 24s ease-in-out infinite alternate;
+}
+
+.ambient-orb-emerald {
+    top: 45%;
+    left: 35%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, rgba(6, 9, 19, 0) 70%);
+    animation: driftEmerald 20s ease-in-out infinite alternate;
+}
+
+@keyframes driftGold {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-50px, 60px) scale(1.1); }
+    100% { transform: translate(40px, -30px) scale(0.95); }
+}
+
+@keyframes driftSapphire {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(60px, -40px) scale(1.15); }
+    100% { transform: translate(-30px, 50px) scale(0.9); }
+}
+
+@keyframes driftEmerald {
+    0% { transform: translate(0, 0) scale(0.9); }
+    100% { transform: translate(-40px, -50px) scale(1.2); }
+}
+
 /* ── Main Workspace ───────────────────────────────────────────────────────── */
 .main-content {
     flex: 1;
     overflow-y: auto;
     padding: 1.75rem 2rem;
     background: transparent;
+    position: relative;
+    z-index: 1;
 }
 
 .screen-view {
     display: none;
-    animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .screen-view.active {
     display: block;
+    opacity: 1;
+    transform: translateY(0);
+    animation: screenEnter 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes screenEnter {
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.99);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Staggered Child Element Reveal */
+.screen-view.active .bento-hero,
+.screen-view.active .bento-card,
+.screen-view.active .panel-card,
+.screen-view.active .legal-tip-card,
+.screen-view.active .recent-chat-row {
+    animation: staggerItem 0.42s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+.screen-view.active .bento-hero { animation-delay: 0.04s; }
+.screen-view.active .bento-card:nth-child(2) { animation-delay: 0.1s; }
+.screen-view.active .legal-tip-card { animation-delay: 0.15s; }
+.screen-view.active .dashboard-middle-grid > div:nth-child(1) { animation-delay: 0.2s; }
+.screen-view.active .dashboard-middle-grid > div:nth-child(2) { animation-delay: 0.25s; }
+
+@keyframes staggerItem {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Scroll-Triggered Reveal Animations ─────────────────────────────────────── */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* ── High-Craft Bento Grid System (Linear / Raycast Architecture) ─────────── */
@@ -1373,4 +1489,223 @@ body {
     .auth-card-pane {
         padding: 2.2rem 1.4rem;
     }
+}
+
+
+/* ── Floating Artwork Physics ──────────────────────────────────────────────── */
+.float-artwork {
+    animation: floatBob 6s ease-in-out infinite;
+    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.65)) drop-shadow(0 0 25px rgba(229, 169, 60, 0.3));
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.float-artwork:hover {
+    transform: translateY(-6px) scale(1.03);
+    filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 35px rgba(229, 169, 60, 0.5));
+}
+
+@keyframes floatBob {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-9px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes pulseGlow {
+    0% { opacity: 0.35; transform: scale(0.95); }
+    100% { opacity: 0.8; transform: scale(1.1); }
+}
+
+/* ── Modern Card Hover Physics & Specular Sheen ───────────────────────────── */
+.bento-card, .panel-card, .legal-tip-card, .auth-clean-card, .statute-card {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 0.28s ease;
+}
+
+.bento-card::after, .panel-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.75s ease;
+    pointer-events: none;
+}
+
+.bento-card:hover::after, .panel-card:hover::after {
+    left: 140%;
+}
+
+.bento-card:hover, .panel-card:hover, .statute-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-gold-bright);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 28px rgba(229, 169, 60, 0.15);
+}
+
+/* ── Bento Hero Dual Layout (Content + Floating AI Artwork) ──────────────── */
+.bento-hero-dual {
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.bento-hero-artwork-pane {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.bento-hero-floating-img {
+    max-width: 190px;
+    max-height: 190px;
+    object-fit: contain;
+    position: relative;
+    z-index: 2;
+    animation: floatBob 6s ease-in-out infinite;
+    filter: drop-shadow(0 15px 30px rgba(0,0,0,0.7)) drop-shadow(0 0 30px rgba(229, 169, 60, 0.35));
+}
+
+.hero-glow-backdrop {
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(229, 169, 60, 0.28) 0%, rgba(10, 15, 29, 0) 70%);
+    filter: blur(25px);
+    animation: pulseGlow 4s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ── Auth Screen Smooth Transitions ───────────────────────────────────────── */
+.auth-hero-pane {
+    transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.auth-hero-pane.fade-out {
+    opacity: 0;
+    transform: scale(0.96);
+}
+
+.auth-card-pane {
+    animation: authPaneSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes authPaneSlide {
+    from {
+        opacity: 0;
+        transform: translateX(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ── AI Multi-Stage Synthesis Animation ───────────────────────────────────── */
+.ai-synthesis-box {
+    background: rgba(14, 22, 44, 0.88);
+    border: 1px solid var(--border-gold);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    animation: synthesisBoxEnter 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(229, 169, 60, 0.12);
+}
+
+@keyframes synthesisBoxEnter {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.synthesis-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.65rem;
+}
+
+.synthesis-progress-track {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 9999px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 0.75rem;
+}
+
+.synthesis-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--gold-gradient);
+    border-radius: 9999px;
+    transition: width 0.35s ease;
+    box-shadow: 0 0 10px rgba(229, 169, 60, 0.6);
+}
+
+.synthesis-step-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.82rem;
+    color: var(--text-gray);
+    transition: color 0.25s ease;
+}
+
+.synthesis-step-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.synthesis-step-dot.active {
+    background: var(--gold-bright);
+    box-shadow: 0 0 8px var(--gold-bright);
+    animation: radarPulse 1.2s infinite;
+}
+
+.synthesis-step-dot.done {
+    background: var(--color-success);
+    box-shadow: 0 0 6px var(--color-success);
+}
+
+/* ── Copy Citation Morph State ────────────────────────────────────────────── */
+.btn-copy-morph {
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.btn-copy-morph.copied {
+    background: rgba(16, 185, 129, 0.15) !important;
+    border-color: var(--color-success) !important;
+    color: var(--color-success) !important;
+}
+
+/* ── Interactive Chat Hero Banner ─────────────────────────────────────────── */
+.chat-welcome-banner {
+    background: linear-gradient(135deg, rgba(16, 26, 52, 0.7) 0%, rgba(10, 16, 32, 0.8) 100%);
+    border: 1px solid var(--border-gold);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+.chat-welcome-art {
+    max-width: 95px;
+    max-height: 95px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(229, 169, 60, 0.35));
+    animation: floatBob 5s ease-in-out infinite;
+    flex-shrink: 0;
 }
