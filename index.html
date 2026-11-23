@@ -20,12 +20,16 @@
     <!-- ======================================================================
          1. FULLSCREEN DEDICATED AUTHENTICATION (NO SIDEBAR, NO HEADER)
          ====================================================================== -->
-    <div id="auth-wrapper" style="display:block;">
+    <div id="auth-wrapper" style="display:none;">
         <div class="auth-fullscreen-container">
             <div style="display:flex; justify-content:flex-end; margin-bottom:0.75rem;">
                 <button class="theme-toggle-btn" onclick="toggleTheme()" title="Switch Light / Dark Theme">
                     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
                     <span id="auth-theme-text">Switch Theme</span>
+                </button>
+                <button class="theme-toggle-btn" onclick="closeAuthModal()" title="Return to Portal" style="margin-left:0.6rem; cursor:pointer;">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    <span>Return to Portal</span>
                 </button>
             </div>
             <div class="auth-clean-card">
@@ -164,11 +168,11 @@
     <!-- ======================================================================
          2. AUTHENTICATED USER PORTAL (CITIZENS & NORMAL USERS)
          ====================================================================== -->
-    <div id="user-portal-shell" style="display:none;">
+    <div id="user-portal-shell" style="display:block;">
         
         <!-- Top Navigation Header -->
         <header class="top-header">
-            <div class="brand-container" onclick="showScreen('dashboard')">
+            <div class="brand-container" onclick="showScreen('landing')">
                 <div class="brand-logo-badge">
                     <svg class="brand-svg" viewBox="0 0 24 24"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
                 </div>
@@ -198,6 +202,10 @@
                 <div class="icon-btn-badge" title="Statutory Knowledge Base" onclick="showToast('1,420 Pakistani statutory sections loaded and active.', 'info')">
                     <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
                 </div>
+                <button class="theme-toggle-btn" onclick="openAuthModal('login')" style="cursor:pointer;" title="Sign In or Switch Account">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                    <span>Sign In</span>
+                </button>
                 <div class="user-profile-pill" onclick="showScreen('settings')">
                     <div class="user-avatar-circle">A</div>
                     <span class="user-profile-name" id="user-display-name">Muhammad Aqib</span>
@@ -211,8 +219,12 @@
             <!-- Citizen Navigation Sidebar -->
             <aside class="sidebar-nav">
                 <ul class="sidebar-menu">
-                    <li class="sidebar-item active" data-screen="dashboard" onclick="showScreen('dashboard')">
+                    <li class="sidebar-item active" data-screen="landing" onclick="showScreen('landing')">
                         <svg class="nav-svg" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        <span class="sidebar-item-label">Home / Portal</span>
+                    </li>
+                    <li class="sidebar-item" data-screen="dashboard" onclick="showScreen('dashboard')">
+                        <svg class="nav-svg" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                         <span class="sidebar-item-label">Dashboard</span>
                     </li>
                     <li class="sidebar-item" data-screen="chat" onclick="showScreen('chat')">
@@ -250,7 +262,368 @@
             <main class="main-content">
                 
                 <!-- ── SCREEN 3: HIGH-CRAFT BENTO DASHBOARD ────────────────────────── -->
-                <section id="screen-dashboard" class="screen-view active">
+                
+        <!-- ======================================================================
+             0. WORLD-CLASS CIVIC LEGAL PORTAL (PUBLIC LANDING & CITIZEN GATEWAY)
+             ====================================================================== -->
+        <section id="screen-landing" class="screen-view active">
+            
+            <!-- Hero Civic Banner -->
+            <div class="landing-hero-container">
+                <div class="landing-hero-content">
+                    <div class="landing-badge">
+                        <span class="live-radar-dot"></span> Official Statutory Intelligence • Islamic Republic of Pakistan
+                    </div>
+                    <h1 class="landing-hero-title">
+                        Pakistani Law & Rights,<br/>
+                        <span class="gold-gradient-text">Simplified for Every Citizen.</span>
+                    </h1>
+                    <p class="landing-hero-subtitle">
+                        Instant, verified guidance grounded in the Pakistan Penal Code 1860, Cr.P.C. 1898, Constitution of Pakistan 1973, and PECA 2016. Ask any legal question in plain English or Urdu without confusing legal jargon.
+                    </p>
+
+                    <!-- Interactive Live Query Box in Hero -->
+                    <div class="hero-interactive-box">
+                        <div class="hero-query-input-row">
+                            <span class="hero-query-icon">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                            </span>
+                            <input type="text" id="landing-hero-query" placeholder="Ask any legal question (e.g. Can police refuse FIR? Bail under CrPC 497? PPC 302?)..." onkeydown="if(event.key==='Enter') executeLandingHeroQuery()">
+                            <button class="btn-gold hero-ask-btn" onclick="executeLandingHeroQuery()">
+                                Ask Legal AI
+                                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                            </button>
+                        </div>
+
+                        <!-- Quick Scenario Prompts -->
+                        <div class="hero-prompts-row">
+                            <span class="hero-prompts-label">Popular Citizen Inquiries:</span>
+                            <span class="prompt-pill" onclick="quickAskLanding('Can the police legally refuse to register an FIR under Section 154 CrPC?')">📜 Police Refusal to File FIR</span>
+                            <span class="prompt-pill" onclick="quickAskLanding('What is the punishment for intentional murder under Pakistan Penal Code 302?')">⚖️ PPC 302 Murder</span>
+                            <span class="prompt-pill" onclick="quickAskLanding('Under what conditions can post-arrest bail be granted under Section 497 CrPC?')">🔓 Bail under CrPC 497</span>
+                            <span class="prompt-pill" onclick="quickAskLanding('What remedies exist for unauthorized photo distribution under PECA 2016?')">💻 FIA Cyber Harassment</span>
+                            <span class="prompt-pill" onclick="quickAskLanding('Can a consumer claim refund for defective goods in Consumer Court?')">🛒 Consumer Court Rights</span>
+                        </div>
+                    </div>
+
+                    <!-- Trust Stats Bar -->
+                    <div class="landing-trust-bar">
+                        <div class="trust-stat-item">
+                            <strong class="trust-stat-num">1,420+</strong>
+                            <span class="trust-stat-label">Statutory Sections Indexed</span>
+                        </div>
+                        <div class="trust-stat-divider"></div>
+                        <div class="trust-stat-item">
+                            <strong class="trust-stat-num">6 Codes</strong>
+                            <span class="trust-stat-label">Federal & Provincial Acts</span>
+                        </div>
+                        <div class="trust-stat-divider"></div>
+                        <div class="trust-stat-item">
+                            <strong class="trust-stat-num" style="color:var(--color-success);">100% Free</strong>
+                            <span class="trust-stat-label">Public Citizen Guidance</span>
+                        </div>
+                        <div class="trust-stat-divider"></div>
+                        <div class="trust-stat-item">
+                            <strong class="trust-stat-num" style="color:var(--gold-bright);">Zero</strong>
+                            <span class="trust-stat-label">Hallucinations • Gazette Grounded</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Artwork: Luxury State Judicial Medallion -->
+                <div class="landing-hero-art-pane">
+                    <div class="landing-medallion-aura"></div>
+                    <div class="hero-medallion-frame" style="width:230px; height:230px;">
+                        <img src="images/hero_ai_scales.png" alt="AI Legal Scales of Justice" title="Official Pakistani Legal Intelligence">
+                    </div>
+                    <div class="landing-art-caption">
+                        <span class="live-radar-dot"></span> State Judicial Neural Intelligence
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: THE 6 STATUTORY PILLARS OF PAKISTANI LAW -->
+            <div class="landing-section-block">
+                <div class="section-title-center">
+                    <span class="badge-tag badge-gold">Legislative Corpus</span>
+                    <h2 class="section-main-heading">Grounding Across Pakistan's Primary Legal Codes</h2>
+                    <p class="section-sub-heading">Every answer is linked directly to official gazette texts and Supreme Court precedents.</p>
+                </div>
+
+                <div class="statutes-pillar-grid">
+                    <!-- Pillar 1 -->
+                    <div class="pillar-card" onclick="openStatuteExplorer('PPC')">
+                        <div class="pillar-header">
+                            <div class="pillar-icon-badge">⚖️</div>
+                            <span class="pillar-code-token">PPC 1860</span>
+                        </div>
+                        <h3 class="pillar-title">Pakistan Penal Code</h3>
+                        <p class="pillar-desc">The substantive criminal code governing offences against the human body, property, and public order.</p>
+                        <div class="pillar-meta-row">
+                            <span>511 Sections</span>
+                            <span class="pillar-link">Explore Sections ➔</span>
+                        </div>
+                    </div>
+
+                    <!-- Pillar 2 -->
+                    <div class="pillar-card" onclick="openStatuteExplorer('CrPC')">
+                        <div class="pillar-header">
+                            <div class="pillar-icon-badge">📜</div>
+                            <span class="pillar-code-token">Cr.P.C 1898</span>
+                        </div>
+                        <h3 class="pillar-title">Code of Criminal Procedure</h3>
+                        <p class="pillar-desc">Procedural rules governing arrest, investigation, police duties, FIRs, and bail admissibility.</p>
+                        <div class="pillar-meta-row">
+                            <span>565 Sections</span>
+                            <span class="pillar-link">Explore Sections ➔</span>
+                        </div>
+                    </div>
+
+                    <!-- Pillar 3 -->
+                    <div class="pillar-card" onclick="openStatuteExplorer('Constitution')">
+                        <div class="pillar-header">
+                            <div class="pillar-icon-badge">🇵🇰</div>
+                            <span class="pillar-code-token">Constitution 1973</span>
+                        </div>
+                        <h3 class="pillar-title">Constitution of Pakistan</h3>
+                        <p class="pillar-desc">Supreme law safeguarding Fundamental Rights: fair trial, liberty, equality, and dignity of man.</p>
+                        <div class="pillar-meta-row">
+                            <span>280 Articles</span>
+                            <span class="pillar-link">Explore Rights ➔</span>
+                        </div>
+                    </div>
+
+                    <!-- Pillar 4 -->
+                    <div class="pillar-card" onclick="openStatuteExplorer('PECA')">
+                        <div class="pillar-header">
+                            <div class="pillar-icon-badge">💻</div>
+                            <span class="pillar-code-token">PECA 2016</span>
+                        </div>
+                        <h3 class="pillar-title">Prevention of Electronic Crimes</h3>
+                        <p class="pillar-desc">Special law on cyber harassment, unauthorized photo sharing, online blackmail, and FIA reporting.</p>
+                        <div class="pillar-meta-row">
+                            <span>53 Sections</span>
+                            <span class="pillar-link">Explore Cyber Law ➔</span>
+                        </div>
+                    </div>
+
+                    <!-- Pillar 5 -->
+                    <div class="pillar-card" onclick="openStatuteExplorer('Consumer')">
+                        <div class="pillar-header">
+                            <div class="pillar-icon-badge">🛡️</div>
+                            <span class="pillar-code-token">Consumer Act 2005</span>
+                        </div>
+                        <h3 class="pillar-title">Punjab Consumer Protection</h3>
+                        <p class="pillar-desc">Statutory rights against defective products, false warranties, and 15-day legal notice mandates.</p>
+                        <div class="pillar-meta-row">
+                            <span>36 Sections</span>
+                            <span class="pillar-link">Explore Remedies ➔</span>
+                        </div>
+                    </div>
+
+                    <!-- Pillar 6 -->
+                    <div class="pillar-card" onclick="openStatuteExplorer('Family')">
+                        <div class="pillar-header">
+                            <div class="pillar-icon-badge">👨‍👩‍👧</div>
+                            <span class="pillar-code-token">MFLO 1961</span>
+                        </div>
+                        <h3 class="pillar-title">Muslim Family Laws</h3>
+                        <p class="pillar-desc">Procedural guidelines for marriage registration, Union Council reconciliation, and maintenance.</p>
+                        <div class="pillar-meta-row">
+                            <span>13 Sections</span>
+                            <span class="pillar-link">Explore Family Rights ➔</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: COMMON CITIZEN SCENARIOS & SOLUTIONS -->
+            <div class="landing-section-block">
+                <div class="section-title-center">
+                    <span class="badge-tag badge-active">Citizen Legal Remedies</span>
+                    <h2 class="section-main-heading">Real Scenarios Pakistani Citizens Face Daily</h2>
+                    <p class="section-sub-heading">Practical statutory roadmaps for when your legal rights are challenged.</p>
+                </div>
+
+                <div class="scenarios-grid">
+                    <div class="scenario-card">
+                        <div class="scenario-badge">Police Station Challenge</div>
+                        <h3 class="scenario-title">Police Refusal to Register an FIR</h3>
+                        <p class="scenario-problem">The local police station officer refuses to register your robbery or theft report.</p>
+                        <div class="scenario-solution">
+                            <strong>Statutory Remedy:</strong> Under Section 154 Cr.P.C., the police are legally bound to register cognizable complaints. If refused, file a Section 22-A/22-B application before the Ex-Officio Justice of Peace (Sessions Court) or lodge a direct private complaint under Section 200 Cr.P.C.
+                        </div>
+                        <div class="scenario-action-row">
+                            <span class="statute-token">Cr.P.C § 154</span>
+                            <span class="statute-token">Cr.P.C § 22-A</span>
+                            <button class="btn-outline-gold btn-sm" onclick="quickAskLanding('What to do if police refuse FIR under CrPC 154?')">Consult AI ➔</button>
+                        </div>
+                    </div>
+
+                    <div class="scenario-card">
+                        <div class="scenario-badge">Digital Safety</div>
+                        <h3 class="scenario-title">Online Blackmail & Private Photo Leaks</h3>
+                        <p class="scenario-problem">Someone is threatening to share private photographs or blackmailing you on WhatsApp.</p>
+                        <div class="scenario-solution">
+                            <strong>Statutory Remedy:</strong> Under Section 21 of PECA 2016, transmitting explicit material without consent carries up to 5 years imprisonment and 5 million PKR fine. Immediate complaint must be submitted to the FIA Cyber Crime Wing (NR3C) for forensic evidence preservation under Section 31.
+                        </div>
+                        <div class="scenario-action-row">
+                            <span class="statute-token">PECA § 21</span>
+                            <span class="statute-token">PECA § 24</span>
+                            <button class="btn-outline-gold btn-sm" onclick="quickAskLanding('How to report cyber blackmail under PECA 2016?')">Consult AI ➔</button>
+                        </div>
+                    </div>
+
+                    <div class="scenario-card">
+                        <div class="scenario-badge">Consumer Rights</div>
+                        <h3 class="scenario-title">Shopkeeper Refuses to Return Defective Appliance</h3>
+                        <p class="scenario-problem">You bought an electronic appliance that stopped working within warranty, but the seller refuses replacement.</p>
+                        <div class="scenario-solution">
+                            <strong>Statutory Remedy:</strong> Serve a mandatory 15-day written legal notice under Section 13 of the Punjab Consumer Protection Act 2005. If unresolved, lodge a claim in the District Consumer Court for full refund plus damages. No court fee is required.
+                        </div>
+                        <div class="scenario-action-row">
+                            <span class="statute-token">Consumer Act § 13</span>
+                            <span class="statute-token">Consumer Act § 3</span>
+                            <button class="btn-outline-gold btn-sm" onclick="quickAskLanding('How to file consumer court case for defective goods?')">Consult AI ➔</button>
+                        </div>
+                    </div>
+
+                    <div class="scenario-card">
+                        <div class="scenario-badge">Constitutional Safeguard</div>
+                        <h3 class="scenario-title">Arbitrary Police Detention & Bail Rights</h3>
+                        <p class="scenario-problem">A family member has been detained by police for over 24 hours without being presented before a Magistrate.</p>
+                        <div class="scenario-solution">
+                            <strong>Statutory Remedy:</strong> Article 10 of the Constitution mandates that no citizen shall be detained beyond 24 hours without the authority of a Magistrate. For bail in non-bailable offences, apply under Section 497 Cr.P.C. Statutory delay of 1 year warrants automatic bail.
+                        </div>
+                        <div class="scenario-action-row">
+                            <span class="statute-token">Constitution Art 10</span>
+                            <span class="statute-token">Cr.P.C § 497</span>
+                            <button class="btn-outline-gold btn-sm" onclick="quickAskLanding('What are bail rules in non bailable offence under CrPC 497?')">Consult AI ➔</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: HOW IT WORKS STEP-BY-STEP -->
+            <div class="landing-section-block">
+                <div class="section-title-center">
+                    <span class="badge-tag badge-gold">Transparent Architecture</span>
+                    <h2 class="section-main-heading">How AI Smart Legal Assistant Works</h2>
+                    <p class="section-sub-heading">From your everyday words to verified statutory court sections.</p>
+                </div>
+
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-num">01</div>
+                        <h3 class="step-title">Describe Your Situation</h3>
+                        <p class="step-desc">Type your scenario in plain English or Urdu. No formal legal training or complicated terminology needed.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-num">02</div>
+                        <h3 class="step-title">Gazette Semantic Matching</h3>
+                        <p class="step-desc">The AI scans 1,420+ official sections from Pakistan Penal Code, Cr.P.C., and PECA, correlating Constitutional rights.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-num">03</div>
+                        <h3 class="step-title">Verified Procedural Guidance</h3>
+                        <p class="step-desc">Receive clear, actionable steps, court jurisdictions, and exact statutory citations you can copy and verify.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: FREQUENTLY ASKED QUESTIONS (ACCORDION) -->
+            <div class="landing-section-block">
+                <div class="section-title-center">
+                    <span class="badge-tag badge-active">Help & Awareness</span>
+                    <h2 class="section-main-heading">Frequently Asked Questions</h2>
+                    <p class="section-sub-heading">Everything you need to know about civic legal intelligence in Pakistan.</p>
+                </div>
+
+                <div class="faq-container">
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <span>Is this guidance legally valid in a Pakistani court?</span>
+                            <span class="faq-chevron">▾</span>
+                        </div>
+                        <div class="faq-answer">
+                            The AI Smart Legal Assistant provides statutory guidance and citations mapped directly to official Federal and Provincial acts published in the Gazette of Pakistan. While it provides accurate legal awareness and procedural directions, it does not replace formal representation by an advocate licensed by the High Court or Bar Council.
+                        </div>
+                    </div>
+
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <span>Can I ask questions in Roman Urdu or plain Urdu?</span>
+                            <span class="faq-chevron">▾</span>
+                        </div>
+                        <div class="faq-answer">
+                            Yes. The assistant is trained to recognize queries phrased in plain English, Roman Urdu (e.g. "police ne FIR darj krne se inkar kr diya"), and Urdu script. It will translate your everyday situation into precise Pakistani statutes.
+                        </div>
+                    </div>
+
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <span>Does this service cost anything for Pakistani citizens?</span>
+                            <span class="faq-chevron">▾</span>
+                        </div>
+                        <div class="faq-answer">
+                            No. The AI Smart Legal Assistant is completely free of charge for public legal literacy, constitutional rights awareness, and citizen empowerment across Pakistan.
+                        </div>
+                    </div>
+
+                    <div class="faq-item" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <span>How is my personal consultation history kept private?</span>
+                            <span class="faq-chevron">▾</span>
+                        </div>
+                        <div class="faq-answer">
+                            Your sessions are encrypted and stored under your private user profile. No other user or third party has access to your consultation history.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTTOM CTA BANNER -->
+            <div class="landing-cta-banner">
+                <div class="cta-banner-content">
+                    <span class="badge-tag badge-gold">Start Now</span>
+                    <h2 style="font-size:1.8rem; font-weight:800; color:var(--text-white); margin-top:0.4rem;">Empower Yourself with Pakistani Law Today</h2>
+                    <p style="color:var(--text-muted); font-size:0.92rem; max-width:550px; margin:0.6rem auto 1.4rem auto;">
+                        Instant, free statutory guidance is just one query away. Try the interactive legal consultation workspace now.
+                    </p>
+                    <div style="display:flex; justify-content:center; gap:1rem;">
+                        <button class="btn-gold" style="padding:0.75rem 1.6rem; font-size:0.95rem;" onclick="showScreen('chat')">
+                            Open Legal Chatbot ➔
+                        </button>
+                        <button class="btn-outline-gold" style="padding:0.75rem 1.6rem; font-size:0.95rem;" onclick="showScreen('sources')">
+                            Explore All Statutes
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <footer class="landing-footer">
+                <div class="footer-row">
+                    <div>
+                        <div class="brand-title" style="font-size:1.1rem;">AI Smart Legal Assistant</div>
+                        <div class="brand-sub">COMSATS University Islamabad, Vehari Campus • Department of Computer Science</div>
+                    </div>
+                    <div style="display:flex; gap:1.5rem; font-size:0.84rem;">
+                        <a href="javascript:void(0)" onclick="showScreen('dashboard')" style="color:var(--text-muted); text-decoration:none;">Dashboard</a>
+                        <a href="javascript:void(0)" onclick="showScreen('chat')" style="color:var(--text-muted); text-decoration:none;">Legal Chatbot</a>
+                        <a href="javascript:void(0)" onclick="showScreen('sources')" style="color:var(--text-muted); text-decoration:none;">Statutory Corpus</a>
+                        <a href="javascript:void(0)" onclick="showAuthView('login')" style="color:var(--gold-bright); text-decoration:none; font-weight:600;">Sign In</a>
+                    </div>
+                </div>
+                <div class="footer-legal-copy">
+                    © 2026 AI Smart Legal Assistant. Grounded in official Pakistani legislation (PPC 1860, Cr.P.C 1898, Constitution 1973, PECA 2016, Consumer Act 2005, MFLO 1961). Informational civic guidance only; not formal advocate representation.
+                </div>
+            </footer>
+
+        </section>
+
+
+                <section id="screen-dashboard" class="screen-view">
                     
                     <!-- Quick Statutory Domain Chips -->
                     <div class="legal-domain-chips">

@@ -737,8 +737,8 @@ function revokeAllSessions() {
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize Theme (Defaults to Luxury Executive Ivory)
     initTheme();
-    // Show Dashboard by default
-    showScreen('dashboard');
+    // Show World-Class Civic Legal Landing Portal by default
+    showScreen('landing');
 });
 
 // —— RBAC / Role Switching (User Portal vs Administrator Panel) ———————————————
@@ -1375,4 +1375,73 @@ function initScrollObserver() {
         el.classList.add('reveal-on-scroll');
         observer.observe(el);
     });
+}
+
+
+// ── Civic Landing Page & Modal Control ───────────────────────────────────────
+function openAuthModal(view = 'login') {
+    const authWrapper = document.getElementById('auth-wrapper');
+    if (authWrapper) {
+        authWrapper.style.display = 'flex';
+        showAuthView(view);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function closeAuthModal() {
+    const authWrapper = document.getElementById('auth-wrapper');
+    if (authWrapper) {
+        authWrapper.style.display = 'none';
+    }
+}
+
+function executeLandingHeroQuery() {
+    const heroInput = document.getElementById('landing-hero-query');
+    if (!heroInput) return;
+    const query = heroInput.value.trim();
+    if (!query) {
+        showToast('Please enter a legal query or scenario to analyze.', 'warning');
+        return;
+    }
+    quickAskLanding(query);
+}
+
+function quickAskLanding(query) {
+    if (!query) return;
+    showScreen('chat');
+    const input = document.getElementById('chat-user-input');
+    if (input) {
+        input.value = query;
+        // Trigger automated legal query processing
+        sendLegalQuery();
+    }
+}
+
+function openStatuteExplorer(statuteCode) {
+    showScreen('sources');
+    const filterInput = document.getElementById('source-search-input');
+    if (filterInput && statuteCode) {
+        filterInput.value = statuteCode;
+        if (typeof filterSourceCards === 'function') {
+            filterSourceCards();
+        }
+    }
+    showToast(`Exploring statutory corpus for ${statuteCode}`, 'info');
+}
+
+function toggleFaq(card) {
+    if (!card) return;
+    const answer = card.querySelector('.faq-card-answer');
+    const icon = card.querySelector('.faq-card-icon svg');
+    if (!answer) return;
+    const isOpen = card.classList.contains('active') || answer.style.display === 'block';
+    if (isOpen) {
+        card.classList.remove('active');
+        answer.style.display = 'none';
+        if (icon) icon.style.transform = 'rotate(0deg)';
+    } else {
+        card.classList.add('active');
+        answer.style.display = 'block';
+        if (icon) icon.style.transform = 'rotate(180deg)';
+    }
 }
