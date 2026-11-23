@@ -1,4 +1,24 @@
 
+// ── Public Legal Portal Access (Guest Citizen Mode) ────────────────────────
+function bypassToCitizenPortal() {
+    STATE.user.name = 'Muhammad Aqib (Guest Citizen)';
+    STATE.user.email = 'citizen@pakistan.gov.pk';
+    
+    const authWrapper = document.getElementById('auth-wrapper');
+    const userShell = document.getElementById('user-portal-shell');
+    const displayName = document.getElementById('user-display-name');
+    const welcomeText = document.getElementById('dash-welcome-text');
+
+    if (authWrapper) authWrapper.style.display = 'none';
+    if (userShell) userShell.style.display = 'block';
+    if (displayName) displayName.textContent = 'Muhammad Aqib';
+    if (welcomeText) welcomeText.textContent = 'Welcome to Pakistan Legal Intelligence';
+
+    showScreen('dashboard');
+    showToast('Welcome to the Public Legal Intelligence Knowledge Base', 'info');
+}
+
+
 // ── Theme Switcher System (Executive Luxury Ivory vs Midnight Obsidian) ─────
 function initTheme() {
     const saved = localStorage.getItem('app-theme') || 'light';
@@ -210,7 +230,7 @@ function renderDashboard() {
                     <span style="font-size:1.15rem; color:var(--gold-bright);">📄</span>
                     <div>
                         <div style="font-size:0.88rem; font-weight:600; color:var(--text-white);">${c.title}</div>
-                        <div style="font-size:0.75rem; color:var(--text-muted);">${c.topic} â€¢ ${c.date}</div>
+                        <div style="font-size:0.75rem; color:var(--text-muted);">${c.topic} • ${c.date}</div>
                     </div>
                 </div>
                 <span style="color:var(--gold-bright); font-size:0.9rem;">➔</span>
@@ -745,14 +765,14 @@ function switchRole(role) {
         if (btnAdmin) btnAdmin.classList.remove('active');
         if (menuUser) menuUser.style.display = 'flex';
         if (menuAdmin) menuAdmin.style.display = 'none';
-        if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus â€¢ User Portal';
+        if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus • User Portal';
         showScreen('dashboard');
     } else {
         if (btnAdmin) btnAdmin.classList.add('active');
         if (btnUser) btnUser.classList.remove('active');
         if (menuAdmin) menuAdmin.style.display = 'flex';
         if (menuUser) menuUser.style.display = 'none';
-        if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus â€¢ Administrator Panel';
+        if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus • Administrator Panel';
         showScreen('audit');
     }
 }
@@ -900,7 +920,7 @@ function activateAdminPanel() {
 
     if (menuUser) menuUser.style.display = 'none';
     if (menuAdmin) menuAdmin.style.display = 'flex';
-    if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus â€¢ Administrator Panel (Secure Session)';
+    if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus • Administrator Panel (Secure Session)';
     if (adminBanner) adminBanner.style.display = 'flex';
 
     showScreen('audit');
@@ -916,7 +936,7 @@ function lockAdminSession() {
 
     if (menuAdmin) menuAdmin.style.display = 'none';
     if (menuUser) menuUser.style.display = 'flex';
-    if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus â€¢ User Portal';
+    if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus • User Portal';
     if (adminBanner) adminBanner.style.display = 'none';
 
     STATE.auditLogs.unshift({
@@ -951,7 +971,7 @@ function showAuthView(viewName) {
             if (registerView) registerView.style.display = 'none';
 
             if (heroImg) {
-                heroImg.src = 'images/hero_login_skyline.png';
+                heroImg.src = 'images/hero_login_skyline_trans.png';
                 heroImg.alt = 'Pakistan Legal Intelligence';
             }
             if (heroBadge) {

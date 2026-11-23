@@ -32,7 +32,7 @@
                 
                 <!-- Left Hero Brand Pane (Authentic Mockup Visuals) -->
                 <div class="auth-hero-pane" id="auth-hero-pane">
-                    <img src="images/hero_login_skyline.png" alt="Pakistan Legal Intelligence" class="auth-hero-emblem float-artwork" id="auth-hero-img">
+                    <img src="images/hero_login_skyline_trans.png" alt="Pakistan Legal Intelligence" class="auth-hero-emblem float-artwork" id="auth-hero-img">
                     <div style="display:inline-flex; align-items:center; gap:0.4rem; background:rgba(229,169,60,0.12); border:1px solid var(--border-gold); padding:0.25rem 0.75rem; border-radius:9999px; font-size:0.75rem; color:var(--gold-bright); font-weight:600; margin-bottom:0.75rem;" id="auth-hero-badge">
                         <span class="live-radar-dot"></span> Official Statutory Intelligence
                     </div>
@@ -86,9 +86,14 @@
                             </button>
                         </form>
 
-                        <div style="text-align:center; margin-top:1.6rem; font-size:0.84rem; color:var(--text-muted);">
+                        <div style="text-align:center; margin-top:1.4rem; font-size:0.84rem; color:var(--text-muted);">
                             Don't have an account? 
                             <a href="javascript:void(0)" onclick="showAuthView('register')" style="color:var(--gold-bright); font-weight:600; text-decoration:none;">Create Account</a>
+                        </div>
+                        <div style="text-align:center; margin-top:0.85rem; padding-top:0.85rem; border-top:1px solid var(--border);">
+                            <a href="javascript:void(0)" onclick="bypassToCitizenPortal()" style="color:var(--emerald-primary); font-size:0.82rem; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:0.35rem;">
+                                <span>🏛️</span> Explore Public Legal Knowledge Base ➔
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -303,7 +308,7 @@
                                     </div>
 
                                     <!-- Quick Ask Dock -->
-                                    <div style="display:flex; gap:0.6rem; margin-top:1.2rem; background:var(--bg-surface-elevated); padding:0.4rem; border-radius:var(--radius-pill); border:1px solid var(--border);">
+                                    <div class="quick-ask-dock">
                                         <input type="text" id="dash-quick-query" placeholder="Ask any question (e.g. bail in non-bailable offence, FIR refusal, PPC 302)..." style="flex:1; background:transparent; border:none; padding:0.4rem 1rem; color:white; font-size:0.88rem; outline:none;" onkeydown="if(event.key==='Enter') quickAsk(this.value)">
                                         <button class="btn-gold" style="padding:0.5rem 1.2rem; font-size:0.84rem;" onclick="quickAsk(document.getElementById('dash-quick-query').value)">
                                             Ask Legal AI
@@ -312,10 +317,11 @@
                                     </div>
                                 </div>
 
-                                <!-- Right Visual Artwork Pane (Mockup AI Scales Emblem) -->
+                                <!-- Right Visual Artwork Pane (Luxury Judicial Medallion) -->
                                 <div class="bento-hero-artwork-pane">
-                                    <div class="hero-glow-backdrop"></div>
-                                    <img src="images/hero_ai_scales.png" alt="AI Legal Neural Scales" class="bento-hero-floating-img" title="Pakistan Statutory Intelligence Engine">
+                                    <div class="hero-medallion-frame">
+                                        <img src="images/hero_ai_scales.png" alt="AI Legal Neural Scales" title="Pakistan Statutory Intelligence Engine">
+                                    </div>
                                 </div>
                             </div>
 
