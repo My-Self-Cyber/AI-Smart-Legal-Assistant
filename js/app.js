@@ -1,3 +1,52 @@
+
+// ── Theme Switcher System (Executive Luxury Ivory vs Midnight Obsidian) ─────
+function initTheme() {
+    const saved = localStorage.getItem('app-theme') || 'light';
+    setTheme(saved);
+}
+
+function setTheme(theme) {
+    if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('app-theme', 'dark');
+        updateThemeUI('dark');
+    } else {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('app-theme', 'light');
+        updateThemeUI('light');
+    }
+}
+
+function toggleTheme() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+        setTheme('light');
+        showToast('Switched to Executive Ivory theme', 'info');
+    } else {
+        setTheme('dark');
+        showToast('Switched to Midnight Obsidian theme', 'info');
+    }
+}
+
+function updateThemeUI(theme) {
+    const sunIcon = document.getElementById('theme-icon-sun');
+    const moonIcon = document.getElementById('theme-icon-moon');
+    const toggleText = document.getElementById('theme-toggle-text');
+    const authText = document.getElementById('auth-theme-text');
+
+    if (theme === 'dark') {
+        if (sunIcon) sunIcon.style.display = 'none';
+        if (moonIcon) moonIcon.style.display = 'inline-block';
+        if (toggleText) toggleText.textContent = 'Midnight';
+        if (authText) authText.textContent = 'Theme: Midnight';
+    } else {
+        if (sunIcon) sunIcon.style.display = 'inline-block';
+        if (moonIcon) moonIcon.style.display = 'none';
+        if (toggleText) toggleText.textContent = 'Executive';
+        if (authText) authText.textContent = 'Theme: Executive';
+    }
+}
+
 /**
  * AI Smart Legal Assistant â€” Official Core Application Logic
  * Module 1: User Management & Authentication
@@ -666,7 +715,9 @@ function revokeAllSessions() {
 
 // —— App Init —————————————————————————————————————————————————————————————————
 document.addEventListener('DOMContentLoaded', () => {
-    // Show Dashboard by default (Image 3)
+    // Initialize Theme (Defaults to Luxury Executive Ivory)
+    initTheme();
+    // Show Dashboard by default
     showScreen('dashboard');
 });
 

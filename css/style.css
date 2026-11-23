@@ -1,55 +1,66 @@
 /* ==========================================================================
-   AI Smart Legal Assistant — State-of-the-Art Humanized LegalTech UI
-   Crafted in the style of Linear, Raycast, Harvey AI, and Modern SaaS
-   Integrated with JetBrains Mono, Bento Grids, Command Palette (⌘K) & SVGs
+   AI Smart Legal Assistant — World-Class Humanized LegalTech Design System
+   "Quiet Luxury" Executive Ivory, Deep Emerald & Champagne Gold Aesthetic
+   Inspired by Harvey AI, Robin AI, Linear, Apple and Stripe
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 :root {
-    /* Atmospheric Base Canvas (Obsidian & Deep Indigo) */
-    --bg-main: #060913;
-    --bg-surface: #0A0F1D;
-    --bg-surface-elevated: #0F172C;
-    --bg-surface-card: rgba(11, 17, 34, 0.75);
-    --bg-input: #070B16;
-    --bg-input-focus: #0A1020;
+    /* ── BASE CANVAS: Luxury Executive Ivory, Alabaster & Linen ── */
+    --bg-main: #F7F8FA;
+    --bg-surface: #FFFFFF;
+    --bg-surface-elevated: #F0F3F7;
+    --bg-surface-card: rgba(255, 255, 255, 0.94);
+    --bg-surface-frosted: rgba(255, 255, 255, 0.82);
+    --bg-input: #FFFFFF;
+    --bg-input-focus: #FDFEFE;
+    --bg-header: rgba(255, 255, 255, 0.88);
+    --bg-sidebar: #FFFFFF;
     
-    /* Modern Translucent 1px Precision Borders */
-    --border: rgba(255, 255, 255, 0.08);
-    --border-subtle: rgba(255, 255, 255, 0.04);
-    --border-hover: rgba(255, 255, 255, 0.16);
-    --border-gold: rgba(229, 169, 60, 0.3);
-    --border-gold-bright: rgba(245, 190, 88, 0.6);
+    /* ── FINE 1px PRECISION BORDERS ── */
+    --border: rgba(15, 23, 42, 0.08);
+    --border-subtle: rgba(15, 23, 42, 0.04);
+    --border-hover: rgba(184, 134, 11, 0.35);
+    --border-gold: rgba(184, 134, 11, 0.28);
+    --border-gold-bright: rgba(184, 134, 11, 0.6);
     
-    /* Premium Legal Gold & Champagne Palette */
-    --gold-primary: #E5A93C;
-    --gold-bright: #F5BE58;
-    --gold-dim: #99732B;
-    --gold-gradient: linear-gradient(135deg, #FAD678 0%, #E5A93C 50%, #B88022 100%);
-    --gold-gradient-hover: linear-gradient(135deg, #FFE89C 0%, #F5BE58 50%, #C98D28 100%);
-    --gold-glow: 0 0 25px rgba(229, 169, 60, 0.35);
+    /* ── HIGH-TRUST LEGAL PALETTE: British/Pakistani Emerald & Legal Gold ── */
+    --emerald-primary: #0A4D3C;
+    --emerald-deep: #06372B;
+    --emerald-light: #E8F5F1;
+    --gold-primary: #B8860B;
+    --gold-bright: #996515;
+    --gold-dim: #7A5210;
+    --gold-gradient: linear-gradient(135deg, #C59B3F 0%, #A67C1E 100%);
+    --gold-gradient-hover: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
+    --gold-glow: 0 0 25px rgba(184, 134, 11, 0.18);
     
-    /* High-Craft Typography Hierarchy */
-    --text-white: #FFFFFF;
-    --text-light: #F1F5F9;
-    --text-gray: #94A3B8;
+    /* ── TYPOGRAPHY: Sharp Charcoal, Deep Slate & High Contrast ── */
+    --text-white: #0F172A; /* In light mode, primary prominent text is deep slate-black */
+    --text-light: #1E293B;
+    --text-gray: #334155;
     --text-muted: #64748B;
-    --text-dim: #475569;
+    --text-dim: #94A3B8;
     
-    /* Status Accents */
-    --color-success: #10B981;
-    --color-success-bg: rgba(16, 185, 129, 0.12);
-    --color-warning: #F59E0B;
-    --color-warning-bg: rgba(245, 158, 11, 0.12);
-    --color-danger: #EF4444;
-    --color-danger-bg: rgba(239, 68, 68, 0.12);
+    /* ── STATUS ACCENTS ── */
+    --color-success: #059669;
+    --color-success-bg: rgba(5, 150, 105, 0.1);
+    --color-warning: #D97706;
+    --color-warning-bg: rgba(217, 119, 6, 0.1);
+    --color-danger: #DC2626;
+    --color-danger-bg: rgba(220, 38, 38, 0.1);
+
+    /* ── SHADOWS ── */
+    --shadow-subtle: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 14px rgba(15, 23, 42, 0.02);
+    --shadow-card: 0 10px 30px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.02);
+    --shadow-hover: 0 18px 45px rgba(15, 23, 42, 0.09), 0 0 22px rgba(184, 134, 11, 0.12);
     
-    /* Typography Stacks */
+    /* ── TYPOGRAPHY STACKS ── */
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
     
-    /* Radii & Physics */
+    /* ── RADII & PHYSICS ── */
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 18px;
@@ -58,6 +69,52 @@
     
     --transition-fast: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
     --transition-smooth: 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── DARK THEME (MIDNIGHT OBSIDIAN OVERRIDE) ── */
+[data-theme="dark"] {
+    --bg-main: #060913;
+    --bg-surface: #0A0F1D;
+    --bg-surface-elevated: #0F172C;
+    --bg-surface-card: rgba(11, 17, 34, 0.85);
+    --bg-surface-frosted: rgba(11, 17, 34, 0.75);
+    --bg-input: #070B16;
+    --bg-input-focus: #0A1020;
+    --bg-header: rgba(10, 15, 29, 0.85);
+    --bg-sidebar: #0A0F1D;
+    
+    --border: rgba(255, 255, 255, 0.08);
+    --border-subtle: rgba(255, 255, 255, 0.04);
+    --border-hover: rgba(255, 255, 255, 0.16);
+    --border-gold: rgba(229, 169, 60, 0.3);
+    --border-gold-bright: rgba(245, 190, 88, 0.6);
+    
+    --emerald-primary: #10B981;
+    --emerald-deep: #064E3B;
+    --emerald-light: rgba(16, 185, 129, 0.12);
+    --gold-primary: #E5A93C;
+    --gold-bright: #F5BE58;
+    --gold-dim: #99732B;
+    --gold-gradient: linear-gradient(135deg, #FAD678 0%, #E5A93C 50%, #B88022 100%);
+    --gold-gradient-hover: linear-gradient(135deg, #FFE89C 0%, #F5BE58 50%, #C98D28 100%);
+    --gold-glow: 0 0 25px rgba(229, 169, 60, 0.35);
+    
+    --text-white: #FFFFFF;
+    --text-light: #F1F5F9;
+    --text-gray: #94A3B8;
+    --text-muted: #64748B;
+    --text-dim: #475569;
+    
+    --color-success: #10B981;
+    --color-success-bg: rgba(16, 185, 129, 0.12);
+    --color-warning: #F59E0B;
+    --color-warning-bg: rgba(245, 158, 11, 0.12);
+    --color-danger: #EF4444;
+    --color-danger-bg: rgba(239, 68, 68, 0.12);
+
+    --shadow-subtle: 0 4px 14px rgba(0, 0, 0, 0.3);
+    --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.45);
+    --shadow-hover: 0 18px 45px rgba(0, 0, 0, 0.6), 0 0 25px rgba(229, 169, 60, 0.2);
 }
 
 /* ── Reset & Global Typography ────────────────────────────────────────────── */
@@ -1708,4 +1765,312 @@ body {
     filter: drop-shadow(0 0 20px rgba(229, 169, 60, 0.35));
     animation: floatBob 5s ease-in-out infinite;
     flex-shrink: 0;
+}
+
+
+/* ── Theme Switcher Button ────────────────────────────────────────────────── */
+.theme-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    padding: 0.38rem 0.8rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-gray);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.theme-toggle-btn:hover {
+    border-color: var(--border-gold);
+    color: var(--gold-bright);
+    background: var(--bg-surface);
+    transform: translateY(-1px);
+}
+
+/* ── Top Header Adaptations ───────────────────────────────────────────────── */
+.top-header {
+    height: 64px;
+    background: var(--bg-header);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-subtle);
+    transition: background 0.35s ease, border-color 0.35s ease;
+}
+
+.brand-logo-badge {
+    width: 38px;
+    height: 38px;
+    background: var(--emerald-light);
+    border: 1px solid var(--border-gold);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--emerald-primary);
+    box-shadow: 0 0 15px rgba(10, 77, 60, 0.12);
+}
+
+[data-theme="dark"] .brand-logo-badge {
+    color: var(--gold-bright);
+    background: rgba(229, 169, 60, 0.1);
+}
+
+.header-search-input {
+    width: 100%;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    padding: 0.52rem 3.5rem 0.52rem 2.4rem;
+    color: var(--text-white);
+    font-size: 0.85rem;
+    outline: none;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.header-center-search:hover .header-search-input {
+    border-color: var(--border-hover);
+    background: var(--bg-surface);
+}
+
+/* ── Sidebar Navigation Adaptations ───────────────────────────────────────── */
+.sidebar-nav {
+    width: 245px;
+    background: var(--bg-sidebar);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem 0;
+    flex-shrink: 0;
+    transition: background 0.35s ease, border-color 0.35s ease;
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0.95rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    color: var(--text-gray);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.sidebar-item:hover {
+    background: var(--bg-surface-elevated);
+    color: var(--text-white);
+}
+
+.sidebar-item.active {
+    background: var(--emerald-light);
+    color: var(--emerald-primary);
+    font-weight: 600;
+}
+
+[data-theme="dark"] .sidebar-item.active {
+    background: rgba(229, 169, 60, 0.12);
+    color: var(--gold-bright);
+}
+
+/* ── Bento Grid & Cards ───────────────────────────────────────────────────── */
+.bento-card, .panel-card, .legal-tip-card {
+    background: var(--bg-surface-card);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+}
+
+.bento-hero {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(246, 248, 252, 0.92) 100%);
+    border: 1px solid var(--border-gold);
+}
+
+[data-theme="dark"] .bento-hero {
+    background: linear-gradient(135deg, rgba(16, 26, 52, 0.85) 0%, rgba(10, 16, 32, 0.95) 100%);
+}
+
+.recent-chat-row {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.recent-chat-row:hover {
+    border-color: var(--border-gold);
+    transform: translateX(3px);
+    background: var(--bg-surface-elevated);
+}
+
+/* ── Chat Messages Hierarchy ──────────────────────────────────────────────── */
+.chat-bubble-user {
+    background: var(--emerald-deep);
+    color: #FFFFFF;
+    border-radius: var(--radius-lg) var(--radius-lg) 4px var(--radius-lg);
+    padding: 0.85rem 1.15rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    box-shadow: 0 4px 15px rgba(10, 77, 60, 0.2);
+}
+
+[data-theme="dark"] .chat-bubble-user {
+    background: linear-gradient(135deg, #1C2D54 0%, #152240 100%);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.chat-bubble-assistant {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) 4px;
+    padding: 1.1rem 1.3rem;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--text-light);
+    box-shadow: var(--shadow-subtle);
+}
+
+.chat-welcome-banner {
+    background: linear-gradient(135deg, #FFFFFF 0%, #F5F7FA 100%);
+    border: 1px solid var(--border-gold);
+    box-shadow: var(--shadow-card);
+}
+
+[data-theme="dark"] .chat-welcome-banner {
+    background: linear-gradient(135deg, rgba(16, 26, 52, 0.7) 0%, rgba(10, 16, 32, 0.8) 100%);
+}
+
+.chat-input-dock {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-subtle);
+}
+
+.chat-input-field {
+    color: var(--text-white);
+}
+
+/* ── Domain Filter Chips ──────────────────────────────────────────────────── */
+.domain-chip {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    padding: 0.45rem 0.9rem;
+    font-size: 0.8rem;
+    color: var(--text-gray);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    box-shadow: var(--shadow-subtle);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.domain-chip:hover {
+    border-color: var(--border-gold);
+    color: var(--text-white);
+}
+
+.domain-chip.active {
+    background: var(--emerald-light);
+    border-color: var(--emerald-primary);
+    color: var(--emerald-primary);
+    font-weight: 600;
+}
+
+[data-theme="dark"] .domain-chip.active {
+    background: rgba(229, 169, 60, 0.15);
+    border-color: var(--gold-bright);
+    color: var(--gold-bright);
+}
+
+/* ── Suggested Prompt Pills ───────────────────────────────────────────────── */
+.prompt-pill {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    padding: 0.35rem 0.8rem;
+    font-size: 0.76rem;
+    color: var(--text-gray);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    box-shadow: var(--shadow-subtle);
+}
+
+.prompt-pill:hover {
+    border-color: var(--border-gold);
+    color: var(--gold-bright);
+    background: var(--bg-surface-elevated);
+}
+
+/* ── Auth Screen Light Polish ─────────────────────────────────────────────── */
+.auth-clean-card {
+    background: var(--bg-surface-card);
+    border: 1px solid var(--border-gold);
+    box-shadow: var(--shadow-card);
+}
+
+.auth-hero-pane {
+    background: linear-gradient(135deg, #0A4332 0%, #06281E 100%);
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.auth-hero-pane * {
+    color: #FFFFFF !important;
+}
+
+.auth-hero-pane .live-radar-dot {
+    background: #10B981 !important;
+}
+
+.auth-card-pane {
+    background: var(--bg-surface);
+}
+
+/* ── Ambient Orbs in Light Mode ───────────────────────────────────────────── */
+.ambient-orb-gold {
+    background: radial-gradient(circle, rgba(184, 134, 11, 0.08) 0%, rgba(247, 248, 250, 0) 70%);
+}
+
+.ambient-orb-sapphire {
+    background: radial-gradient(circle, rgba(10, 77, 60, 0.07) 0%, rgba(247, 248, 250, 0) 70%);
+}
+
+.ambient-orb-emerald {
+    background: radial-gradient(circle, rgba(5, 150, 105, 0.05) 0%, rgba(247, 248, 250, 0) 70%);
+}
+
+[data-theme="dark"] .ambient-orb-gold {
+    background: radial-gradient(circle, rgba(229, 169, 60, 0.14) 0%, rgba(10, 15, 29, 0) 70%);
+}
+
+[data-theme="dark"] .ambient-orb-sapphire {
+    background: radial-gradient(circle, rgba(30, 80, 160, 0.16) 0%, rgba(6, 9, 19, 0) 70%);
+}
+
+[data-theme="dark"] .ambient-orb-emerald {
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, rgba(6, 9, 19, 0) 70%);
 }
