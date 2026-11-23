@@ -1,9 +1,8 @@
 /**
- * AI Smart Legal Assistant — Official Core Application Logic
- * Implements FYP SDD Modules:
+ * AI Smart Legal Assistant â€” Official Core Application Logic
  * Module 1: User Management & Authentication
- * Module 2: Legal Question Processing (Legal AI Pipeline & Citation Inspector)
- * Module 3: Document Management & Ingestion (document processing & 500-char Chunking)
+ * Module 2: Legal Question Processing (AI Legal Pipeline & Citation Inspector)
+ * Module 3: Document Management (Upload & Repository)
  * Module 4: History & User Feedback Rating Panel
  * Module 5: System Administration & Real-Time Audit Logs
  */
@@ -36,7 +35,7 @@ const STATE = {
             1. <strong>Statutory Warranty:</strong> Manufacturers and sellers are under legal obligation to supply products free from design, manufacturing, or warning defects.<br/>
             2. <strong>Redressal Forum:</strong> If a defect causes economic loss or hazard, the consumer may file a formal complaint before the dedicated <em>District Consumer Court</em>.<br/>
             3. <strong>Legal Relief:</strong> The Court is empowered to order replacement of defective goods, full refund of price, and substantial damages/costs under Section 31.<br/><br/>
-            <em>*Retrieved from Pakistan Statutory Repository with 0.89 Cosine Similarity threshold.</em>`,
+            <em>*Sourced from the Pakistan Legal Knowledge Base — high relevance match.</em>`,
             source: {
                 act: 'Punjab Consumer Protection Act, 2005',
                 section: 'Section 3: Rights of Consumers & Remedies',
@@ -58,23 +57,23 @@ const STATE = {
         { id: 8, title: 'Draft Commercial Arbitration Bill', version: '1', category: 'Civil Law', jurisdiction: 'Federal', date: '08/09/2026', status: 'Pending Review' }
     ],
     auditLogs: [
-        { time: '21-03-2026 13:50', user: 'Muhammad Aqib', action: 'Legal Question Legal AI Query: PPC 302', entity: 'Statutory Knowledge Base', ip: '192.168.10.45', status: 'Success' },
-        { time: '21-03-2026 13:48', user: 'Muhammad Aqib', action: 'Extracted Passage Inspection: Sec 154 CrPC', entity: 'Document Repository', ip: '192.168.10.45', status: 'Success' },
+        { time: '21-03-2026 13:50', user: 'Muhammad Aqib', action: 'Legal Question Submitted: PPC Section 302', entity: 'Legal Knowledge Base', ip: '192.168.10.45', status: 'Success' },
+        { time: '21-03-2026 13:48', user: 'Muhammad Aqib', action: 'Source Reference Viewed: Section 154 Cr.P.C.', entity: 'Document Repository', ip: '192.168.10.45', status: 'Success' },
         { time: '21-03-2026 12:40', user: 'Sarah K (Citizen)', action: 'User Feedback: Thumbs Up Registered', entity: 'User Feedback Registry', ip: '192.168.10.72', status: 'Success' },
-        { time: '21-03-2026 12:15', user: 'System Legal AI Engine', action: 'Statutory Precedent Matching', entity: 'Legal Repository (Statutory)', ip: '127.0.0.1', status: 'Success' },
-        { time: '21-03-2026 11:30', user: 'Guest Citizen', action: 'Failed Login Attempt (Invalid Hash)', entity: 'User Auth Module', ip: '39.45.18.99', status: 'Warning' },
-        { time: '21-03-2026 10:20', user: 'Admin User', action: 'Document Upload & document processing Parsing', entity: 'Punjab Consumer Act.pdf', ip: '192.168.10.1', status: 'Success' },
-        { time: '21-03-2026 09:15', user: 'System Daemon', action: 'AI Legal Engine Keep-Alive Ping (Port 11434)', entity: 'Mistral-7B Local', ip: '127.0.0.1', status: 'Success' }
+        { time: '21-03-2026 12:15', user: 'AI Legal Engine', action: 'Legal Reference Lookup', entity: 'Legal Document Repository', ip: '127.0.0.1', status: 'Success' },
+        { time: '21-03-2026 11:30', user: 'Guest Citizen', action: 'Login Attempt — Invalid Credentials', entity: 'Authentication Service', ip: '39.45.18.99', status: 'Warning' },
+        { time: '21-03-2026 10:20', user: 'Admin User', action: 'Document Upload & Document Processing', entity: 'Punjab Consumer Act.pdf', ip: '192.168.10.1', status: 'Success' },
+        { time: '21-03-2026 09:15', user: 'System Monitor', action: 'System Health Check — AI Engine Active', entity: 'AI Legal Engine', ip: '127.0.0.1', status: 'Success' }
     ],
     feedbacks: [
-        { id: 1, user: 'Muhammad Aqib', query: 'What is punishment for PPC 302 murder?', response: 'PPC 302 provides Qisas, life imprisonment or death penalty...', rating: '👍 Helpful', comment: 'Accurate statutory citation of Section 302(b).', time: '21-03-2026 19:24' },
-        { id: 2, user: 'Sarah K', query: 'Consumer defect warranty under Punjab Act', response: 'Under Punjab Consumer Protection Act 2005 Sec 3, District Consumer Court has jurisdiction...', rating: '👍 Helpful', comment: 'Very useful legal references for consumer court.', time: '23-03-2026 13:38' },
-        { id: 3, user: 'Ali Raza', query: 'Cyber stalking remedies in PECA 2016', response: 'PECA 2016 Section 24 covers cyber stalking with up to 3 years imprisonment...', rating: '👍 Helpful', comment: 'Clear explanation of FIA Cyber Crime Circle procedure.', time: '25-03-2026 13:49' },
-        { id: 4, user: 'Tariq Mehmood', query: 'Bail requirements in non-bailable offences', response: 'Section 497 Cr.P.C governs bail when offences do not fall in prohibitory clause...', rating: '👎 Not Helpful', comment: 'Please also include Supreme Court precedent citations.', time: '27-03-2026 17:48' }
+        { id: 1, user: 'Muhammad Aqib', query: 'What is punishment for PPC 302 murder?', response: 'PPC 302 provides Qisas, life imprisonment or death penalty...', rating: 'ðŸ‘� Helpful', comment: 'Accurate statutory citation of Section 302(b).', time: '21-03-2026 19:24' },
+        { id: 2, user: 'Sarah K', query: 'Consumer defect warranty under Punjab Act', response: 'Under Punjab Consumer Protection Act 2005 Sec 3, District Consumer Court has jurisdiction...', rating: 'ðŸ‘� Helpful', comment: 'Very useful legal references for consumer court.', time: '23-03-2026 13:38' },
+        { id: 3, user: 'Ali Raza', query: 'Cyber stalking remedies in PECA 2016', response: 'PECA 2016 Section 24 covers cyber stalking with up to 3 years imprisonment...', rating: 'ðŸ‘� Helpful', comment: 'Clear explanation of FIA Cyber Crime Circle procedure.', time: '25-03-2026 13:49' },
+        { id: 4, user: 'Tariq Mehmood', query: 'Bail requirements in non-bailable offences', response: 'Section 497 Cr.P.C governs bail when offences do not fall in prohibitory clause...', rating: 'ðŸ‘Ž Not Helpful', comment: 'Please also include Supreme Court precedent citations.', time: '27-03-2026 17:48' }
     ]
 };
 
-// ── Screen Navigation Controller ─────────────────────────────────────────────
+// â”€â”€ Screen Navigation Controller â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function showScreen(screenId) {
     STATE.currentScreen = screenId;
 
@@ -96,6 +95,15 @@ function showScreen(screenId) {
         }
     });
 
+    // Toggle active state on mobile bottom nav
+    document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+        if (btn.getAttribute('data-mobilescreen') === screenId) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
     // Screen specific refreshers
     if (screenId === 'dashboard') renderDashboard();
     if (screenId === 'chat') renderChatFeed();
@@ -108,10 +116,28 @@ function showScreen(screenId) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ── Screen 3: User Dashboard Renderer (Image 3) ──────────────────────────────
+// â”€â”€ Screen 3: User Dashboard Renderer (Image 3) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function animateCounter(el, targetVal, duration = 800) {
+    if (!el) return;
+    let startVal = 0;
+    let startTime = null;
+    function update(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        const current = Math.floor(progress * targetVal);
+        el.textContent = current;
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        } else {
+            el.textContent = targetVal;
+        }
+    }
+    requestAnimationFrame(update);
+}
+
 function renderDashboard() {
     const totalConv = document.getElementById('dash-total-conv');
-    if (totalConv) totalConv.textContent = STATE.conversations.length;
+    if (totalConv) animateCounter(totalConv, STATE.conversations.length);
 
     const recentChatsBox = document.getElementById('dash-recent-chats-list');
     if (recentChatsBox) {
@@ -122,20 +148,20 @@ function renderDashboard() {
             row.onclick = () => loadConversationIntoChat(c.id);
             row.innerHTML = `
                 <div style="display:flex; align-items:center; gap:0.75rem;">
-                    <span style="font-size:1.15rem; color:var(--gold-bright);">📄</span>
+                    <span style="font-size:1.15rem; color:var(--gold-bright);">ðŸ“„</span>
                     <div>
                         <div style="font-size:0.88rem; font-weight:600; color:var(--text-white);">${c.title}</div>
-                        <div style="font-size:0.75rem; color:var(--text-muted);">${c.topic} • ${c.date}</div>
+                        <div style="font-size:0.75rem; color:var(--text-muted);">${c.topic} â€¢ ${c.date}</div>
                     </div>
                 </div>
-                <span style="color:var(--gold-bright); font-size:0.9rem;">➔</span>
+                <span style="color:var(--gold-bright); font-size:0.9rem;">âž”</span>
             `;
             recentChatsBox.appendChild(row);
         });
     }
 }
 
-// ── Screen 4: Ask Legal Question (Legal AI Q&A Engine) (Image 4) ──────────────────
+// â”€â”€ Screen 4: Ask Legal Question (Legal AI Q&A Engine) (Image 4) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderChatFeed() {
     const feed = document.getElementById('chat-scroll-feed');
     if (!feed) return;
@@ -149,23 +175,23 @@ function renderChatFeed() {
             bubbleWrap.innerHTML = `
                 <div style="display:flex; align-items:center; gap:0.5rem; justify-content:flex-end; margin-bottom:0.2rem;">
                     <span style="font-size:0.75rem; color:var(--text-muted);">You (${STATE.user.name})</span>
-                    <span style="font-size:0.9rem;">👤</span>
+                    <span style="font-size:0.9rem;">ðŸ‘¤</span>
                 </div>
                 <div class="chat-bubble-user">${msg.text}</div>
             `;
         } else {
             bubbleWrap.innerHTML = `
                 <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.2rem;">
-                    <span style="font-size:1.1rem; color:var(--gold-bright);">⚖️</span>
+                    <span style="font-size:1.1rem; color:var(--gold-bright);">âš–ï¸�</span>
                     <span style="font-size:0.8rem; font-weight:700; color:var(--gold-bright);">AI Assistant (Legal AI Intelligence Engine)</span>
                     <span class="badge-tag badge-active" style="font-size:0.65rem;">Grounded Citation</span>
                 </div>
                 <div class="chat-bubble-assistant">
                     <div>${msg.text}</div>
                     <div class="chat-feedback-row">
-                        <button class="feedback-pill-btn" onclick="submitChatFeedback(${idx}, 'helpful')">👍 Helpful</button>
-                        <button class="feedback-pill-btn" onclick="submitChatFeedback(${idx}, 'unhelpful')">👎 Not Helpful</button>
-                        <button class="feedback-pill-btn" onclick="openCommentModal(${idx})">💬 Add Comment</button>
+                        <button class="feedback-pill-btn" onclick="submitChatFeedback(${idx}, 'helpful')">ðŸ‘� Helpful</button>
+                        <button class="feedback-pill-btn" onclick="submitChatFeedback(${idx}, 'unhelpful')">ðŸ‘Ž Not Helpful</button>
+                        <button class="feedback-pill-btn" onclick="openCommentModal(${idx})">ðŸ’¬ Add Comment</button>
                     </div>
                 </div>
             `;
@@ -209,6 +235,26 @@ function sendLegalQuery() {
         text: query
     });
     renderChatFeed();
+
+    // Show realistic typing indicator
+    const feed = document.getElementById('chat-scroll-feed');
+    const typingBubble = document.createElement('div');
+    typingBubble.id = 'chat-typing-bubble';
+    typingBubble.className = 'chat-bubble-container';
+    typingBubble.innerHTML = `
+        <div class="chat-bubble-assistant" style="display:inline-flex; align-items:center; gap:0.6rem; width:fit-content; border-color:rgba(229,169,60,0.35);">
+            <span style="font-size:0.82rem; color:var(--gold-bright);">Cross-referencing Pakistani statutes</span>
+            <div class="typing-indicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        </div>
+    `;
+    if (feed) {
+        feed.appendChild(typingBubble);
+        feed.scrollTop = feed.scrollHeight;
+    }
 
     // Log to Audit Logs
     STATE.auditLogs.unshift({
@@ -270,6 +316,12 @@ function sendLegalQuery() {
             Citations and active provisions have been loaded in the <strong>Sources & Context</strong> inspection panel.`;
         }
 
+        // Remove typing bubble
+        const existingTyping = document.getElementById('chat-typing-bubble');
+        if (existingTyping && existingTyping.parentNode) {
+            existingTyping.parentNode.removeChild(existingTyping);
+        }
+
         STATE.chatFeed.push({
             sender: 'assistant',
             text: reply,
@@ -287,6 +339,8 @@ function sendLegalQuery() {
         });
 
         renderChatFeed();
+        updateSourcesPanel(matchedSource);
+        showToast('Statutory answer grounded in Pakistani law', 'success');
     }, 750);
 }
 
@@ -299,7 +353,7 @@ function submitChatFeedback(msgIdx, ratingType) {
         user: STATE.user.name,
         query: 'Active Q&A Session',
         response: msg.text.substring(0, 70) + '...',
-        rating: ratingType === 'helpful' ? '👍 Helpful' : '👎 Not Helpful',
+        rating: ratingType === 'helpful' ? 'ðŸ‘� Helpful' : 'ðŸ‘Ž Not Helpful',
         comment: 'Recorded via quick feedback button.',
         time: 'Just now'
     });
@@ -313,7 +367,7 @@ function submitChatFeedback(msgIdx, ratingType) {
         status: 'Success'
     });
 
-    alert(`Feedback registered: ${ratingType === 'helpful' ? 'Marked as Helpful 👍' : 'Marked as Not Helpful 👎'}. Thank you for helping improve the statutory accuracy!`);
+    showToast(`Feedback registered: ${ratingType === 'helpful' ? 'Marked as Helpful 👍' : 'Marked as Not Helpful 👎'}. Thank you!`, 'success');
 }
 
 function openCommentModal(msgIdx) {
@@ -324,15 +378,15 @@ function openCommentModal(msgIdx) {
             user: STATE.user.name,
             query: 'Conversational Feedback',
             response: 'AI Legal Assistant Output',
-            rating: '👍 Helpful',
+            rating: 'ðŸ‘� Helpful',
             comment: comment,
             time: 'Just now'
         });
-        alert('Thank you! Your feedback comment has been saved to the database.');
+        showToast('Thank you! Your feedback comment has been saved.', 'success');
     }
 }
 
-// ── Screen 5: Chat History Renderer (Image 5) ────────────────────────────────
+// â”€â”€ Screen 5: Chat History Renderer (Image 5) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderHistoryTable() {
     const tbody = document.getElementById('history-table-body');
     if (!tbody) return;
@@ -343,7 +397,7 @@ function renderHistoryTable() {
         tr.innerHTML = `
             <td>
                 <div style="display:flex; align-items:center; gap:0.75rem;">
-                    <span style="color:var(--gold-bright); font-size:1.1rem;">📄</span>
+                    <span style="color:var(--gold-bright); font-size:1.1rem;">ðŸ“„</span>
                     <div>
                         <strong style="color:var(--text-white);">${conv.title}</strong>
                         <div style="font-size:0.78rem; color:var(--text-muted);">${conv.query}</div>
@@ -354,7 +408,7 @@ function renderHistoryTable() {
             <td><span style="color:#94A3B8; font-size:0.8rem;">${conv.citations}</span></td>
             <td style="color:#94A3B8; font-size:0.8rem;">${conv.date}</td>
             <td style="text-align:right;">
-                <button class="btn-gold" style="padding:0.35rem 0.85rem; font-size:0.78rem;" onclick="loadConversationIntoChat(${conv.id})">Open ➔</button>
+                <button class="btn-gold" style="padding:0.35rem 0.85rem; font-size:0.78rem;" onclick="loadConversationIntoChat(${conv.id})">Open âž”</button>
             </td>
         `;
         tbody.appendChild(tr);
@@ -384,7 +438,7 @@ function loadConversationIntoChat(convId) {
     showScreen('chat');
 }
 
-// ── Screen 6: Document Management Renderer (Image 6) ─────────────────────────
+// â”€â”€ Screen 6: Document Management Renderer (Image 6) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderDocumentsTable() {
     const tbody = document.getElementById('documents-table-body');
     if (!tbody) return;
@@ -396,7 +450,7 @@ function renderDocumentsTable() {
         tr.innerHTML = `
             <td>
                 <div style="display:flex; align-items:center; gap:0.6rem;">
-                    <span style="color:var(--gold-bright);">📄</span>
+                    <span style="color:var(--gold-bright);">ðŸ“„</span>
                     <strong>${doc.title}</strong>
                 </div>
             </td>
@@ -406,7 +460,7 @@ function renderDocumentsTable() {
             <td>${doc.date}</td>
             <td><span class="badge-tag ${badgeClass}">${doc.status}</span></td>
             <td style="text-align:right;">
-                <button class="btn-outline-gold" style="padding:0.25rem 0.6rem; font-size:0.75rem;" onclick="inspectDocument('${doc.title}')">👁️ View</button>
+                <button class="btn-outline-gold" style="padding:0.25rem 0.6rem; font-size:0.75rem;" onclick="inspectDocument('${doc.title}')">ðŸ‘�ï¸� View</button>
             </td>
         `;
         tbody.appendChild(tr);
@@ -423,7 +477,7 @@ function uploadNewDocument() {
     const jurisdiction = jurisdictionSelect ? jurisdictionSelect.value : 'Federal';
 
     if (!title) {
-        alert('Please enter a Document Title.');
+        showToast('Please enter a Document Title.', 'warning');
         return;
     }
 
@@ -441,15 +495,15 @@ function uploadNewDocument() {
     STATE.auditLogs.unshift({
         time: 'Just now',
         user: STATE.user.name,
-        action: `Legal Act Ingestion & Indexing: "${title}"`,
-        entity: 'Statutory Knowledge Base',
+        action: `Document Upload & Saved: "${title}"`,
+        entity: 'Legal Knowledge Base',
         ip: '192.168.10.45',
         status: 'Success'
     });
 
     if (titleInput) titleInput.value = '';
     renderDocumentsTable();
-    alert(`Document "${title}" uploaded and chunked successfully (500 chars, 50 overlap, Statutory embeddings added to Pakistan Legal Repository)!`);
+    showToast(`Document "${title}" uploaded and cataloged in repository successfully!`, "success");
 }
 
 function inspectDocument(docTitle) {
@@ -458,7 +512,7 @@ function inspectDocument(docTitle) {
     if (actElem) actElem.textContent = docTitle;
 }
 
-// ── Screen 7: Audit Logs Renderer (Image 7) ──────────────────────────────────
+// â”€â”€ Screen 7: Audit Logs Renderer (Image 7) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderAuditLogsTable() {
     const tbody = document.getElementById('audit-table-body');
     if (!tbody) return;
@@ -471,7 +525,7 @@ function renderAuditLogsTable() {
             <td style="color:#94A3B8; font-size:0.8rem;">${log.time}</td>
             <td>
                 <div style="display:flex; align-items:center; gap:0.5rem;">
-                    <span>👤</span>
+                    <span>ðŸ‘¤</span>
                     <span>${log.user}</span>
                 </div>
             </td>
@@ -484,7 +538,7 @@ function renderAuditLogsTable() {
     });
 }
 
-// ── Screen 8: Source References & Citation Inspector (Image 8) ───────────────
+// â”€â”€ Screen 8: Source References & Citation Inspector (Image 8) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderSourceInspector() {
     // Already populated by markup or active selection
 }
@@ -508,7 +562,7 @@ function selectSectionInTree(sectionName, textSnippet) {
     }
 }
 
-// ── Screen 9: Feedback Table Renderer (Image 9) ──────────────────────────────
+// â”€â”€ Screen 9: Feedback Table Renderer (Image 9) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderFeedbackTable() {
     const tbody = document.getElementById('feedback-table-body');
     if (!tbody) return;
@@ -528,7 +582,7 @@ function renderFeedbackTable() {
     });
 }
 
-// ── Screen 10: Profile Settings Saver (Image 10) ─────────────────────────────
+// â”€â”€ Screen 10: Profile Settings Saver (Image 10) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function saveProfileChanges() {
     const nameInput = document.getElementById('profile-name');
     const emailInput = document.getElementById('profile-email');
@@ -552,24 +606,24 @@ function saveProfileChanges() {
         status: 'Success'
     });
 
-    alert('Profile information saved successfully!');
+    showToast('Profile information saved successfully!', 'success');
 }
 
 function updatePassword() {
-    alert('Password updated successfully! Password updated successfully and encrypted in secure database.');
+    showToast('Password updated and encrypted securely!', 'success');
 }
 
 function revokeAllSessions() {
-    alert('All other remote browser sessions have been revoked. Active JWT invalidated.');
+    showToast('All other remote browser sessions have been revoked.', 'warning');
 }
 
-// ── App Init ─────────────────────────────────────────────────────────────────
+// â”€â”€ App Init â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 document.addEventListener('DOMContentLoaded', () => {
     // Show Dashboard by default (Image 3)
     showScreen('dashboard');
 });
 
-// ── RBAC / Role Switching (User Portal vs Administrator Panel) ───────────────
+// â”€â”€ RBAC / Role Switching (User Portal vs Administrator Panel) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 STATE.currentRole = 'user';
 STATE.registeredUsers = [
     { id: 'USR-001', name: 'Muhammad Aqib', email: 'aqib44584@gmail.com', role: 'Citizen (Normal User)', city: 'Vehari, Pakistan', status: 'Active', joined: '01/01/2026' },
@@ -593,14 +647,14 @@ function switchRole(role) {
         if (btnAdmin) btnAdmin.classList.remove('active');
         if (menuUser) menuUser.style.display = 'flex';
         if (menuAdmin) menuAdmin.style.display = 'none';
-        if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus • User Portal';
+        if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus â€¢ User Portal';
         showScreen('dashboard');
     } else {
         if (btnAdmin) btnAdmin.classList.add('active');
         if (btnUser) btnUser.classList.remove('active');
         if (menuAdmin) menuAdmin.style.display = 'flex';
         if (menuUser) menuUser.style.display = 'none';
-        if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus • Administrator Panel';
+        if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus â€¢ Administrator Panel';
         showScreen('audit');
     }
 }
@@ -631,7 +685,7 @@ function submitUserFeedbackForm() {
     const comment = document.getElementById('user-fb-comment').value.trim();
 
     if (!comment) {
-        alert('Please enter a feedback comment.');
+        showToast('Please enter a feedback comment.', 'warning');
         return;
     }
 
@@ -657,7 +711,7 @@ function submitUserFeedbackForm() {
 
     document.getElementById('user-fb-comment').value = '';
     renderUserMyFeedbackList();
-    alert('Thank you! Your feedback has been recorded in the database.');
+    showToast('Thank you! Your feedback has been recorded.', 'success');
 }
 
 function renderUserMyFeedbackList() {
@@ -687,7 +741,7 @@ function renderUserMyFeedbackList() {
     });
 }
 
-// ── Security Gate & Admin Authentication Verification ────────────────────────
+// â”€â”€ Security Gate & Admin Authentication Verification â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 STATE.isAdminAuthenticated = false;
 
 function openAdminSecurityModal() {
@@ -736,7 +790,7 @@ function verifyAdminPasskey() {
             status: 'Failure'
         });
 
-        alert('⛔ 403 Access Denied: Invalid Administrative Passkey. Access attempt has been recorded in the security audit logs.');
+        showToast("Access Denied: Invalid Administrative Passkey.", "danger");
     }
 }
 
@@ -748,7 +802,7 @@ function activateAdminPanel() {
 
     if (menuUser) menuUser.style.display = 'none';
     if (menuAdmin) menuAdmin.style.display = 'flex';
-    if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus • Administrator Panel (Secure Session)';
+    if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus â€¢ Administrator Panel (Secure Session)';
     if (adminBanner) adminBanner.style.display = 'flex';
 
     showScreen('audit');
@@ -764,7 +818,7 @@ function lockAdminSession() {
 
     if (menuAdmin) menuAdmin.style.display = 'none';
     if (menuUser) menuUser.style.display = 'flex';
-    if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus • User Portal';
+    if (brandSub) brandSub.textContent = 'COMSATS University Islamabad, Vehari Campus â€¢ User Portal';
     if (adminBanner) adminBanner.style.display = 'none';
 
     STATE.auditLogs.unshift({
@@ -777,10 +831,10 @@ function lockAdminSession() {
     });
 
     showScreen('dashboard');
-    alert('🔒 Administrator session locked. Returned safely to Citizen User Portal.');
+    showToast("Administrator session locked. Returned safely to Citizen Portal.", "info");
 }
 
-// ── Dedicated Full-Screen Auth & Admin Routing Controller ────────────────────
+// â”€â”€ Dedicated Full-Screen Auth & Admin Routing Controller â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function showAuthView(viewName) {
     const loginView = document.getElementById('auth-view-login');
     const registerView = document.getElementById('auth-view-register');
@@ -819,6 +873,7 @@ function handleLoginSubmit(event) {
     if (displayName) displayName.textContent = STATE.user.name;
 
     showScreen('dashboard');
+    showToast('Welcome back, ' + STATE.user.name + '!', 'success');
 }
 
 function handleRegisterSubmit(event) {
@@ -829,7 +884,7 @@ function handleRegisterSubmit(event) {
     const pass2 = document.getElementById('reg-pass2').value.trim();
 
     if (pass !== pass2) {
-        alert('Passwords do not match. Please re-enter.');
+        showToast('Passwords do not match. Please re-enter.', 'warning');
         return;
     }
 
@@ -847,7 +902,7 @@ function handleRegisterSubmit(event) {
     if (welcome) welcome.textContent = 'Welcome back, ' + name;
 
     showScreen('dashboard');
-    alert('Account created successfully! Welcome to AI Smart Legal Assistant, ' + name + '.');
+    showToast('Account created successfully! Welcome, ' + name + '!', 'success');
 }
 
 function logoutToAuthScreen() {
@@ -890,4 +945,272 @@ function showAdminScreen(adminScreenId) {
     if (adminScreenId === 'admin-users') renderAdminUsersTable();
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+
+// ── Interactive Tools: Daily Legal Rights, Quick Ask, Domain Filters, Toast ─
+const LEGAL_TIPS = [
+    {
+        icon: '🇵🇰',
+        category: 'Constitutional Right • Article 10A',
+        title: 'Right to Fair Trial & Due Process',
+        desc: 'For the determination of his civil rights and obligations or in any criminal charge against him, a citizen shall be entitled to a fair trial and due process.'
+    },
+    {
+        icon: '📜',
+        category: 'Criminal Procedure • Section 154 Cr.P.C.',
+        title: 'Mandatory Duty of Police to Register FIR',
+        desc: 'Police officers are statutorily bound to record every information relating to a cognizable offence without undue delay and provide a free certified copy to the informant.'
+    },
+    {
+        icon: '⚖️',
+        category: 'Constitutional Right • Article 25',
+        title: 'Equality of All Pakistani Citizens',
+        desc: 'All citizens are equal before law and are entitled to equal protection of law. There shall be no discrimination on the basis of sex, creed, or background alone.'
+    },
+    {
+        icon: '🛡️',
+        category: 'Consumer Protection • Punjab Act 2005',
+        title: 'Right to Remedy against Defective Products',
+        desc: 'Consumers have an inalienable right to safe, defect-free products. You can claim full refund, replacement, or damages through dedicated District Consumer Courts without court fee.'
+    },
+    {
+        icon: '💻',
+        category: 'Cybercrime Law • PECA 2016 Section 24',
+        title: 'Protection against Cyber Stalking & Harassment',
+        desc: 'Online harassment, black-mailing, and non-consensual sharing of personal photographs carry severe penalties up to 3 years imprisonment under FIA Cyber Crime Wing jurisdiction.'
+    },
+    {
+        icon: '👨‍👩‍👧',
+        category: 'Family Law • MFLO 1961 Section 7',
+        title: 'Mandatory Union Council Notice in Divorce / Khula',
+        desc: 'To attain statutory legal finality, notice of Talaq or Khula must be officially delivered to the Chairman of the local Union Council for mandatory 90-day reconciliation proceedings.'
+    }
+];
+
+let currentTipIndex = 0;
+function cycleLegalTip() {
+    currentTipIndex = (currentTipIndex + 1) % LEGAL_TIPS.length;
+    const tip = LEGAL_TIPS[currentTipIndex];
+    const cat = document.getElementById('legal-tip-category');
+    const title = document.getElementById('legal-tip-title');
+    const desc = document.getElementById('legal-tip-desc');
+    const icon = document.getElementById('legal-tip-icon');
+    if (cat) cat.textContent = tip.category;
+    if (title) title.textContent = tip.title;
+    if (desc) desc.textContent = tip.desc;
+    if (icon) icon.textContent = tip.icon;
+    showToast(`Updated to: ${tip.title}`, 'info');
+}
+
+function quickAsk(questionText) {
+    showScreen('chat');
+    const input = document.getElementById('chat-user-input');
+    if (input) {
+        input.value = questionText;
+        sendLegalQuery();
+    }
+}
+
+function filterStatuteDomain(domain, chipElem) {
+    document.querySelectorAll('.domain-chip').forEach(c => c.classList.remove('active'));
+    if (chipElem) chipElem.classList.add('active');
+
+    const recentBox = document.getElementById('dash-recent-chats-list');
+    if (!recentBox) return;
+
+    let filtered = STATE.conversations;
+    if (domain !== 'all') {
+        filtered = STATE.conversations.filter(c => 
+            c.topic.toLowerCase().includes(domain.toLowerCase()) || 
+            c.citations.toLowerCase().includes(domain.toLowerCase()) ||
+            c.title.toLowerCase().includes(domain.toLowerCase())
+        );
+    }
+    recentBox.innerHTML = '';
+    if (filtered.length === 0) filtered = STATE.conversations.slice(0, 3);
+    filtered.forEach(c => {
+        const row = document.createElement('div');
+        row.className = 'recent-chat-row';
+        row.onclick = () => loadConversationIntoChat(c.id);
+        row.innerHTML = `
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+                <span style="font-size:1.15rem; color:var(--gold-bright);">📄</span>
+                <div>
+                    <div style="font-size:0.88rem; font-weight:600; color:var(--text-white);">${c.title}</div>
+                    <div style="font-size:0.75rem; color:var(--text-muted);">${c.topic} • ${c.date}</div>
+                </div>
+            </div>
+            <span style="color:var(--gold-bright); font-size:0.9rem;">➔</span>
+        `;
+        recentBox.appendChild(row);
+    });
+    showToast(`Filtered by: ${chipElem ? chipElem.textContent.trim() : domain}`, 'info');
+}
+
+function copyCurrentCitation() {
+    const act = document.getElementById('context-source-act')?.textContent || '';
+    const sec = document.getElementById('context-source-section')?.textContent || '';
+    const excerpt = document.getElementById('context-source-excerpt')?.textContent || '';
+    const textToCopy = `Pakistani Legal Citation:\nAct: ${act}\nSection: ${sec}\n\nStatutory Excerpt:\n${excerpt}\n\n[Grounded via AI Smart Legal Assistant]`;
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            showToast('📋 Statutory Citation copied to clipboard!', 'success');
+        }).catch(() => {
+            showToast('Copied to clipboard!', 'success');
+        });
+    } else {
+        showToast('📋 Citation copied to clipboard!', 'success');
+    }
+}
+
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    const toast = document.createElement('div');
+    toast.className = 'glass-toast';
+    let icon = '⚖️';
+    if (type === 'success') icon = '✅';
+    if (type === 'info') icon = 'ℹ️';
+    if (type === 'warning') icon = '⚠️';
+    toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+    }, 4000);
+}
+
+
+// ── Interactive Tools: Daily Legal Rights, Quick Ask, Domain Filters, Toast ─
+const LEGAL_TIPS = [
+    {
+        icon: '🇵🇰',
+        category: 'Constitutional Right • Article 10A',
+        title: 'Right to Fair Trial & Due Process',
+        desc: 'For the determination of his civil rights and obligations or in any criminal charge against him, a citizen shall be entitled to a fair trial and due process.'
+    },
+    {
+        icon: '📜',
+        category: 'Criminal Procedure • Section 154 Cr.P.C.',
+        title: 'Mandatory Duty of Police to Register FIR',
+        desc: 'Police officers are statutorily bound to record every information relating to a cognizable offence without undue delay and provide a free certified copy to the informant.'
+    },
+    {
+        icon: '⚖️',
+        category: 'Constitutional Right • Article 25',
+        title: 'Equality of All Pakistani Citizens',
+        desc: 'All citizens are equal before law and are entitled to equal protection of law. There shall be no discrimination on the basis of sex, creed, or background alone.'
+    },
+    {
+        icon: '🛡️',
+        category: 'Consumer Protection • Punjab Act 2005',
+        title: 'Right to Remedy against Defective Products',
+        desc: 'Consumers have an inalienable right to safe, defect-free products. You can claim full refund, replacement, or damages through dedicated District Consumer Courts without court fee.'
+    },
+    {
+        icon: '💻',
+        category: 'Cybercrime Law • PECA 2016 Section 24',
+        title: 'Protection against Cyber Stalking & Harassment',
+        desc: 'Online harassment, black-mailing, and non-consensual sharing of personal photographs carry severe penalties up to 3 years imprisonment under FIA Cyber Crime Wing jurisdiction.'
+    },
+    {
+        icon: '👨‍👩‍👧',
+        category: 'Family Law • MFLO 1961 Section 7',
+        title: 'Mandatory Union Council Notice in Divorce / Khula',
+        desc: 'To attain statutory legal finality, notice of Talaq or Khula must be officially delivered to the Chairman of the local Union Council for mandatory 90-day reconciliation proceedings.'
+    }
+];
+
+let currentTipIndex = 0;
+function cycleLegalTip() {
+    currentTipIndex = (currentTipIndex + 1) % LEGAL_TIPS.length;
+    const tip = LEGAL_TIPS[currentTipIndex];
+    const cat = document.getElementById('legal-tip-category');
+    const title = document.getElementById('legal-tip-title');
+    const desc = document.getElementById('legal-tip-desc');
+    const icon = document.getElementById('legal-tip-icon');
+    if (cat) cat.textContent = tip.category;
+    if (title) title.textContent = tip.title;
+    if (desc) desc.textContent = tip.desc;
+    if (icon) icon.textContent = tip.icon;
+    showToast(`Updated to: ${tip.title}`, 'info');
+}
+
+function quickAsk(questionText) {
+    showScreen('chat');
+    const input = document.getElementById('chat-user-input');
+    if (input) {
+        input.value = questionText;
+        sendLegalQuery();
+    }
+}
+
+function filterStatuteDomain(domain, chipElem) {
+    document.querySelectorAll('.domain-chip').forEach(c => c.classList.remove('active'));
+    if (chipElem) chipElem.classList.add('active');
+
+    const recentBox = document.getElementById('dash-recent-chats-list');
+    if (!recentBox) return;
+
+    let filtered = STATE.conversations;
+    if (domain !== 'all') {
+        filtered = STATE.conversations.filter(c => 
+            c.topic.toLowerCase().includes(domain.toLowerCase()) || 
+            c.citations.toLowerCase().includes(domain.toLowerCase()) ||
+            c.title.toLowerCase().includes(domain.toLowerCase())
+        );
+    }
+    recentBox.innerHTML = '';
+    if (filtered.length === 0) filtered = STATE.conversations.slice(0, 3);
+    filtered.forEach(c => {
+        const row = document.createElement('div');
+        row.className = 'recent-chat-row';
+        row.onclick = () => loadConversationIntoChat(c.id);
+        row.innerHTML = `
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+                <span style="font-size:1.15rem; color:var(--gold-bright);">📄</span>
+                <div>
+                    <div style="font-size:0.88rem; font-weight:600; color:var(--text-white);">${c.title}</div>
+                    <div style="font-size:0.75rem; color:var(--text-muted);">${c.topic} • ${c.date}</div>
+                </div>
+            </div>
+            <span style="color:var(--gold-bright); font-size:0.9rem;">➔</span>
+        `;
+        recentBox.appendChild(row);
+    });
+    showToast(`Filtered by: ${chipElem ? chipElem.textContent.trim() : domain}`, 'info');
+}
+
+function copyCurrentCitation() {
+    const act = document.getElementById('context-source-act')?.textContent || '';
+    const sec = document.getElementById('context-source-section')?.textContent || '';
+    const excerpt = document.getElementById('context-source-excerpt')?.textContent || '';
+    const textToCopy = `Pakistani Legal Citation:\nAct: ${act}\nSection: ${sec}\n\nStatutory Excerpt:\n${excerpt}\n\n[Grounded via AI Smart Legal Assistant]`;
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            showToast('📋 Statutory Citation copied to clipboard!', 'success');
+        }).catch(() => {
+            showToast('Copied to clipboard!', 'success');
+        });
+    } else {
+        showToast('📋 Citation copied to clipboard!', 'success');
+    }
+}
+
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    const toast = document.createElement('div');
+    toast.className = 'glass-toast';
+    let icon = '⚖️';
+    if (type === 'success') icon = '✅';
+    if (type === 'info') icon = 'ℹ️';
+    if (type === 'warning') icon = '⚠️';
+    toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+    }, 4000);
 }
