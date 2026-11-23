@@ -119,6 +119,10 @@ function showScreen(screenId) {
 // â”€â”€ Screen 3: User Dashboard Renderer (Image 3) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function animateCounter(el, targetVal, duration = 800) {
     if (!el) return;
+    if (typeof requestAnimationFrame === 'undefined') {
+        el.textContent = targetVal;
+        return;
+    }
     let startVal = 0;
     let startTime = null;
     function update(timestamp) {
@@ -945,140 +949,6 @@ function showAdminScreen(adminScreenId) {
     if (adminScreenId === 'admin-users') renderAdminUsersTable();
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-
-// ── Interactive Tools: Daily Legal Rights, Quick Ask, Domain Filters, Toast ─
-const LEGAL_TIPS = [
-    {
-        icon: '🇵🇰',
-        category: 'Constitutional Right • Article 10A',
-        title: 'Right to Fair Trial & Due Process',
-        desc: 'For the determination of his civil rights and obligations or in any criminal charge against him, a citizen shall be entitled to a fair trial and due process.'
-    },
-    {
-        icon: '📜',
-        category: 'Criminal Procedure • Section 154 Cr.P.C.',
-        title: 'Mandatory Duty of Police to Register FIR',
-        desc: 'Police officers are statutorily bound to record every information relating to a cognizable offence without undue delay and provide a free certified copy to the informant.'
-    },
-    {
-        icon: '⚖️',
-        category: 'Constitutional Right • Article 25',
-        title: 'Equality of All Pakistani Citizens',
-        desc: 'All citizens are equal before law and are entitled to equal protection of law. There shall be no discrimination on the basis of sex, creed, or background alone.'
-    },
-    {
-        icon: '🛡️',
-        category: 'Consumer Protection • Punjab Act 2005',
-        title: 'Right to Remedy against Defective Products',
-        desc: 'Consumers have an inalienable right to safe, defect-free products. You can claim full refund, replacement, or damages through dedicated District Consumer Courts without court fee.'
-    },
-    {
-        icon: '💻',
-        category: 'Cybercrime Law • PECA 2016 Section 24',
-        title: 'Protection against Cyber Stalking & Harassment',
-        desc: 'Online harassment, black-mailing, and non-consensual sharing of personal photographs carry severe penalties up to 3 years imprisonment under FIA Cyber Crime Wing jurisdiction.'
-    },
-    {
-        icon: '👨‍👩‍👧',
-        category: 'Family Law • MFLO 1961 Section 7',
-        title: 'Mandatory Union Council Notice in Divorce / Khula',
-        desc: 'To attain statutory legal finality, notice of Talaq or Khula must be officially delivered to the Chairman of the local Union Council for mandatory 90-day reconciliation proceedings.'
-    }
-];
-
-let currentTipIndex = 0;
-function cycleLegalTip() {
-    currentTipIndex = (currentTipIndex + 1) % LEGAL_TIPS.length;
-    const tip = LEGAL_TIPS[currentTipIndex];
-    const cat = document.getElementById('legal-tip-category');
-    const title = document.getElementById('legal-tip-title');
-    const desc = document.getElementById('legal-tip-desc');
-    const icon = document.getElementById('legal-tip-icon');
-    if (cat) cat.textContent = tip.category;
-    if (title) title.textContent = tip.title;
-    if (desc) desc.textContent = tip.desc;
-    if (icon) icon.textContent = tip.icon;
-    showToast(`Updated to: ${tip.title}`, 'info');
-}
-
-function quickAsk(questionText) {
-    showScreen('chat');
-    const input = document.getElementById('chat-user-input');
-    if (input) {
-        input.value = questionText;
-        sendLegalQuery();
-    }
-}
-
-function filterStatuteDomain(domain, chipElem) {
-    document.querySelectorAll('.domain-chip').forEach(c => c.classList.remove('active'));
-    if (chipElem) chipElem.classList.add('active');
-
-    const recentBox = document.getElementById('dash-recent-chats-list');
-    if (!recentBox) return;
-
-    let filtered = STATE.conversations;
-    if (domain !== 'all') {
-        filtered = STATE.conversations.filter(c => 
-            c.topic.toLowerCase().includes(domain.toLowerCase()) || 
-            c.citations.toLowerCase().includes(domain.toLowerCase()) ||
-            c.title.toLowerCase().includes(domain.toLowerCase())
-        );
-    }
-    recentBox.innerHTML = '';
-    if (filtered.length === 0) filtered = STATE.conversations.slice(0, 3);
-    filtered.forEach(c => {
-        const row = document.createElement('div');
-        row.className = 'recent-chat-row';
-        row.onclick = () => loadConversationIntoChat(c.id);
-        row.innerHTML = `
-            <div style="display:flex; align-items:center; gap:0.75rem;">
-                <span style="font-size:1.15rem; color:var(--gold-bright);">📄</span>
-                <div>
-                    <div style="font-size:0.88rem; font-weight:600; color:var(--text-white);">${c.title}</div>
-                    <div style="font-size:0.75rem; color:var(--text-muted);">${c.topic} • ${c.date}</div>
-                </div>
-            </div>
-            <span style="color:var(--gold-bright); font-size:0.9rem;">➔</span>
-        `;
-        recentBox.appendChild(row);
-    });
-    showToast(`Filtered by: ${chipElem ? chipElem.textContent.trim() : domain}`, 'info');
-}
-
-function copyCurrentCitation() {
-    const act = document.getElementById('context-source-act')?.textContent || '';
-    const sec = document.getElementById('context-source-section')?.textContent || '';
-    const excerpt = document.getElementById('context-source-excerpt')?.textContent || '';
-    const textToCopy = `Pakistani Legal Citation:\nAct: ${act}\nSection: ${sec}\n\nStatutory Excerpt:\n${excerpt}\n\n[Grounded via AI Smart Legal Assistant]`;
-    
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(textToCopy).then(() => {
-            showToast('📋 Statutory Citation copied to clipboard!', 'success');
-        }).catch(() => {
-            showToast('Copied to clipboard!', 'success');
-        });
-    } else {
-        showToast('📋 Citation copied to clipboard!', 'success');
-    }
-}
-
-function showToast(message, type = 'success') {
-    const container = document.getElementById('toast-container');
-    if (!container) return;
-    const toast = document.createElement('div');
-    toast.className = 'glass-toast';
-    let icon = '⚖️';
-    if (type === 'success') icon = '✅';
-    if (type === 'info') icon = 'ℹ️';
-    if (type === 'warning') icon = '⚠️';
-    toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
-    container.appendChild(toast);
-    setTimeout(() => {
-        if (toast.parentNode) toast.parentNode.removeChild(toast);
-    }, 4000);
 }
 
 
