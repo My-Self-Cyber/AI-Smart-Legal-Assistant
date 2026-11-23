@@ -66,14 +66,14 @@ const STATE = {
         { time: '21-03-2026 09:15', user: 'System Monitor', action: 'System Health Check — AI Engine Active', entity: 'AI Legal Engine', ip: '127.0.0.1', status: 'Success' }
     ],
     feedbacks: [
-        { id: 1, user: 'Muhammad Aqib', query: 'What is punishment for PPC 302 murder?', response: 'PPC 302 provides Qisas, life imprisonment or death penalty...', rating: 'ðŸ‘� Helpful', comment: 'Accurate statutory citation of Section 302(b).', time: '21-03-2026 19:24' },
-        { id: 2, user: 'Sarah K', query: 'Consumer defect warranty under Punjab Act', response: 'Under Punjab Consumer Protection Act 2005 Sec 3, District Consumer Court has jurisdiction...', rating: 'ðŸ‘� Helpful', comment: 'Very useful legal references for consumer court.', time: '23-03-2026 13:38' },
-        { id: 3, user: 'Ali Raza', query: 'Cyber stalking remedies in PECA 2016', response: 'PECA 2016 Section 24 covers cyber stalking with up to 3 years imprisonment...', rating: 'ðŸ‘� Helpful', comment: 'Clear explanation of FIA Cyber Crime Circle procedure.', time: '25-03-2026 13:49' },
-        { id: 4, user: 'Tariq Mehmood', query: 'Bail requirements in non-bailable offences', response: 'Section 497 Cr.P.C governs bail when offences do not fall in prohibitory clause...', rating: 'ðŸ‘Ž Not Helpful', comment: 'Please also include Supreme Court precedent citations.', time: '27-03-2026 17:48' }
+        { id: 1, user: 'Muhammad Aqib', query: 'What is punishment for PPC 302 murder?', response: 'PPC 302 provides Qisas, life imprisonment or death penalty...', rating: '👍� Helpful', comment: 'Accurate statutory citation of Section 302(b).', time: '21-03-2026 19:24' },
+        { id: 2, user: 'Sarah K', query: 'Consumer defect warranty under Punjab Act', response: 'Under Punjab Consumer Protection Act 2005 Sec 3, District Consumer Court has jurisdiction...', rating: '👍� Helpful', comment: 'Very useful legal references for consumer court.', time: '23-03-2026 13:38' },
+        { id: 3, user: 'Ali Raza', query: 'Cyber stalking remedies in PECA 2016', response: 'PECA 2016 Section 24 covers cyber stalking with up to 3 years imprisonment...', rating: '👍� Helpful', comment: 'Clear explanation of FIA Cyber Crime Circle procedure.', time: '25-03-2026 13:49' },
+        { id: 4, user: 'Tariq Mehmood', query: 'Bail requirements in non-bailable offences', response: 'Section 497 Cr.P.C governs bail when offences do not fall in prohibitory clause...', rating: '👍Ž Not Helpful', comment: 'Please also include Supreme Court precedent citations.', time: '27-03-2026 17:48' }
     ]
 };
 
-// â”€â”€ Screen Navigation Controller â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —— Screen Navigation Controller —————————————————————————————————————————————
 function showScreen(screenId) {
     STATE.currentScreen = screenId;
 
@@ -116,7 +116,7 @@ function showScreen(screenId) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// â”€â”€ Screen 3: User Dashboard Renderer (Image 3) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —— Screen 3: User Dashboard Renderer (Image 3) ——————————————————————————————
 function animateCounter(el, targetVal, duration = 800) {
     if (!el) return;
     if (typeof requestAnimationFrame === 'undefined') {
@@ -152,20 +152,20 @@ function renderDashboard() {
             row.onclick = () => loadConversationIntoChat(c.id);
             row.innerHTML = `
                 <div style="display:flex; align-items:center; gap:0.75rem;">
-                    <span style="font-size:1.15rem; color:var(--gold-bright);">ðŸ“„</span>
+                    <span style="font-size:1.15rem; color:var(--gold-bright);">📄</span>
                     <div>
                         <div style="font-size:0.88rem; font-weight:600; color:var(--text-white);">${c.title}</div>
                         <div style="font-size:0.75rem; color:var(--text-muted);">${c.topic} â€¢ ${c.date}</div>
                     </div>
                 </div>
-                <span style="color:var(--gold-bright); font-size:0.9rem;">âž”</span>
+                <span style="color:var(--gold-bright); font-size:0.9rem;">➔</span>
             `;
             recentChatsBox.appendChild(row);
         });
     }
 }
 
-// â”€â”€ Screen 4: Ask Legal Question (Legal AI Q&A Engine) (Image 4) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —— Screen 4: Ask Legal Question (Legal AI Q&A Engine) (Image 4) ——————————————————
 function renderChatFeed() {
     const feed = document.getElementById('chat-scroll-feed');
     if (!feed) return;
@@ -179,7 +179,7 @@ function renderChatFeed() {
             bubbleWrap.innerHTML = `
                 <div style="display:flex; align-items:center; gap:0.5rem; justify-content:flex-end; margin-bottom:0.2rem;">
                     <span style="font-size:0.75rem; color:var(--text-muted);">You (${STATE.user.name})</span>
-                    <span style="font-size:0.9rem;">ðŸ‘¤</span>
+                    <span style="font-size:0.9rem;">👍¤</span>
                 </div>
                 <div class="chat-bubble-user">${msg.text}</div>
             `;
@@ -193,8 +193,8 @@ function renderChatFeed() {
                 <div class="chat-bubble-assistant">
                     <div>${msg.text}</div>
                     <div class="chat-feedback-row">
-                        <button class="feedback-pill-btn" onclick="submitChatFeedback(${idx}, 'helpful')">ðŸ‘� Helpful</button>
-                        <button class="feedback-pill-btn" onclick="submitChatFeedback(${idx}, 'unhelpful')">ðŸ‘Ž Not Helpful</button>
+                        <button class="feedback-pill-btn" onclick="submitChatFeedback(${idx}, 'helpful')">👍� Helpful</button>
+                        <button class="feedback-pill-btn" onclick="submitChatFeedback(${idx}, 'unhelpful')">👍Ž Not Helpful</button>
                         <button class="feedback-pill-btn" onclick="openCommentModal(${idx})">ðŸ’¬ Add Comment</button>
                     </div>
                 </div>
@@ -357,7 +357,7 @@ function submitChatFeedback(msgIdx, ratingType) {
         user: STATE.user.name,
         query: 'Active Q&A Session',
         response: msg.text.substring(0, 70) + '...',
-        rating: ratingType === 'helpful' ? 'ðŸ‘� Helpful' : 'ðŸ‘Ž Not Helpful',
+        rating: ratingType === 'helpful' ? '👍� Helpful' : '👍Ž Not Helpful',
         comment: 'Recorded via quick feedback button.',
         time: 'Just now'
     });
@@ -382,7 +382,7 @@ function openCommentModal(msgIdx) {
             user: STATE.user.name,
             query: 'Conversational Feedback',
             response: 'AI Legal Assistant Output',
-            rating: 'ðŸ‘� Helpful',
+            rating: '👍� Helpful',
             comment: comment,
             time: 'Just now'
         });
@@ -390,7 +390,7 @@ function openCommentModal(msgIdx) {
     }
 }
 
-// â”€â”€ Screen 5: Chat History Renderer (Image 5) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —— Screen 5: Chat History Renderer (Image 5) ————————————————————————————————
 function renderHistoryTable() {
     const tbody = document.getElementById('history-table-body');
     if (!tbody) return;
@@ -401,7 +401,7 @@ function renderHistoryTable() {
         tr.innerHTML = `
             <td>
                 <div style="display:flex; align-items:center; gap:0.75rem;">
-                    <span style="color:var(--gold-bright); font-size:1.1rem;">ðŸ“„</span>
+                    <span style="color:var(--gold-bright); font-size:1.1rem;">📄</span>
                     <div>
                         <strong style="color:var(--text-white);">${conv.title}</strong>
                         <div style="font-size:0.78rem; color:var(--text-muted);">${conv.query}</div>
@@ -412,7 +412,7 @@ function renderHistoryTable() {
             <td><span style="color:#94A3B8; font-size:0.8rem;">${conv.citations}</span></td>
             <td style="color:#94A3B8; font-size:0.8rem;">${conv.date}</td>
             <td style="text-align:right;">
-                <button class="btn-gold" style="padding:0.35rem 0.85rem; font-size:0.78rem;" onclick="loadConversationIntoChat(${conv.id})">Open âž”</button>
+                <button class="btn-gold" style="padding:0.35rem 0.85rem; font-size:0.78rem;" onclick="loadConversationIntoChat(${conv.id})">Open ➔</button>
             </td>
         `;
         tbody.appendChild(tr);
@@ -442,7 +442,7 @@ function loadConversationIntoChat(convId) {
     showScreen('chat');
 }
 
-// â”€â”€ Screen 6: Document Management Renderer (Image 6) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —— Screen 6: Document Management Renderer (Image 6) —————————————————————————
 function renderDocumentsTable() {
     const tbody = document.getElementById('documents-table-body');
     if (!tbody) return;
@@ -454,7 +454,7 @@ function renderDocumentsTable() {
         tr.innerHTML = `
             <td>
                 <div style="display:flex; align-items:center; gap:0.6rem;">
-                    <span style="color:var(--gold-bright);">ðŸ“„</span>
+                    <span style="color:var(--gold-bright);">📄</span>
                     <strong>${doc.title}</strong>
                 </div>
             </td>
@@ -464,7 +464,7 @@ function renderDocumentsTable() {
             <td>${doc.date}</td>
             <td><span class="badge-tag ${badgeClass}">${doc.status}</span></td>
             <td style="text-align:right;">
-                <button class="btn-outline-gold" style="padding:0.25rem 0.6rem; font-size:0.75rem;" onclick="inspectDocument('${doc.title}')">ðŸ‘�ï¸� View</button>
+                <button class="btn-outline-gold" style="padding:0.25rem 0.6rem; font-size:0.75rem;" onclick="inspectDocument('${doc.title}')">👍�ï¸� View</button>
             </td>
         `;
         tbody.appendChild(tr);
@@ -516,7 +516,7 @@ function inspectDocument(docTitle) {
     if (actElem) actElem.textContent = docTitle;
 }
 
-// â”€â”€ Screen 7: Audit Logs Renderer (Image 7) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —— Screen 7: Audit Logs Renderer (Image 7) ——————————————————————————————————
 function renderAuditLogsTable() {
     const tbody = document.getElementById('audit-table-body');
     if (!tbody) return;
@@ -529,7 +529,7 @@ function renderAuditLogsTable() {
             <td style="color:#94A3B8; font-size:0.8rem;">${log.time}</td>
             <td>
                 <div style="display:flex; align-items:center; gap:0.5rem;">
-                    <span>ðŸ‘¤</span>
+                    <span>👍¤</span>
                     <span>${log.user}</span>
                 </div>
             </td>
@@ -542,7 +542,7 @@ function renderAuditLogsTable() {
     });
 }
 
-// â”€â”€ Screen 8: Source References & Citation Inspector (Image 8) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —— Screen 8: Source References & Citation Inspector (Image 8) ———————————————
 function renderSourceInspector() {
     // Already populated by markup or active selection
 }
@@ -566,7 +566,7 @@ function selectSectionInTree(sectionName, textSnippet) {
     }
 }
 
-// â”€â”€ Screen 9: Feedback Table Renderer (Image 9) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —— Screen 9: Feedback Table Renderer (Image 9) ——————————————————————————————
 function renderFeedbackTable() {
     const tbody = document.getElementById('feedback-table-body');
     if (!tbody) return;
@@ -586,7 +586,7 @@ function renderFeedbackTable() {
     });
 }
 
-// â”€â”€ Screen 10: Profile Settings Saver (Image 10) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —— Screen 10: Profile Settings Saver (Image 10) —————————————————————————————
 function saveProfileChanges() {
     const nameInput = document.getElementById('profile-name');
     const emailInput = document.getElementById('profile-email');
@@ -621,13 +621,13 @@ function revokeAllSessions() {
     showToast('All other remote browser sessions have been revoked.', 'warning');
 }
 
-// â”€â”€ App Init â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —— App Init —————————————————————————————————————————————————————————————————
 document.addEventListener('DOMContentLoaded', () => {
     // Show Dashboard by default (Image 3)
     showScreen('dashboard');
 });
 
-// â”€â”€ RBAC / Role Switching (User Portal vs Administrator Panel) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —— RBAC / Role Switching (User Portal vs Administrator Panel) ———————————————
 STATE.currentRole = 'user';
 STATE.registeredUsers = [
     { id: 'USR-001', name: 'Muhammad Aqib', email: 'aqib44584@gmail.com', role: 'Citizen (Normal User)', city: 'Vehari, Pakistan', status: 'Active', joined: '01/01/2026' },
@@ -745,7 +745,7 @@ function renderUserMyFeedbackList() {
     });
 }
 
-// â”€â”€ Security Gate & Admin Authentication Verification â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —— Security Gate & Admin Authentication Verification ————————————————————————
 STATE.isAdminAuthenticated = false;
 
 function openAdminSecurityModal() {
@@ -838,7 +838,7 @@ function lockAdminSession() {
     showToast("Administrator session locked. Returned safely to Citizen Portal.", "info");
 }
 
-// â”€â”€ Dedicated Full-Screen Auth & Admin Routing Controller â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// —— Dedicated Full-Screen Auth & Admin Routing Controller ————————————————————
 function showAuthView(viewName) {
     const loginView = document.getElementById('auth-view-login');
     const registerView = document.getElementById('auth-view-register');
@@ -1084,3 +1084,94 @@ function showToast(message, type = 'success') {
         if (toast.parentNode) toast.parentNode.removeChild(toast);
     }, 4000);
 }
+
+
+// ── Modern Command Palette (⌘K / Ctrl+K) Engine ───────────────────────────
+const STATUTE_COMMANDS = [
+    { type: 'statute', title: 'Pakistan Penal Code (PPC 1860)', badge: 'PPC § 302', desc: 'Murder, offences against person, theft, criminal trespass', action: () => quickAsk('What is the punishment for intentional murder under Pakistan Penal Code section 302?') },
+    { type: 'statute', title: 'Code of Criminal Procedure (Cr.P.C 1898)', badge: 'Cr.P.C § 154', desc: 'Police duty to register FIR, cognizable offences, bail rules', action: () => quickAsk('Can the police legally refuse to register an FIR for a cognizable robbery offence under CrPC 154?') },
+    { type: 'statute', title: 'Post-Arrest Bail Rules (Cr.P.C § 497)', badge: 'Cr.P.C § 497', desc: 'Prohibitory clause, statutory delay, medical grounds', action: () => quickAsk('Under what conditions can post-arrest bail be granted under Section 497 Cr.P.C.?') },
+    { type: 'statute', title: 'Constitution of Pakistan (1973)', badge: 'Art 10A & 25', desc: 'Fundamental citizen rights, fair trial, equality before law', action: () => quickAsk('What fundamental rights are guaranteed to Pakistani citizens under Article 10A and Article 25?') },
+    { type: 'statute', title: 'Cybercrime Act (PECA 2016)', badge: 'PECA § 24', desc: 'Cyber stalking, unauthorized pictures, FIA cyber crime cell', action: () => quickAsk('What legal remedies exist for unauthorized distribution of private photos under PECA 2016?') },
+    { type: 'statute', title: 'Punjab Consumer Protection Act 2005', badge: 'PCPA § 3', desc: 'Defective products, merchant warranty, Consumer Court claims', action: () => quickAsk('Can a consumer claim compensation for defective electronic goods in Consumer Court?') },
+    { type: 'statute', title: 'Muslim Family Laws Ordinance 1961', badge: 'MFLO § 7', desc: 'Talaq, Khula, Union Council reconciliation procedure', action: () => quickAsk('What is the mandatory procedure for Khula under the Muslim Family Laws Ordinance 1961?') },
+    { type: 'navigation', title: 'Go to Citizen Dashboard', badge: 'View', desc: 'View statutory summary, telemetry & recent activity', action: () => showScreen('dashboard') },
+    { type: 'navigation', title: 'Inspect Legal Source Acts & Precedents', badge: 'View', desc: 'Official gazette publications and section index tree', action: () => showScreen('sources') },
+    { type: 'navigation', title: 'Consultation History Archive', badge: 'View', desc: 'View past queries and grounded legal answers', action: () => showScreen('history') }
+];
+
+function openCommandPalette() {
+    const overlay = document.getElementById('cmd-palette-overlay');
+    if (!overlay) return;
+    overlay.style.display = 'flex';
+    const input = document.getElementById('cmd-palette-input');
+    if (input) {
+        input.value = '';
+        input.focus();
+    }
+    renderCommandResults(STATUTE_COMMANDS);
+}
+
+function closeCommandPalette() {
+    const overlay = document.getElementById('cmd-palette-overlay');
+    if (overlay) overlay.style.display = 'none';
+}
+
+function handleCommandSearch(query) {
+    const q = query.toLowerCase().trim();
+    if (!q) {
+        renderCommandResults(STATUTE_COMMANDS);
+        return;
+    }
+    const filtered = STATUTE_COMMANDS.filter(cmd => 
+        cmd.title.toLowerCase().includes(q) || 
+        cmd.badge.toLowerCase().includes(q) || 
+        cmd.desc.toLowerCase().includes(q)
+    );
+    renderCommandResults(filtered);
+}
+
+function renderCommandResults(list) {
+    const container = document.getElementById('cmd-palette-results');
+    if (!container) return;
+    if (list.length === 0) {
+        container.innerHTML = '<div style="padding:1.5rem; text-align:center; color:var(--text-muted); font-size:0.88rem;">No matching statutes or legal topics found.<br/><span style="font-size:0.78rem;">Try searching "PPC", "bail", "FIR", or "PECA"</span></div>';
+        return;
+    }
+    container.innerHTML = '<div class="cmd-section-title">Verified Pakistani Statutes & Navigation</div>';
+    list.forEach((cmd, idx) => {
+        const item = document.createElement('div');
+        item.className = 'cmd-item' + (idx === 0 ? ' selected' : '');
+        item.onclick = () => {
+            closeCommandPalette();
+            cmd.action();
+        };
+        item.innerHTML = `
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+                <span class="statute-token">${cmd.badge}</span>
+                <div>
+                    <div style="font-weight:600; color:var(--text-white); font-size:0.86rem;">${cmd.title}</div>
+                    <div style="font-size:0.74rem; color:var(--text-muted);">${cmd.desc}</div>
+                </div>
+            </div>
+            <span style="font-size:0.78rem; color:var(--text-muted);">↵</span>
+        `;
+        container.appendChild(item);
+    });
+}
+
+// Global Keyboard Shortcut: ⌘K or Ctrl+K opens Command Palette; ESC closes it
+document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        const overlay = document.getElementById('cmd-palette-overlay');
+        if (overlay && overlay.style.display === 'flex') {
+            closeCommandPalette();
+        } else {
+            openCommandPalette();
+        }
+    }
+    if (e.key === 'Escape') {
+        closeCommandPalette();
+    }
+});
